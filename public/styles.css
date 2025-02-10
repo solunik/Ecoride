@@ -1,0 +1,99 @@
+/* RESET & BASE STYLES */
+body {
+    font-family: Arial, sans-serif; /* Définit la police du texte du site */
+    margin: 0; /* Enlève les marges par défaut du body */
+    padding: 0; /* Enlève les espacements par défaut du body */
+    background-color: #f9fafb; /* Définit une couleur de fond claire */
+    color: #1f2937; /* Définit la couleur du texte en gris foncé */
+}
+
+/* HEADER */
+header {
+    background-color: #22c55e; /* Définit la couleur de fond du header en vert */
+    color: white; /* Définit la couleur du texte du header en blanc */
+}
+
+nav {
+    display: flex; /* Utilise le modèle de boîte flexible pour organiser les éléments */
+    align-items: center; /* Centre verticalement les éléments dans le nav */
+    justify-content: center; /* Centre horizontalement les éléments dans le nav */
+    width: 100%; /* Assure que le nav prend toute la largeur disponible */
+}
+
+/* Liste du menu */
+.menu {
+    list-style: none; /* Enlève les puces par défaut de la liste */
+    margin: 0; /* Enlève les marges par défaut de la liste */
+    padding: 0; /* Enlève les espacements internes de la liste */
+    display: flex; /* Organise les éléments de la liste en ligne (horizontale) */
+    gap: 1.4rem; /* Ajoute un écart de 1.5rem entre chaque élément de la liste */
+}
+
+.menu li a {
+    color: white; /* Définit la couleur des liens en blanc */
+    text-decoration: none; /* Enlève la décoration (soulignement) des liens */
+    font-weight: bold; /* Met en gras le texte des liens */
+}
+
+.menu li a:hover {
+    text-decoration: underline; /* Ajoute un soulignement au lien lorsque l'on passe la souris dessus */
+}
+
+/* MAIN */
+main {
+    padding: 2rem; /* Ajoute un padding de 2rem autour du contenu principal */
+}
+
+section {
+    margin-bottom: 2rem; /* Ajoute une marge de 2rem en bas de chaque section */
+}
+
+/* TOP MAIN */
+.top-main {
+    text-align: center; /* Centre le texte dans la section */
+    margin-bottom: 2rem; /* Ajoute une marge en bas de la section */
+    padding: 2rem; /* Ajoute un padding autour du contenu de la section */
+    background-color: #f0fdf4; /* Définit un fond vert pâle pour cette section */
+    border-radius: 10px; /* Arrondit les coins de la section */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère autour de la section */
+}
+
+/* FORM */
+form {
+    display: flex; /* Utilise le modèle de boîte flexible pour organiser les éléments du formulaire */
+    flex-direction: column; /* Organise les éléments du formulaire en colonne */
+    gap: 1rem; /* Ajoute un écart de 1rem entre chaque champ du formulaire */
+    max-width: 400px; /* Définit la largeur maximale du formulaire à 400px */
+    margin: 0 auto; /* Centre le formulaire horizontalement */
+}
+
+input, button {
+    padding: 0.5rem; /* Ajoute un padding de 0.5rem aux champs de saisie et aux boutons */
+    border: 1px solid #22c55e; /* Ajoute une bordure verte autour des champs de saisie et des boutons */
+    border-radius: 5px; /* Arrondit les coins des champs de saisie et des boutons */
+}
+
+button {
+    background-color: #22c55e; /* Définit un fond vert pour les boutons */
+    color: white; /* Définit la couleur du texte du bouton en blanc */
+    cursor: pointer; /* Change le curseur lorsque l'on passe dessus (indiquant qu'il est cliquable) */
+}
+
+button:hover {
+    background-color: #16a34a; /* Change la couleur de fond du bouton au survol */
+}
+
+.link-proposal {
+    text-align: center; /* Centre le texte dans le conteneur .link-proposal */
+}
+
+/* FOOTER */
+footer {
+    background-color: #22c55e; /* Définit un fond vert pour le footer */
+    color: white; /* Définit la couleur du texte du footer en blanc */
+    text-align: center; /* Centre le texte dans le footer */
+    padding: 0rem 0; /* Ajoute un padding de 1rem en haut et en bas du footer */
+    position: fixed; /* Fixe le footer en bas de la page */
+    bottom: 0; /* Positionne le footer tout en bas de la page */
+    width: 100%; /* Prend toute la largeur de la page pour le footer */
+}
