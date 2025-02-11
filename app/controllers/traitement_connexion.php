@@ -13,8 +13,6 @@ try {
         $email = htmlspecialchars($_POST['email']);
         $password = $_POST['password']; // Mot de passe en clair
 
-        $password_hash = hash('sha256', $password);
-
         // Requête pour récupérer l'utilisateur correspondant à l'email
         $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email");
         $stmt->execute([':email' => $email]);
@@ -22,8 +20,11 @@ try {
 
         // Vérifier si l'utilisateur existe
         if ($utilisateur) {
+            
+            $passwordHash = $utilisateur['password'];
+
             // Comparer le mot de passe haché avec le mot de passe en clair
-            if ($password_hash == $utilisateur['password']) {
+            if (password_verify($password, $passwordHash)) {
                 // Stocker les informations de l'utilisateur dans la session
                 $_SESSION['utilisateur_id'] = $utilisateur['utilisateur_id'];
                 $_SESSION['prenom'] = $utilisateur['prenom'];
