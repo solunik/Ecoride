@@ -14,7 +14,8 @@ try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
         // Si la méthode de la requête est POST, cela signifie que le formulaire a été soumis.
 
-        $email = htmlspecialchars($_POST['email']); 
+        $email = htmlspecialchars($_POST['email']);
+        $pseudo = htmlspecialchars($_POST['pseudo']); 
         $prenom = htmlspecialchars($_POST['prenom']); 
         $nom = htmlspecialchars($_POST['nom']); 
         $password = $_POST['password']; 
@@ -26,24 +27,28 @@ try {
             // Si les mots de passe correspondent, on continue.
 
             // Hacher le mot de passe
-            $passwordHash = hash('sha256', $password);
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
             // Vérifier si l'email existe déjà
-            $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email");
+            $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email OR pseudo = :pseudo");
             // Prépare une requête SQL pour rechercher un utilisateur avec l'email fourni.
-            $stmt->execute([':email' => $email]); 
+            $stmt->execute([':email' => $email, ':pseudo' => $pseudo]); 
             // Exécute la requête avec l'email comme paramètre.
             $user = $stmt->fetch(PDO::FETCH_ASSOC); 
             // Récupère les résultats sous forme de tableau associatif.
 
             if ($user) { 
-                // Si un utilisateur avec cet email existe déjà, on affiche une erreur.
-                $error = "Cet email est déjà utilisé.";
+                // Si un utilisateur avec cet email ou pseudo existe déjà, on affiche une erreur.
+                if ($user['email'] === $email) {
+                    $error = "Cet email est déjà utilisé.";
+                } elseif ($user['pseudo'] === $pseudo) {
+                    $error = "Ce pseudo est déjà pris.";
+                }
             } else {
-                // Si l'email est unique, on insère l'utilisateur dans la base de données.
-                $stmt = $conn->prepare("INSERT INTO utilisateur (email, prenom, nom, password) VALUES (:email, :prenom, :nom, :password)");
+                // Si l'email est unique et le pseudo, on insère l'utilisateur dans la base de données.
+                $stmt = $conn->prepare("INSERT INTO utilisateur (email, pseudo, prenom, nom, password, credit) VALUES (:email, :pseudo, :prenom, :nom, :password, :credit)");
                 // Prépare une requête SQL pour insérer un nouvel utilisateur dans la table 'utilisateur'.
-                $stmt->execute([':email' => $email, ':prenom' => $prenom, ':nom' => $nom, ':password' => $passwordHash]); 
+                $stmt->execute([':email' => $email, ':pseudo' => $pseudo, ':prenom' => $prenom, ':nom' => $nom, ':password' => $passwordHash, ':credit' => 20]); 
                 // Exécute la requête en insérant les données de l'utilisateur.
 
                 // Rediriger l'utilisateur vers la page de connexion après l'inscription
@@ -97,6 +102,9 @@ try {
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" required>
                 <!-- Champ pour l'email avec validation HTML5 pour un format valide -->
+
+                <label for="pseudo">Pseudo</label>
+                <input type="text" name="pseudo" id="pseudo" required>
 
                 <label for="prenom">Prénom</label>
                 <input type="text" name="prenom" id="prenom" required>
