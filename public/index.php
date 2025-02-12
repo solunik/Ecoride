@@ -11,12 +11,7 @@ session_start();
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <?php include __DIR__ . '/../app/partials/header.php'; ?> 
-                <!-- Mise à jour du chemin vers le header (répertoire app/partials) -->
-            </ul>
-        </nav>
+        <?php include __DIR__ . '/../app/partials/header.php'; ?> 
     </header>
 
     <main>
@@ -58,8 +53,7 @@ session_start();
     </main>
 
     <footer>
-        <?php include __DIR__ . '/../app/partials/footer.php'; ?> 
-        <!-- Mise à jour du chemin vers le footer (répertoire app/partials) -->
+        <?php include __DIR__ . '/../app/partials/footer.php'; ?>
     </footer>
 </body>
 </html>

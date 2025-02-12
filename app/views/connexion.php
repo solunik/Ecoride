@@ -9,11 +9,7 @@
 <body>
     
     <header>
-        <nav>
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
+            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
     </header>
 
     <main>
