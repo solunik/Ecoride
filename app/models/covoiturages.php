@@ -11,12 +11,8 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
 </head>
 <body> <!-- Début du contenu de la page -->
     
-    <header> <!-- Section de l'en-tête contenant la navigation -->
-        <nav> <!-- Section de la barre de navigation -->
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
+    <header>
+            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
     </header>
 
     <main> <!-- Section principale du contenu -->

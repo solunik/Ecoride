@@ -11,12 +11,8 @@ session_start(); // Démarre la session PHP
     <link rel="stylesheet" href="/Covoiturage/public/styles.css"> <!-- Lien vers le fichier CSS dans public/ -->
 </head>
 <body>
-<header>
-        <nav>
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
+    <header>
+            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
     </header>
     
     <div class="content">
@@ -72,7 +68,9 @@ session_start(); // Démarre la session PHP
         }
         ?>
     </div>
-
-    <?php include '../partials/footer.php'; ?> <!-- Inclusion du footer -->
+    
+    <footer>
+        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+    </footer>
 </body>
 </html>
