@@ -64,6 +64,15 @@ section {
 }
 
 
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
 /* TOP MAIN */
 .top-main {
     text-align: center; /* Centre le texte dans la section */

@@ -5,10 +5,12 @@ session_start();
 
 // Connexion à la base de données
 try {
-    $conn = new PDO('mysql:host=localhost;dbname=covoiturage', 'root', ''); 
-    // Crée une connexion à la base de données MySQL. Ici, la base de données s'appelle 'covoiturage' et l'utilisateur est 'root' sans mot de passe.
+    // Charger la configuration de la base de données depuis config.php
+    $config = require __DIR__ . '/../../config/config.php';
+    // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
+    $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
+    // Configuration pour afficher les erreurs SQL en cas de problème
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-    // Définit l'attribut de gestion des erreurs pour que les exceptions soient lancées en cas d'erreur.
 
     // Vérifie si le formulaire est soumis
     if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
@@ -89,8 +91,9 @@ try {
         <section>
             <?php if (isset($error)): ?> 
                 <!-- Si une erreur est présente, elle sera affichée ici -->
-                <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
-            <?php endif; ?>
+                <p><?php echo '<div class="error-message">' . htmlspecialchars($error) . '</div>'; ?></p>
+            <?php endif; 
+            ?>
 
             <form method="POST" action="/Covoiturage/app/views/inscription.php">
                 <!-- Le formulaire envoie les données à la même page 'inscription.php' avec la méthode POST -->

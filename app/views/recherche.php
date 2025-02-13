@@ -19,9 +19,10 @@ session_start(); // Démarre la session PHP
         <?php
         // Connexion à la base de données
         try {
-            // Création d'une connexion PDO à la base de données "covoiturage" sur le serveur local
-            $conn = new PDO('mysql:host=localhost;dbname=covoiturage', 'root', '');
-            
+            // Charger la configuration de la base de données depuis config.php
+            $config = require __DIR__ . '/../../config/config.php';
+            // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
+            $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
             // Configuration pour afficher les erreurs SQL en cas de problème
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
