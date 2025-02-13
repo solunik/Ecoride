@@ -141,3 +141,62 @@ footer {
     bottom: 0; /* Positionne le footer tout en bas de la page */
     width: 100%; /* Prend toute la largeur de la page pour le footer */
 }
+
+
+.top-main {
+    text-align: center; /* Centre le texte dans la section */
+    margin-bottom: 2rem; /* Ajoute une marge en bas de la section */
+    padding: 2rem; /* Ajoute un padding autour du contenu de la section */
+    background-color: #f0fdf4; /* Définit un fond vert pâle pour cette section */
+    border-radius: 10px; /* Arrondit les coins de la section */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère autour de la section */
+}
+/* Section contenant les cartes */
+.resultats-covoiturage {
+    display: flex;
+    flex-wrap: wrap; /* Pour que les cartes s'affichent en plusieurs lignes */
+    justify-content: center; /* Centrer les cartes horizontalement */
+    gap: 20px; /* Espace entre les cartes */
+}
+
+/* Style pour le conteneur de la carte */
+.carte-covoiturage {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 15px 0;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour la section de l'information sur le chauffeur */
+.chauffeur-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.photo-chauffeur {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+/* Style pour le bouton Détail */
+.btn-detail {
+    display: inline-block;
+    background-color: #22c55e; /* Couleur du bouton en vert */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none; /* Pas de soulignement */
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Transition pour l'effet hover */
+}
+
+.btn-detail:hover {
+    background-color: #16a34a; /* Changement de couleur au survol */
+}
