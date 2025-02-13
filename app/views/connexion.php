@@ -9,17 +9,14 @@
 <body>
     
     <header>
-        <nav>
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
+        <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
     </header>
 
     <main>
         <section class="top-main">
             <h1>Connexion</h1>
         </section>
+
 
         <section>
             <form action="/Covoiturage/app/controllers/traitement_connexion.php" method="post"> <!-- Formulaire pointe vers traitement_connexion.php dans controllers/ -->
@@ -36,6 +33,15 @@
         <section class="link-proposal">
             <p>Pas encore de compte ? <a href="/Covoiturage/app/views/inscription.php">Inscrivez-vous ici</a>.</p> <!-- Lien vers inscription.php dans public/ -->
         </section>
+        
+        <!-- Afficher l'erreur si elle existe -->
+        <?php
+        session_start();
+        if (isset($_SESSION['error'])) {
+            echo '<div class="error-message">' . htmlspecialchars($_SESSION['error']) . '</div>';
+            unset($_SESSION['error']); // Supprimer l'erreur après l'affichage pour éviter qu'elle reste après un rechargement
+        }
+        ?>
     </main>
 
     <footer>

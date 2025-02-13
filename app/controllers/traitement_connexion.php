@@ -4,7 +4,15 @@ session_start();
 
 // Connexion à la base de données
 try {
-    $conn = new PDO('mysql:host=localhost;dbname=covoiturage', 'root', '');
+    // Charger la configuration de la base de données depuis config.php
+    $config = require __DIR__ . '/../../config/config.php';
+    
+    // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
+    $conn = new PDO(
+        'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'],
+        $config['user'],
+        $config['password']
+    );
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Vérifier si les champs du formulaire sont remplis
@@ -49,8 +57,6 @@ try {
     // Erreur de connexion à la base de données
     $error = "Erreur de connexion : " . $e->getMessage();
 }
-
-
 ?>
 
 <!DOCTYPE html>

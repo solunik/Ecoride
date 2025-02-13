@@ -1,7 +1,9 @@
 <?php
+
 // Chargement des informations de connexion depuis le fichier config
-$config = require __DIR__ . '/Covoiturage/app/config/config.php'; 
+$config = require __DIR__ . '/../../config/config.php';
 // Le fichier config.php se trouve dans le dossier config, un niveau au-dessus de ce fichier
+var_dump($config); // Vérifie si le tableau est bien chargé
 
 try {
     // Crée la connexion avec PDO

@@ -11,21 +11,18 @@ session_start(); // Démarre la session PHP
     <link rel="stylesheet" href="/Covoiturage/public/styles.css"> <!-- Lien vers le fichier CSS dans public/ -->
 </head>
 <body>
-<header>
-        <nav>
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
+    <header>
+            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
     </header>
     
     <div class="content">
         <?php
         // Connexion à la base de données
         try {
-            // Création d'une connexion PDO à la base de données "covoiturage" sur le serveur local
-            $conn = new PDO('mysql:host=localhost;dbname=covoiturage', 'root', '');
-            
+            // Charger la configuration de la base de données depuis config.php
+            $config = require __DIR__ . '/../../config/config.php';
+            // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
+            $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
             // Configuration pour afficher les erreurs SQL en cas de problème
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -72,7 +69,9 @@ session_start(); // Démarre la session PHP
         }
         ?>
     </div>
-
-    <?php include '../partials/footer.php'; ?> <!-- Inclusion du footer -->
+    
+    <footer>
+        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+    </footer>
 </body>
 </html>
