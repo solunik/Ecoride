@@ -8,11 +8,8 @@ try {
     $config = require __DIR__ . '/../../config/config.php';
     
     // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
-    $conn = new PDO(
-        'mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'],
-        $config['user'],
-        $config['password']
-    );
+    $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
+    
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Vérifier si les champs du formulaire sont remplis
@@ -42,54 +39,27 @@ try {
                 header("Location: /Covoiturage/public/index.php");
                 exit;
             } else {
-                // Mot de passe incorrect
-                $error = "Mot de passe ou email incorrect.";
+                // Mot de passe incorrect, stocker l'erreur dans la session et rediriger
+                $_SESSION['error'] = "Mot de passe ou email incorrect";
+                header("Location: /Covoiturage/app/views/connexion.php");
+                exit;
             }
         } else {
-            // Email non trouvé
-            $error = "Utilisateur introuvable.";
+            // Email non trouvé, stocker l'erreur dans la session et rediriger
+            $_SESSION['error'] = "Utilisateur introuvable.";
+            header("Location: /Covoiturage/app/views/connexion.php");
+            exit;
         }
     } else {
-        // Formulaire incomplet
-        $error = "Veuillez remplir tous les champs.";
+        // Formulaire incomplet, stocker l'erreur dans la session et rediriger
+        $_SESSION['error'] = "Veuillez remplir tous les champs.";
+        header("Location: /Covoiturage/app/views/connexion.php");
+        exit;
     }
 } catch (PDOException $e) {
-    // Erreur de connexion à la base de données
-    $error = "Erreur de connexion : " . $e->getMessage();
+    // Erreur de connexion à la base de données, stocker l'erreur dans la session et rediriger
+    $_SESSION['error'] = "Erreur de connexion : " . $e->getMessage();
+    header("Location: /Covoiturage/app/views/connexion.php");
+    exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="../../public/styles.css"> <!-- Chemin vers ton CSS -->
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section>
-            <h1>Connexion</h1>
-
-            <?php if (isset($error)): ?>
-                <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
-            <?php endif; ?>
-
-            <p><a href="/Covoiturage/app/views/connexion.php">Retour à la page de connexion</a></p> <!-- Lien vers la page de connexion -->
-        </section>
-    </main>
-
-    <footer>
-        <?php include('../partials/footer.php'); ?> <!-- Inclusion du footer -->
-    </footer>
-</body>
-</html>
