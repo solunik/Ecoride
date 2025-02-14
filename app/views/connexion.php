@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css"> <!-- Lien vers le fichier CSS dans public/ -->
+    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
 </head>
 <body>
     
     <header>
-        <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
+        <?php include('../partials/header.php'); ?>
     </header>
 
     <main>
@@ -35,17 +35,15 @@
         </section>
         
         <!-- Afficher l'erreur si elle existe -->
-        <?php
-        session_start();
-        if (isset($_SESSION['error'])) {
-            echo '<div class="error-message">' . htmlspecialchars($_SESSION['error']) . '</div>';
-            unset($_SESSION['error']); // Supprimer l'erreur après l'affichage pour éviter qu'elle reste après un rechargement
-        }
-        ?>
+        <?php if (isset($errorMessage) && $errorMessage): ?>
+        <div class="error-message"><?php echo htmlspecialchars($errorMessage); ?></div>
+        <?php unset($errorMessage); ?> <!-- Supprimer la variable d'erreur après affichage -->
+        <?php endif; ?>
+        
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+        <?php include('../partials/footer.php'); ?>
     </footer>
 </body>
 </html>
