@@ -2,15 +2,14 @@
 // Démarrer la session pour stocker les informations de l'utilisateur
 session_start();
 
-// Connexion à la base de données
+// Inclure la classe de connexion
+require_once __DIR__ . '/../../app/models/db.php';
+
+$errorMessage = ''; // Variable pour l'erreur
+
 try {
-    // Charger la configuration de la base de données depuis config.php
-    $config = require __DIR__ . '/../../config/config.php';
-    
-    // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
-    $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
-    
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Obtenir l'instance de la connexion PDO
+    $conn = Database::getInstance();
 
     // Vérifier si les champs du formulaire sont remplis
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
@@ -25,7 +24,6 @@ try {
 
         // Vérifier si l'utilisateur existe
         if ($utilisateur) {
-            
             $passwordHash = $utilisateur['password'];
 
             // Comparer le mot de passe haché avec le mot de passe en clair
@@ -39,27 +37,26 @@ try {
                 header("Location: /Covoiturage/public/index.php");
                 exit;
             } else {
-                // Mot de passe incorrect, stocker l'erreur dans la session et rediriger
-                $_SESSION['error'] = "Mot de passe ou email incorrect";
-                header("Location: /Covoiturage/app/views/connexion.php");
-                exit;
+                // Mot de passe incorrect
+                $errorMessage = "Mot de passe ou email incorrect";
             }
         } else {
-            // Email non trouvé, stocker l'erreur dans la session et rediriger
-            $_SESSION['error'] = "Utilisateur introuvable.";
-            header("Location: /Covoiturage/app/views/connexion.php");
-            exit;
+            // Email non trouvé
+            $errorMessage = "Mot de passe ou email incorrect";
         }
     } else {
-        // Formulaire incomplet, stocker l'erreur dans la session et rediriger
-        $_SESSION['error'] = "Veuillez remplir tous les champs.";
-        header("Location: /Covoiturage/app/views/connexion.php");
-        exit;
+        // Formulaire incomplet
+        $errorMessage = "Veuillez remplir tous les champs.";
     }
 } catch (PDOException $e) {
-    // Erreur de connexion à la base de données, stocker l'erreur dans la session et rediriger
-    $_SESSION['error'] = "Erreur de connexion : " . $e->getMessage();
-    header("Location: /Covoiturage/app/views/connexion.php");
+    // Erreur de connexion à la base de données
+    $errorMessage = "Erreur de connexion : " . $e->getMessage();
+}
+
+// Vérifier si une erreur a été définie, sinon on la passe à la vue
+if ($errorMessage) {
+    // Inclure la vue avec le message d'erreur
+    include('../../app/views/connexion.php');
     exit;
 }
 ?>
