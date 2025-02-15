@@ -142,15 +142,6 @@ footer {
     width: 100%; /* Prend toute la largeur de la page pour le footer */
 }
 
-
-.top-main {
-    text-align: center; /* Centre le texte dans la section */
-    margin-bottom: 2rem; /* Ajoute une marge en bas de la section */
-    padding: 2rem; /* Ajoute un padding autour du contenu de la section */
-    background-color: #f0fdf4; /* Définit un fond vert pâle pour cette section */
-    border-radius: 10px; /* Arrondit les coins de la section */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère autour de la section */
-}
 /* Section contenant les cartes */
 .resultats-covoiturage {
     display: flex;
