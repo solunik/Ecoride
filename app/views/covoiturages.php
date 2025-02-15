@@ -21,17 +21,17 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
         </section>
         
         <section> <!-- Section contenant le formulaire de recherche -->
-            <form action="/Covoiturage/app/views/recherche.php" method="get"> <!-- Formulaire qui enverra les données via la méthode GET à 'recherche.php' -->
-                <label for="depart">Départ</label> <!-- Etiquette du champ départ -->
-                <input type="text" id="depart" name="depart" required> <!-- Champ de saisie pour le lieu de départ, avec champ requis -->
+            <form action="/Covoiturage/app/views/recherche.php" method="get">
+                <label for="depart">Départ</label>
+                <input type="text" id="depart" name="depart" required>
 
-                <label for="arrivee">Arrivée</label> <!-- Etiquette du champ arrivée -->
-                <input type="text" id="arrivee" name="arrivee" required> <!-- Champ de saisie pour le lieu d'arrivée, avec champ requis -->
+                <label for="arrivee">Arrivée</label>
+                <input type="text" id="arrivee" name="arrivee" required>
 
-                <label for="date">Date</label> <!-- Etiquette du champ date -->
-                <input type="date" id="date" name="date" required> <!-- Champ de saisie pour la date, avec champ requis -->
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
 
-                <button type="submit">Rechercher</button> <!-- Bouton pour soumettre le formulaire -->
+                <button type="submit">Rechercher</button>
             </form>
         </section>
     </main>

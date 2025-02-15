@@ -1,74 +1,3 @@
-<?php
-// Démarrer la session
-session_start(); 
-// Cette ligne démarre une session pour gérer l'état de l'utilisateur pendant la navigation (par exemple, pour stocker des informations de connexion ou des messages d'erreur).
-
-// Connexion à la base de données
-try {
-    // Charger la configuration de la base de données depuis config.php
-    $config = require __DIR__ . '/../../config/config.php';
-    // Utilisation des valeurs du fichier config.php pour se connecter à la base de données
-    $conn = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['dbname'], $config['user'], $config['password']);
-    // Configuration pour afficher les erreurs SQL en cas de problème
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-
-    // Vérifie si le formulaire est soumis
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
-        // Si la méthode de la requête est POST, cela signifie que le formulaire a été soumis.
-
-        $email = htmlspecialchars($_POST['email']);
-        $pseudo = htmlspecialchars($_POST['pseudo']); 
-        $prenom = htmlspecialchars($_POST['prenom']); 
-        $nom = htmlspecialchars($_POST['nom']); 
-        $password = $_POST['password']; 
-        $confirmPassword = $_POST['confirm_password']; 
-        // Récupère les données envoyées par le formulaire et les nettoie avec htmlspecialchars pour éviter les attaques XSS.
-
-        // Vérifier si les mots de passe correspondent
-        if ($password === $confirmPassword) { 
-            // Si les mots de passe correspondent, on continue.
-
-            // Hacher le mot de passe
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            // Vérifier si l'email existe déjà
-            $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = :email OR pseudo = :pseudo");
-            // Prépare une requête SQL pour rechercher un utilisateur avec l'email fourni.
-            $stmt->execute([':email' => $email, ':pseudo' => $pseudo]); 
-            // Exécute la requête avec l'email comme paramètre.
-            $user = $stmt->fetch(PDO::FETCH_ASSOC); 
-            // Récupère les résultats sous forme de tableau associatif.
-
-            if ($user) { 
-                // Si un utilisateur avec cet email ou pseudo existe déjà, on affiche une erreur.
-                if ($user['email'] === $email) {
-                    $error = "Cet email est déjà utilisé.";
-                } elseif ($user['pseudo'] === $pseudo) {
-                    $error = "Ce pseudo est déjà pris.";
-                }
-            } else {
-                // Si l'email est unique et le pseudo, on insère l'utilisateur dans la base de données.
-                $stmt = $conn->prepare("INSERT INTO utilisateur (email, pseudo, prenom, nom, password, credit) VALUES (:email, :pseudo, :prenom, :nom, :password, :credit)");
-                // Prépare une requête SQL pour insérer un nouvel utilisateur dans la table 'utilisateur'.
-                $stmt->execute([':email' => $email, ':pseudo' => $pseudo, ':prenom' => $prenom, ':nom' => $nom, ':password' => $passwordHash, ':credit' => 20]); 
-                // Exécute la requête en insérant les données de l'utilisateur.
-
-                // Rediriger l'utilisateur vers la page de connexion après l'inscription
-                header("Location: /Covoiturage/app/views/connexion.php");
-                exit; 
-                // Redirige l'utilisateur vers la page de connexion après une inscription réussie.
-            }
-        } else {
-            // Si les mots de passe ne correspondent pas, on affiche un message d'erreur.
-            $error = "Les mots de passe ne correspondent pas.";
-        }
-    }
-} catch (PDOException $e) {
-    // Si une erreur se produit lors de la connexion à la base de données, on capture l'exception et on affiche un message d'erreur générique.
-    $error = "Erreur de connexion : " . $e->getMessage();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -78,62 +7,55 @@ try {
     <link rel="stylesheet" href="/Covoiturage/public/styles.css">
 </head>
 <body>
+    
     <header>
-            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
+        <?php include('../partials/header.php'); ?>
     </header>
 
     <main>
         <section class="top-main">
             <h1>Inscription</h1>
-            <!-- Affiche le titre de la page -->
         </section>
-        
+
+
         <section>
-            <?php if (isset($error)): ?> 
-                <!-- Si une erreur est présente, elle sera affichée ici -->
-                <p><?php echo '<div class="error-message">' . htmlspecialchars($error) . '</div>'; ?></p>
-            <?php endif; 
-            ?>
+            <form action="/Covoiturage/app/controllers/traitement_inscription.php" method="post">
+                <label for="email">E-mail </label>
+                <input type="email" id="email" name="email" required>
 
-            <form method="POST" action="/Covoiturage/app/views/inscription.php">
-                <!-- Le formulaire envoie les données à la même page 'inscription.php' avec la méthode POST -->
+                <label for="pseudo">Pseudo </label>
+                <input type="text" id="pseudo" name="pseudo" required>
 
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" required>
-                <!-- Champ pour l'email avec validation HTML5 pour un format valide -->
+                <label for="prenom">Prénom </label>
+                <input type="text" id="prenom" name="prenom" required>
 
-                <label for="pseudo">Pseudo</label>
-                <input type="text" name="pseudo" id="pseudo" required>
+                <label for="nom">Nom </label>
+                <input type="text" id="nom" name="nom" required>
 
-                <label for="prenom">Prénom</label>
-                <input type="text" name="prenom" id="prenom" required>
-                <!-- Champ pour le prénom -->
+                <label for="password">Mot de passe </label>
+                <input type="password" id="password" name="password" required>
 
-                <label for="nom">Nom</label>
-                <input type="text" name="nom" id="nom" required>
-                <!-- Champ pour le nom -->
+                <label for="confirm_password">Confirmer le mot de passe </label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
 
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password" required>
-                <!-- Champ pour le mot de passe -->
-
-                <label for="confirm_password">Confirmer le mot de passe</label>
-                <input type="password" name="confirm_password" id="confirm_password" required>
-                <!-- Champ pour confirmer le mot de passe -->
-
-                <button type="submit">S'inscrire</button>
-                <!-- Bouton pour soumettre le formulaire -->
+                <button type="submit" name="ok">S'inscrire</button>
             </form>
         </section>
-        
+
         <section class="link-proposal">
-            <p>Vous avez déjà un compte ? <a href="/Covoiturage/app/views/connexion.php">Connectez-vous ici</a></p>
-            <!-- Lien vers la page de connexion pour les utilisateurs déjà inscrits -->
+            <p>Déjà un compte ? <a href="/Covoiturage/app/views/connexion.php">Connectez-vous ici</a>.</p>
         </section>
+
+        <!-- Afficher l'erreur si elle existe -->
+        <?php if (isset($errorMessage) && $errorMessage): ?>
+        <div class="error-message"><?php echo htmlspecialchars($errorMessage); ?></div>
+        <?php unset($errorMessage); ?> <!-- Supprimer la variable d'erreur après affichage -->
+        <?php endif; ?>
+        
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+        <?php include('../partials/footer.php'); ?>
     </footer>
 </body>
 </html>

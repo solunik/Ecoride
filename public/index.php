@@ -26,17 +26,10 @@ session_start();
         </section>
 
         <section>
-            <form action="/Covoiturage/app/views/recherche.php" method="get" class="search-form">
-                <!-- Nouveau chemin pour envoyer les données à recherche.php -->
-                <label for="depart">Départ</label>
-                <input type="text" id="depart" name="depart" placeholder="Ex : Paris" required>
-
-                <label for="arrivee">Arrivée</label>
-                <input type="text" id="arrivee" name="arrivee" placeholder="Ex : Toulouse" required>
-
-                <label for="date">Date</label>
-                <input type="date" id="date" name="date" required>
-
+            <form action="/Covoiturage/app/controllers/traitement_recherche.php" method="GET">
+                <input type="text" name="depart" placeholder="Départ" required>
+                <input type="text" name="arrivee" placeholder="Arrivée" required>
+                <input type="date" name="date" required>
                 <button type="submit">Rechercher</button>
             </form>
         </section>

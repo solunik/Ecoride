@@ -7,12 +7,12 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css"> <!-- Lien vers le fichier CSS dans public/ -->
+    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
 </head>
 <body>
     
     <header>
-            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
+            <?php include('../partials/header.php'); ?>
     </header>
 
     <main>
@@ -41,7 +41,7 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+        <?php include('../partials/footer.php'); ?>
     </footer>
 </body>
 </html>
