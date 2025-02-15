@@ -46,20 +46,25 @@ unset($_SESSION['errorMessage']);
                     <div class='carte-covoiturage'>
                         <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
                         <div class='chauffeur-info'>
+                            <?php if (!empty($covoiturage['photo'])): ?>
+                                <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
+                            <?php else: ?>
+                                <img src="/Covoiturage/public/images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
+                            <?php endif; ?>
                             <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
-                            <p><strong>Note:</strong> <?= htmlspecialchars($covoiturage['note']) ?> / 5</p>
+                            <p><?= htmlspecialchars($covoiturage['note']) ?> / 5</p>
                         </div>
                         <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                         <p><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
                         <p><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
-                        <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
+                        <p><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
                         <p><strong>Voyage écologique</strong> <?= $ecologique ?></p>
                         <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
                     </div>
                 <?php endforeach; ?>
-                <?php elseif (empty($resultats) && $errorMessage === ''): ?>
-                    <p>Aucun covoiturage</p>
+            <?php elseif (empty($resultats) && $errorMessage === ''): ?>
+                <p>Aucun covoiturage trouvé.</p>
             <?php endif; ?>
         </section>
     </main>

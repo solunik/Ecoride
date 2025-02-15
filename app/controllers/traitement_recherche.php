@@ -43,7 +43,7 @@ JOIN
 JOIN 
     voiture v ON c.voiture_id = v.voiture_id
 LEFT JOIN
-    avis a ON a.utilisateur_id = u.utilisateur_id  -- Permet d’inclure les conducteurs sans avis
+    avis a ON a.utilisateur_id = u.utilisateur_id
 WHERE 
     c.lieu_depart = :depart 
     AND 
@@ -52,7 +52,7 @@ WHERE
         c.date_depart = :date
 GROUP BY 
     c.covoiturage_id, c.date_depart, c.lieu_depart, c.lieu_arrivee, 
-    c.heure_depart, c.heure_arrivee, c.nb_place, c.prix_personne,
+    c.heure_depart, c.heure_arrivee, c.nb_place, c.prix_personne, u.photo,
     u.pseudo, v.energie
 ORDER BY 
     c.heure_depart;
