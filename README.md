@@ -17,13 +17,16 @@ Avant de commencer, assurez-vous que vous avez les outils suivants installés :
 ### Étape 1 : Cloner le Repository
 
 Clonez ce projet en utilisant la commande Git suivante dans votre terminal ou dans VSCode :
-bash : git clone https://github.com/solunik/Ecoride.git
+
+bash : 
+git clone https://github.com/solunik/Ecoride.git
 
 Étape 2 : Installer les Dépendances
 
 Dans VSCode, ouvrez le terminal intégré et exécutez cette commande pour installer les dépendances PHP :
 
-bash : composer install
+bash : 
+composer install
 
 Étape 3 : Lancer XAMPP
 
@@ -48,36 +51,44 @@ http://localhost/covoiturage
 
 Ce projet utilise Git pour la gestion de versions. Voici la structure des branches et les bonnes pratiques à suivre :
 
-1. Branche Principale (main)
+1. Branche Principale (master)
 
-La branche main contient le code prêt pour la production.
+La branche master contient le code prêt pour la production.
 
 2. Branche de Développement (dev)
 
 La branche dev contient le code en développement, avant d'être testé et validé.
 
 3. Branches de Fonctionnalité
+
 Chaque nouvelle fonctionnalité doit être développée dans une branche dédiée, issue de la branche dev :
 
-bash : git checkout -b feature-nom_fonctionnalite
+bash : 
+git checkout -b feature/nom_fonctionnalite
 
 4. Processus de Fusion (Merge)
 
 Une fois la fonctionnalité terminée et testée, fusionnez-la dans la branche dev :
 
-bash : git checkout dev
-git merge feature-nom_fonctionnalite
+bash : 
+git checkout dev
+git merge feature/nom_fonctionnalite
 
-Lorsque la branche dev est stable et prête pour la production, fusionnez-la dans la branche main.
+Lorsque la branche dev est stable et prête pour la production, fusionnez-la dans la branche master.
 
 5. Commandes Git Utiles
-Créer une branche : git checkout -b feature-nom_fonctionnalite
-Ajouter des fichiers : git add .
-Committer les changements : git commit -m "Message"
-Pousser les changements sur GitHub : git push origin feature-nom_fonctionnalite
+Créer une branche : 
+git checkout -b feature-nom_fonctionnalite
+Ajouter des fichiers : 
+git add .
+Committer les changements : 
+git commit -m "Message"
+Pousser les changements sur GitHub : 
+git push origin feature-nom_fonctionnalite
 
 
 Fichiers SQL
+
 Les fichiers SQL nécessaires à la création de la base de données et à l'intégration des données sont disponibles dans le dossier /sql :
 
 database_creation.sql : Crée les tables dans la base de données.
@@ -93,6 +104,7 @@ Manuel d'Utilisation (PDF) : Ce document présente l'application et fournit des 
 Charte Graphique (PDF) : Inclut la palette de couleurs et la police utilisée dans l'application.
 
 Documentation Technique (PDF) :
+
 -Réflexions sur les choix technologiques du projet.
 -Configuration de l'environnement de travail.
 -Modèle Conceptuel de Données (MCD).
@@ -101,15 +113,9 @@ Documentation Technique (PDF) :
 
 Gestion de Projet
 
-Le projet utilise une gestion de projet sous forme de Kanban. Voici les différentes colonnes du tableau Kanban :
+Le projet utilise une gestion de projet sous forme de Kanban. Voici le lien :
 
--Fonctionnalités Prévues : Liste de toutes les fonctionnalités à développer, classées par priorité.
--Fonctionnalités en Cours : Fonctionnalités actuellement en développement.
--Fonctionnalités Terminées : Fonctionnalités terminées et testées, prêtes à être fusionnées.
--Fonctionnalités Fusionnées dans main : Fonctionnalités fusionnées dans la branche principale après validation.
+https://trello.com/invite/b/67a9c2d26a467a2a5bdc66b0/ATTI52cc37a9449ef68dcc64ce3b704ad04eC3CFCD26/kanban-ecoride
 
 Auteurs
-HAMMOUMI Sofiène (Développeur Principal)
-
-Licence
-Ce projet est sous la licence MIT.
+HAMMOUMI Sofiène

@@ -19,7 +19,7 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
         <section class="top-main">
             <h1>Contactez-nous</h1>
             <p>Vous pouvez nous contacter en utilisant l'adresse e-mail suivante :</p>
-            <h4>contact@covoiturage.com</h4>
+            <h4>contact@ecoride.fr</h4>
             <br>
             <p>Ou en remplissant le formulaire ci-dessous :</p>
         </section>

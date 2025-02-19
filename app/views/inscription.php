@@ -43,7 +43,7 @@
         </section>
 
         <section class="link-proposal">
-            <p>Déjà un compte ? <a href="/Covoiturage/app/views/connexion.php">Connectez-vous ici</a>.</p>
+            <p>Déjà un compte ? <a href="/Covoiturage/app/views/connexion.php">Connectez-vous ici</a></p>
         </section>
 
         <!-- Afficher l'erreur si elle existe -->

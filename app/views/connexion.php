@@ -31,7 +31,7 @@
         </section>
 
         <section class="link-proposal">
-            <p>Pas encore de compte ? <a href="/Covoiturage/app/views/inscription.php">Inscrivez-vous ici</a>.</p> <!-- Lien vers inscription.php dans public/ -->
+            <p>Pas encore de compte ? <a href="/Covoiturage/app/views/inscription.php">Inscrivez-vous ici</a></p> <!-- Lien vers inscription.php dans public/ -->
         </section>
         
         <!-- Afficher l'erreur si elle existe -->
@@ -43,7 +43,7 @@
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?>
+
     </footer>
 </body>
 </html>

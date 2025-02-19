@@ -130,6 +130,15 @@ button:hover {
     text-align: center; /* Centre le texte dans le conteneur .link-proposal */
 }
 
+.link-proposal a {
+    color: #16a34a; /* Vert général bouton survol */
+    text-decoration: none;
+}
+
+.link-proposal a:hover {
+    color: #374151; /* Gris légèrement plus clair au survol */
+}
+
 
 /* FOOTER */
 footer {
@@ -141,6 +150,17 @@ footer {
     bottom: 0; /* Positionne le footer tout en bas de la page */
     width: 100%; /* Prend toute la largeur de la page pour le footer */
 }
+
+footer a {
+    color: #1f2937; /* Gris foncé */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+}
+
+footer a:hover {
+    color: #374151; /* Gris légèrement plus clair au survol */
+    text-decoration: underline; /* Ajoute un soulignement au survol */
+}
+
 
 /* Section contenant les cartes */
 .resultats-covoiturage {
@@ -176,7 +196,7 @@ footer {
     margin-right: 10px;
 }
 
-/* Style pour le bouton Détail */
+/* Style pour les boutons */
 .btn-detail {
     display: inline-block;
     background-color: #22c55e; /* Couleur du bouton en vert */
@@ -189,6 +209,28 @@ footer {
     transition: background-color 0.3s ease; /* Transition pour l'effet hover */
 }
 
+.btn-container {
+    display: flex;
+    justify-content: space-between; /* Répartit les boutons sur toute la largeur */
+    margin-top: 15px;
+}
+
 .btn-detail:hover {
+    background-color: #16a34a; /* Changement de couleur au survol */
+}
+
+.btn-participer {
+    display: inline-block;
+    background-color: #22c55e; /* Couleur du bouton en vert */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none; /* Pas de soulignement */
+    font-weight: bold;
+    transition: background-color 0.3s ease; /* Transition pour l'effet hover */
+}
+
+.btn-participer:hover {
     background-color: #16a34a; /* Changement de couleur au survol */
 }
