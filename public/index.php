@@ -21,7 +21,7 @@ session_start();
                 <p>Ravi de vous revoir sur EcoRide</p> 
             <?php else: ?>
                 <h1>Bienvenue sur EcoRide</h1>
-                <p>Rejoignez notre communauté pour des trajets économiques et respectueux de l'environnement.</p>
+                <p>Rejoignez notre communauté et recevez 20 crédits pour vos premiers voyages !</p>
             <?php endif; ?>
         </section>
 
