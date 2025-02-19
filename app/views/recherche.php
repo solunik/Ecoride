@@ -54,13 +54,18 @@ unset($_SESSION['errorMessage']);
                             <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
                             <p><?= htmlspecialchars($covoiturage['note']) ?> / 5</p>
                         </div>
+                        
                         <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                         <p><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
                         <p><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
                         <p><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
                         <p><strong>Voyage écologique</strong> <?= $ecologique ?></p>
+                        
+                        <div class="btn-container">
                         <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
+                        <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php elseif (empty($resultats) && $errorMessage === ''): ?>
