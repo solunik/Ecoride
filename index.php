@@ -1,4 +1,6 @@
 <?php
-// ajout de index de redirection pour heroku 
-header("Location: public/");
-exit;
+// Covoiturage/index.php
+
+// Redirige vers le dossier public pour charger l'application
+header('Location: /public/');
+exit();
