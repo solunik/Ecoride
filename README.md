@@ -37,9 +37,15 @@ composer install
 
 -Ouvrez phpMyAdmin via l'interface de XAMPP (http://localhost/phpmyadmin).
 -Créez une nouvelle base de données nommée covoiturage.
--Importez les fichiers SQL pour créer les tables et insérer les données de test :
-Allez dans l'onglet SQL de phpMyAdmin.
-Copiez et collez le contenu des fichiers database_creation.sql et data_integration.sql.
+-Importation de la base de données
+
+Pour importer la base de données `covoiturage`:
+
+ -Téléchargez le fichier `covoiturage.sql` dans le dossier `/sql` de ce dépôt.
+ -Utilisez phpMyAdmin ou un autre outil de gestion de base de données pour importer ce fichier.
+   - Ouvrez phpMyAdmin, sélectionnez votre base de données.
+   - Allez dans l'onglet **Importer**.
+   - Sélectionnez le fichier `covoiturage.sql` et cliquez sur **Exécuter**.
 
 Étape 5 : Lancer l'Application
 
@@ -48,6 +54,8 @@ Placez le projet dans le dossier htdocs de XAMPP (par défaut, C:\xampp\htdocs),
 http://localhost/covoiturage
 
 ##Structure des Branches Git
+
+
 
 Ce projet utilise Git pour la gestion de versions. Voici la structure des branches et les bonnes pratiques à suivre :
 
@@ -85,15 +93,6 @@ Committer les changements :
 git commit -m "Message"
 Pousser les changements sur GitHub : 
 git push origin feature-nom_fonctionnalite
-
-
-Fichiers SQL
-
-Les fichiers SQL nécessaires à la création de la base de données et à l'intégration des données sont disponibles dans le dossier /sql :
-
-database_creation.sql : Crée les tables dans la base de données.
-data_integration.sql : Insère des données de test dans la base de données.
-
 
 
 
