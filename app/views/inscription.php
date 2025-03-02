@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
+    <link rel="stylesheet" href="../../public/styles.css">
 </head>
 <body>
     
@@ -19,7 +19,7 @@
 
 
         <section>
-            <form action="/Covoiturage/app/controllers/traitement_inscription.php" method="post">
+            <form action="../controllers/traitement_inscription.php" method="post">
                 <label for="email">E-mail </label>
                 <input type="email" id="email" name="email" required>
 
@@ -43,7 +43,7 @@
         </section>
 
         <section class="link-proposal">
-            <p>Déjà un compte ? <a href="/Covoiturage/app/views/connexion.php">Connectez-vous ici</a></p>
+            <p>Déjà un compte ? <a href="connexion.php">Connectez-vous ici</a></p>
         </section>
 
         <!-- Afficher l'erreur si elle existe -->

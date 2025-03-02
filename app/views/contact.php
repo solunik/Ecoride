@@ -7,7 +7,7 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
+    <link rel="stylesheet" href="../../public/styles.css">
 </head>
 <body>
     

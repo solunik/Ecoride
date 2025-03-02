@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
+    <link rel="stylesheet" href="../../public/styles.css">
 </head>
 <body>
     
@@ -19,7 +19,7 @@
 
 
         <section>
-            <form action="/Covoiturage/app/controllers/traitement_connexion.php" method="post"> <!-- Formulaire pointe vers traitement_connexion.php dans controllers/ -->
+            <form action="../controllers/traitement_connexion.php" method="post"> <!-- Formulaire pointe vers traitement_connexion.php dans controllers/ -->
                 <label for="email">E-mail </label>
                 <input type="email" id="email" name="email" required>
 
@@ -31,7 +31,7 @@
         </section>
 
         <section class="link-proposal">
-            <p>Pas encore de compte ? <a href="/Covoiturage/app/views/inscription.php">Inscrivez-vous ici</a></p> <!-- Lien vers inscription.php dans public/ -->
+            <p>Pas encore de compte ? <a href="inscription.php">Inscrivez-vous ici</a></p> <!-- Lien vers inscription.php dans public/ -->
         </section>
         
         <!-- Afficher l'erreur si elle existe -->

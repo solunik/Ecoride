@@ -51,7 +51,7 @@ try {
                 ]);
 
                 // Rediriger vers la page de connexion
-                header("Location: /Covoiturage/app/views/connexion.php");
+                header("Location: ../views/connexion.php");
                 exit;
             }
         }

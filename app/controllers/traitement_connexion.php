@@ -34,7 +34,7 @@ try {
                 $_SESSION['nom'] = $utilisateur['nom'];
 
                 // Rediriger vers la page d'accueil
-                header("Location: /Covoiturage/public/index.php");
+                header("Location: ../views/accueil.php");
                 exit;
             } else {
                 // Mot de passe incorrect
