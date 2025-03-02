@@ -14,7 +14,7 @@ unset($_SESSION['errorMessage']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
-    <link rel="stylesheet" href="/Covoiturage/public/styles.css">
+    <link rel="stylesheet" href="../../public/styles.css">
 </head>
 <body>
     <header>
@@ -26,7 +26,7 @@ unset($_SESSION['errorMessage']);
             <h1>Recherchez un covoiturage</h1>
         </section>
         <section>
-            <form action="/Covoiturage/app/controllers/traitement_recherche.php" method="GET">
+            <form action="../controllers/traitement_recherche.php" method="GET">
                 <input type="text" name="depart" placeholder="Départ" required>
                 <input type="text" name="arrivee" placeholder="Arrivée" required>
                 <input type="date" name="date" required>

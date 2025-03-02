@@ -73,5 +73,5 @@ $_SESSION['resultats_recherche'] = $resultats;
 $_SESSION['errorMessage'] = $errorMessage ?? null;
 
 // Redirection vers la page de recherche
-header("Location: /Covoiturage/app/views/recherche.php");
+header("Location: ../views/recherche.php");
 exit();

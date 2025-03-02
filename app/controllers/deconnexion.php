@@ -9,6 +9,6 @@ session_unset();
 session_destroy();
 
 // Rediriger l'utilisateur vers la page d'accueil ou une autre page
-header("Location: /Covoiturage/public/index.php");  // Remonter d'un niveau pour atteindre le dossier public
+header("Location: ../views/accueil.php");
 exit;
 ?>
