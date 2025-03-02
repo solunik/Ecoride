@@ -37,9 +37,9 @@ session_start();
         <section class="presentation">
                 <h2>À propos d'EcoRide</h2>
                 <p>EcoRide est une plateforme de covoiturage conçue pour offrir des trajets économiques, écologiques et conviviaux.</p>
-                <img src="/Covoiturage/public/images/covoiturage1.webp" alt="Covoiturage en route">
-                <img src="/Covoiturage/public/images/covoiturage2.webp" alt="Communauté EcoRide">
-                <img src="/Covoiturage/public/images/covoiturage3.webp" alt="Trajets écologiques">
+                <img src="images/covoiturage1.webp" alt="Covoiturage en route">
+                <img src="images/covoiturage2.webp" alt="Communauté EcoRide">
+                <img src="images/covoiturage3.webp" alt="Trajets écologiques">
         </section>
     
 
