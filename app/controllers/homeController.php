@@ -11,9 +11,6 @@ function contactPage() {
     require __DIR__ . '/../views/contact.php';  // Inclut la vue de la page de contact
 }
 
-function covoituragesPage() {
-    require __DIR__ . '/../views/covoiturages.php';  // Inclut la vue des covoiturages
-}
 
 function inscriptionPage() {
     require __DIR__ . '/../views/inscription.php';  // Inclut la vue d'inscription

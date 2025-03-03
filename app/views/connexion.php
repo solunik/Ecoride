@@ -7,41 +7,30 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
     <header>
         <?php include __DIR__ . '/../partials/header.php'; ?>
     </header>
-
     <main>
         <section class="top-main">
             <h1>Connexion</h1>
         </section>
-
-
         <section>
-            <form action="../controllers/traitement_connexion.php" method="post"> <!-- Formulaire pointe vers traitement_connexion.php dans controllers/ -->
+            <form action="../app/controllers/traitement_connexion.php" method="post">
                 <label for="email">E-mail </label>
                 <input type="email" id="email" name="email" required>
-
                 <label for="password">Mot de passe </label>
                 <input type="password" id="password" name="password" required>
-
                 <button type="submit">Se connecter</button>
             </form>
         </section>
-
         <section class="link-proposal">
-            <p>Pas encore de compte ? <a href="inscription.php">Inscrivez-vous ici</a></p> <!-- Lien vers inscription.php dans public/ -->
+            <p>Pas encore de compte ? <a href="index.php?page=inscription">Inscrivez-vous ici</a></p>
         </section>
-        
-        <!-- Afficher l'erreur si elle existe -->
-        <?php if (isset($errorMessage) && $errorMessage): ?>
-        <div class="error-message"><?php echo htmlspecialchars($errorMessage); ?></div>
-        <?php unset($errorMessage); ?> <!-- Supprimer la variable d'erreur après affichage -->
+        <?php if (isset($_SESSION['errorMessage']) && $_SESSION['errorMessage']): ?>
+        <div class="error-message"> <?php echo htmlspecialchars($_SESSION['errorMessage']); ?> </div>
+        <?php unset($_SESSION['errorMessage']); ?>
         <?php endif; ?>
-        
     </main>
-
     <footer>
         <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
