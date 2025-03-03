@@ -19,7 +19,7 @@
 
 
         <section>
-            <form action="../controllers/traitement_inscription.php" method="post">
+            <form action="../app/controllers/traitement_inscription.php" method="post">
                 <label for="email">E-mail </label>
                 <input type="email" id="email" name="email" required>
 
@@ -43,15 +43,15 @@
         </section>
 
         <section class="link-proposal">
-            <p>Déjà un compte ? <a href="connexion.php">Connectez-vous ici</a></p>
+            <p>Déjà un compte ? <a href="index.php?page=connexion">Connectez-vous ici</a></p>
         </section>
 
-        <!-- Afficher l'erreur si elle existe -->
-        <?php if (isset($errorMessage) && $errorMessage): ?>
-        <div class="error-message"><?php echo htmlspecialchars($errorMessage); ?></div>
-        <?php unset($errorMessage); ?> <!-- Supprimer la variable d'erreur après affichage -->
+        <!-- Affichage du message d'erreur -->
+        <?php if (isset($_SESSION['error_message']) && $_SESSION['error_message']): ?>
+        <div class="error-message"><?php echo htmlspecialchars($_SESSION['error_message']); ?></div>
+        <?php unset($_SESSION['error_message']); ?> <!-- Supprimer le message après affichage -->
         <?php endif; ?>
-        
+    
     </main>
 
     <footer>

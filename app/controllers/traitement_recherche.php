@@ -1,8 +1,5 @@
 <?php
-// Démarrer la session pour stocker les informations de l'utilisateur
 session_start();
-
-// Inclure la classe de connexion
 require_once __DIR__ . '/../../app/models/db.php';
 
 // Initialisation de la variable d'erreur
@@ -73,5 +70,5 @@ $_SESSION['resultats_recherche'] = $resultats;
 $_SESSION['errorMessage'] = $errorMessage ?? null;
 
 // Redirection vers la page de recherche
-header("Location: ../views/recherche.php");
+header("Location: ../../public/index.php?page=recherche");
 exit();

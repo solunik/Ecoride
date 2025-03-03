@@ -25,7 +25,7 @@ unset($_SESSION['errorMessage']);
             <h1>Recherchez un covoiturage</h1>
         </section>
         <section>
-            <form action="../controllers/traitement_recherche.php" method="GET">
+            <form action="../app/controllers/traitement_recherche.php" method="GET">
                 <input type="text" name="depart" placeholder="Départ" required>
                 <input type="text" name="arrivee" placeholder="Arrivée" required>
                 <input type="date" name="date" required>
