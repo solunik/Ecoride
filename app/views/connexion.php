@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <link rel="stylesheet" href="../../public/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     
     <header>
-        <?php include('../partials/header.php'); ?>
+        <?php include __DIR__ . '/../partials/header.php'; ?>
     </header>
 
     <main>
@@ -43,7 +43,7 @@
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?>
+        <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
 </body>
 </html>

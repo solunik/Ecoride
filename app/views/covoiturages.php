@@ -1,18 +1,15 @@
-<?php
-session_start(); // Démarre la session PHP, permettant d'utiliser les variables de session (comme l'authentification de l'utilisateur)
-?>
 <!DOCTYPE html>
 <html lang="fr"> <!-- Définit la langue du document HTML comme étant le français -->
 <head>
     <meta charset="UTF-8"> <!-- Spécifie que le jeu de caractères utilisé est UTF-8 (supporte tous les caractères internationaux) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Définit la mise en page responsive pour les appareils mobiles -->
     <title>Covoiturages</title> <!-- Titre de la page affiché dans l'onglet du navigateur -->
-    <link rel="stylesheet" href="../../public/styles.css"> <!-- Lien vers le fichier CSS externe pour le style de la page, mis à jour avec le bon chemin -->
+    <link rel="stylesheet" href="styles.css"> <!-- Lien vers le fichier CSS externe pour le style de la page, mis à jour avec le bon chemin -->
 </head>
 <body> <!-- Début du contenu de la page -->
     
     <header>
-            <?php include('../partials/header.php'); ?> <!-- Inclusion de header.php depuis partials/ -->
+        <?php include __DIR__ . '/../partials/header.php'; ?>
     </header>
 
     <main> <!-- Section principale du contenu -->
@@ -37,7 +34,7 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?> <!-- Inclusion de footer.php depuis partials/ -->
+        <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
 </body>
 </html> <!-- Fin du document HTML -->

@@ -1,18 +1,15 @@
-<?php
-session_start(); // Démarre la session PHP, permettant d'utiliser les variables de session pour suivre l'état de l'utilisateur
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="../../public/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     
     <header>
-            <?php include('../partials/header.php'); ?>
+        <?php include __DIR__ . '/../partials/header.php'; ?>
     </header>
 
     <main>
@@ -41,7 +38,7 @@ session_start(); // Démarre la session PHP, permettant d'utiliser les variables
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?>
+        <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
 </body>
 </html>

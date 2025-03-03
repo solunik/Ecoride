@@ -1,5 +1,4 @@
 <?php
-session_start();
 $resultats = $_SESSION['resultats_recherche'] ?? [];
 $errorMessage = $_SESSION['errorMessage'] ?? null;
 
@@ -14,11 +13,11 @@ unset($_SESSION['errorMessage']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
-    <link rel="stylesheet" href="../../public/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <?php include('../partials/header.php'); ?>
+        <?php include __DIR__ . '/../partials/header.php'; ?>
     </header>
 
     <main>
@@ -75,7 +74,7 @@ unset($_SESSION['errorMessage']);
     </main>
 
     <footer>
-        <?php include('../partials/footer.php'); ?>
+        <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
 </body>
 </html>
