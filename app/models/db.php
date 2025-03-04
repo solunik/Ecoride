@@ -5,17 +5,36 @@ class Database {
     private $pdo;
 
     private function __construct() {
-        $config = require __DIR__ . '/../../config/config.php';
+        // Vérifier si on est sur Heroku (JAWSDB_URL existe)
+        $url = getenv('JAWSDB_URL');
+
+        if ($url) {
+            // On est sur Heroku, on parse l'URL de connexion
+            $dbparts = parse_url($url);
+
+            $host = $dbparts['host'];
+            $dbname = ltrim($dbparts['path'], '/');
+            $user = $dbparts['user'];
+            $password = $dbparts['pass'];
+        } else {
+            // On est en local, on utilise le fichier config.php
+            $config = require __DIR__ . '/../../config/config.php';
+
+            $host = $config['host'];
+            $dbname = $config['dbname'];
+            $user = $config['user'];
+            $password = $config['password'];
+        }
 
         try {
             $this->pdo = new PDO(
-                "mysql:host={$config['host']};dbname={$config['dbname']}",
-                $config['user'],
-                $config['password']
+                "mysql:host=$host;dbname=$dbname;charset=utf8",
+                $user,
+                $password,
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("Erreur de connexion à la base de données.");
+            die("Erreur de connexion à la base de données : " . $e->getMessage());
         }
     }
 
@@ -26,4 +45,3 @@ class Database {
         return self::$instance->pdo;
     }
 }
-?>

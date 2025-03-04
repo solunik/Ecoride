@@ -25,9 +25,18 @@ switch ($page) {
     case 'recherche':
         recherchePage();
         break;
+
+    case 'login':
+        login($_POST['email'],$_POST['password']);
+        break;
+
+
+
+
     case 'deconnexion':
         require_once __DIR__ . '/../app/controllers/deconnexion.php';
         break;   
+    
     default:
         header("HTTP/1.0 404 Not Found");
         echo "Page non trouvée.";

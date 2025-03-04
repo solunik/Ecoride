@@ -15,7 +15,7 @@
             <h1>Connexion</h1>
         </section>
         <section>
-            <form action="../app/controllers/traitement_connexion.php" method="post">
+            <form action="index.php?page=login" method="post">
                 <label for="email">E-mail </label>
                 <input type="email" id="email" name="email" required>
                 <label for="password">Mot de passe </label>
