@@ -5,7 +5,7 @@
         <li><a href="index.php?page=contact">Contact</a></li>
         <?php 
         if (isset($_SESSION['utilisateur_id'])): ?>
-            <li><a href="index.php?page=deconnexion">Se déconnecter</a></li>
+            <li><a href="index.php?page=logout">Se déconnecter</a></li>
         <?php else: ?>
             <li><a href="index.php?page=connexion">Connexion</a></li>
         <?php endif; ?>

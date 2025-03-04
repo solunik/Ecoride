@@ -25,7 +25,7 @@ unset($_SESSION['errorMessage']);
             <h1>Recherchez un covoiturage</h1>
         </section>
         <section>
-            <form action="../app/controllers/traitement_recherche.php" method="GET">
+            <form action="index.php?page=research" method="post">
                 <input type="text" name="depart" placeholder="Départ" required>
                 <input type="text" name="arrivee" placeholder="Arrivée" required>
                 <input type="date" name="date" required>
@@ -48,7 +48,7 @@ unset($_SESSION['errorMessage']);
                             <?php if (!empty($covoiturage['photo'])): ?>
                                 <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
                             <?php else: ?>
-                                <img src="/Covoiturage/public/images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
+                                <img src="images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
                             <?php endif; ?>
                             <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
                             <p><?= htmlspecialchars($covoiturage['note']) ?> / 5</p>

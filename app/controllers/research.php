@@ -1,23 +1,22 @@
 <?php
-session_start();
-require_once __DIR__ . '/../../app/models/db.php';
+    
+function research($postdepart, $postarrivee, $postdate) {
 
-// Initialisation de la variable d'erreur
-$errorMessage = ''; 
+    require_once __DIR__ . '/../models/db.php';
+    $errorMessage = ''; 
 
 try {
-    // Connexion à la base de données en utilisant la classe Database
     $conn = Database::getInstance();
 
     // Initialisation du tableau des résultats
     $resultats = [];
 
     // Vérification de la présence des paramètres GET
-    if (isset($_GET['depart'], $_GET['arrivee'], $_GET['date'])) {
+    if (isset($postdepart, $postarrivee, $postdate)) {
         // Assainissement des entrées utilisateur pour éviter les attaques XSS
-        $depart = htmlspecialchars($_GET['depart']);
-        $arrivee = htmlspecialchars($_GET['arrivee']);
-        $date = htmlspecialchars($_GET['date']);
+        $depart = htmlspecialchars($postdepart);
+        $arrivee = htmlspecialchars($postarrivee);
+        $date = htmlspecialchars($postdate);
 
         // Requête SQL pour récupérer les données nécessaires
     $stmt = $conn->prepare("
@@ -70,5 +69,6 @@ $_SESSION['resultats_recherche'] = $resultats;
 $_SESSION['errorMessage'] = $errorMessage ?? null;
 
 // Redirection vers la page de recherche
-header("Location: ../../public/index.php?page=recherche");
+header("Location: index.php?page=recherche");
 exit();
+}
