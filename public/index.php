@@ -6,6 +6,7 @@ require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../app/controllers/home.php';
 require_once __DIR__ . '/../app/controllers/auth.php';
 require_once __DIR__ . '/../app/controllers/research.php';
+require_once __DIR__ . '/../app/controllers/registration.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -37,6 +38,10 @@ switch ($page) {
 
     case 'research':
         research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
+    break;
+
+    case 'registration':
+        registration($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
     break;
 
 
