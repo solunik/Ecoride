@@ -3,7 +3,9 @@ session_start();
 
 // Charge les fichiers de configuration et les contrôleurs
 require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../app/controllers/homeController.php';
+require_once __DIR__ . '/../app/controllers/home.php';
+require_once __DIR__ . '/../app/controllers/auth.php';
+require_once __DIR__ . '/../app/controllers/research.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -27,15 +29,17 @@ switch ($page) {
         break;
 
     case 'login':
-        login($_POST['email'],$_POST['password']);
+            Auth::login($_POST['email'], $_POST['password']);
+        break;
+    case 'logout':
+            Auth::logout();
         break;
 
+    case 'research':
+        research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
+    break;
 
 
-
-    case 'deconnexion':
-        require_once __DIR__ . '/../app/controllers/deconnexion.php';
-        break;   
     
     default:
         header("HTTP/1.0 404 Not Found");

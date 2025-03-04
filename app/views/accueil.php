@@ -23,7 +23,7 @@
         </section>
 
         <section>
-            <form action="../app/controllers/traitement_recherche.php" method="GET">
+            <form action="index.php?page=research" method="post">
                 <input type="text" name="depart" placeholder="Départ" required>
                 <input type="text" name="arrivee" placeholder="Arrivée" required>
                 <input type="date" name="date" required>
