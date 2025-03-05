@@ -35,7 +35,7 @@ function research($postdepart, $postarrivee, $postdate) {
             FROM 
                 covoiturage c  -- Table en minuscules
             JOIN 
-                utilisateur u ON c.conducteur_id = u.utilisateur_id
+                utilisateur u ON c.utilisateur_id = u.utilisateur_id
             JOIN 
                 voiture v ON c.voiture_id = v.voiture_id
             LEFT JOIN
