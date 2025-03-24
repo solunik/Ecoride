@@ -19,4 +19,5 @@ function inscriptionPage() {
 function recherchePage() {
     require __DIR__ . '/../views/recherche.php';  // Inclut la vue de recherche
 }
+
 ?>

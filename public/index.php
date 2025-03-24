@@ -44,8 +44,6 @@ switch ($page) {
         registration($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
     break;
 
-
-    
     default:
         header("HTTP/1.0 404 Not Found");
         echo "Page non trouvée.";
