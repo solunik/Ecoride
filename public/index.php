@@ -41,7 +41,7 @@ switch ($page) {
     break;
 
     case 'registration':
-        Registration::register($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
+        registration($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
     break;
 
     default:
