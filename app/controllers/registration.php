@@ -1,53 +1,45 @@
 <?php
 
-require_once __DIR__ . '/../models/Utilisateur.php';
+require_once __DIR__ . '/../models/utilisateur.php';
 
-function registration($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
-    $errorMessage = '';
+class Registration {
+    public static function register($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
+        $_SESSION['error_message'] = ''; // Reset du message d'erreur à chaque nouvelle tentative
 
-    try {
-        // Assainir les données
-        $email = trim(strtolower($postEmail));
-        $pseudo = trim(strtolower($postPseudo));
-        $prenom = htmlspecialchars($postPrenom);
-        $nom = htmlspecialchars($postNom);
-        $password = $postPassword;
-        $confirmPassword = $postConfirmPassword;
+        try {
+            // Assainir les entrées utilisateur
+            $email = trim(strtolower($postEmail));
+            $pseudo = trim(strtolower($postPseudo));
+            $prenom = htmlspecialchars($postPrenom);
+            $nom = htmlspecialchars($postNom);
+            $password = $postPassword;
+            $confirmPassword = $postConfirmPassword;
 
-        // Créer une instance du modèle Utilisateur
-        $utilisateurModel = new Utilisateur();
+            $utilisateur = new Utilisateur();
 
-        // Vérifier si l'email ou le pseudo existent déjà
-        if ($utilisateurModel->findByEmail($email)) {
-            $errorMessage = "L'email est déjà utilisé.";
-        } elseif ($utilisateurModel->findByPseudo($pseudo)) {
-            $errorMessage = "Le pseudo est déjà pris.";
-        } elseif ($password !== $confirmPassword) {
-            $errorMessage = "Les mots de passe ne correspondent pas.";
-        } else {
-            // Assigner les valeurs aux propriétés de l'utilisateur
-            $utilisateurModel->nom = $nom;
-            $utilisateurModel->prenom = $prenom;
-            $utilisateurModel->email = $email;
-            $utilisateurModel->password = $password;
-            $utilisateurModel->pseudo = $pseudo;
-            $utilisateurModel->credit = 20; // Crédit par défaut
-
-            // Enregistrer l'utilisateur
-            $utilisateurModel->inscription();
-                // Vérifier avant redirection
+            // Vérifier si l'email ou le pseudo existent déjà
+            if ($utilisateur->findByEmail($email)) {
+                $_SESSION['error_message'] = "L'email est déjà utilisé.";
+            } elseif ($utilisateur->findByPseudo($pseudo)) {
+                $_SESSION['error_message'] = "Le pseudo est déjà pris.";
+            } elseif ($password !== $confirmPassword) {
+                $_SESSION['error_message'] = "Les mots de passe ne correspondent pas.";
+            } else {
+                // Inscription de l'utilisateur
+                $utilisateur->inscription($nom, $prenom, $email, $password, $pseudo);
+                
+                // Redirection vers la page de connexion après inscription réussie
                 header("Location: index.php?page=connexion");
                 exit;
-            
+            }
+        } catch (Exception $e) {
+            // Enregistrer l'erreur dans le log et dans la session
+            error_log("Erreur d'inscription : " . $e->getMessage());
+            $_SESSION['error_message'] = "Erreur lors de l'inscription, veuillez réessayer plus tard.";
         }
-    } catch (Exception $e) {
-        $errorMessage = "Erreur : " . $e->getMessage();
-    }
 
-    // Gérer les erreurs
-    if ($errorMessage) {
-        $_SESSION['error_message'] = $errorMessage;
-        header('Location: index.php?page=inscription');
+        // Redirection en cas d'erreur
+        header("Location: index.php?page=inscription");
         exit;
     }
 }
