@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../models/Utilisateur.php';
+require_once __DIR__ . '/../models/utilisateur.php';
 
 function registration($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
     $errorMessage = '';
