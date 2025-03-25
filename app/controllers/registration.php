@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../models/Utilisateur.php';
+require_once __DIR__ . '/../models/utilisateur.php';
 
 class Registration {
     public static function register($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
