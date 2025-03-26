@@ -37,7 +37,7 @@ switch ($page) {
         break;
 
     case 'research':
-        research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
+        Covoit::research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
     break;
 
     case 'registration':
