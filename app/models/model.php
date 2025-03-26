@@ -53,6 +53,7 @@ class Model {
         return $stmt->execute(['id' => $id]);
     }
 
+
     // Relation "Un à plusieurs" (hasMany)
     public function hasMany($relatedModel, $foreignKey) {
         $stmt = $this->pdo->prepare("SELECT * FROM {$relatedModel} WHERE {$foreignKey} = :id");
