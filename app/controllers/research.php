@@ -1,74 +1,37 @@
 <?php
-    
-function research($postdepart, $postarrivee, $postdate) {
 
-    require_once __DIR__ . '/../models/db.php';
-    $errorMessage = ''; 
+// Inclure la classe Covoiturage
+require_once __DIR__ . '/../models/covoiturage.php';
+class Covoit{
 
-    try {
-        $conn = Database::getInstance();
+public static function research() {
 
-        // Initialisation du tableau des résultats
-        $resultats = [];
-
-        // Vérification de la présence des paramètres POST
-        if (isset($postdepart, $postarrivee, $postdate)) {
-            // Assainissement des entrées utilisateur pour éviter les attaques XSS
-            $depart = htmlspecialchars($postdepart);
-            $arrivee = htmlspecialchars($postarrivee);
-            $date = htmlspecialchars($postdate);
-
-            // Requête SQL pour récupérer les données nécessaires
-            $stmt = $conn->prepare("
-            SELECT
-                c.date_depart,
-                c.lieu_depart, 
-                c.lieu_arrivee, 
-                c.heure_depart,
-                c.heure_arrivee,
-                c.nb_place,
-                c.prix_personne,
-                u.photo,
-                u.pseudo, 
-                v.energie,
-                ROUND(AVG(a.note), 1) AS note
-            FROM 
-                covoiturage c  -- Table en minuscules
-            JOIN 
-                utilisateur u ON c.utilisateur_id = u.utilisateur_id
-            JOIN 
-                voiture v ON c.voiture_id = v.voiture_id
-            LEFT JOIN
-                avis a ON a.utilisateur_id = u.utilisateur_id
-            WHERE 
-                c.lieu_depart = :depart 
-                AND 
-                c.lieu_arrivee = :arrivee 
-                AND 
-                c.date_depart = :date
-            GROUP BY 
-                c.covoiturage_id, c.date_depart, c.lieu_depart, c.lieu_arrivee, 
-                c.heure_depart, c.heure_arrivee, c.nb_place, c.prix_personne, u.photo,
-                u.pseudo, v.energie
-            ORDER BY 
-                c.heure_depart;
-            ");
-
-            // Exécution et récupération des résultats
-            $stmt->execute([':depart' => $depart, ':arrivee' => $arrivee, ':date' => $date]);
-            $resultats = $stmt->fetchAll();
-        }
-    } catch (PDOException $e) {
-        // En cas d'erreur de connexion ou d'exécution, on stocke le message d'erreur
-        $errorMessage = "Erreur de connexion : " . htmlspecialchars($e->getMessage());
+    // Vérifier si le formulaire a été soumis
+    if (!isset($_POST['depart'], $_POST['arrivee'], $_POST['date'])) {
+        $_SESSION['errorMessage'] = "Veuillez remplir tous les champs.";
+        header("Location: index.php?page=recherche");
+        exit();
     }
 
-    // Stockage des résultats et du message d'erreur dans la session
-    $_SESSION['resultats_recherche'] = $resultats;
-    $_SESSION['errorMessage'] = $errorMessage ?? null;
+    // Récupérer les données du formulaire
+    $depart = $_POST['depart'];
+    $arrivee = $_POST['arrivee'];
+    $date = $_POST['date'];
 
-    // Redirection vers la page de recherche
+
+    // Instancier la classe Covoiturage
+    $covoiturageModel = new Covoiturage();
+    $resultats = $covoiturageModel->search($depart, $arrivee, $date);
+
+    if (isset($resultats["error"])) {
+        $_SESSION['errorMessage'] = $resultats["error"];
+        $_SESSION['resultats_recherche'] = [];
+    } else {
+        $_SESSION['resultats_recherche'] = $resultats;
+    }
+
     header("Location: index.php?page=recherche");
     exit();
+}
 }
 ?>
