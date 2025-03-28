@@ -234,3 +234,22 @@ footer a:hover {
 .btn-participer:hover {
     background-color: #16a34a; /* Changement de couleur au survol */
 }
+
+/* Centrer le filtre */
+.filtre-eco {
+    display: flex;
+    justify-content: center; /* Centre le filtre horizontalement */
+    align-items: center; /* Centre le filtre verticalement si nécessaire */
+    margin-bottom: 20px; /* Un peu d'espace sous le filtre */
+}
+
+/* Styles pour le menu déroulant (select) */
+#filtre-covoiturages {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+    min-width: 50px; /* Assure que le menu déroulant n'est pas trop petit */
+}

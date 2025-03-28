@@ -14,6 +14,7 @@ unset($_SESSION['errorMessage']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="js/evenements.js" defer></script> <!-- Lien vers ton fichier JS -->
 </head>
 <body>
     <header>
@@ -33,6 +34,13 @@ unset($_SESSION['errorMessage']);
             </form>
         </section>
 
+        <section class="filtre-eco">
+            <select id="filtre-covoiturages">
+                <option value="">Filtrer par...</option>
+                <option value="ecologique">Écologique</option>
+            </select>
+        </section>
+
         <section class="resultats-covoiturage">
             <?php if ($errorMessage): ?>
                 <p class="error-message"><?= htmlspecialchars($errorMessage) ?></p>
@@ -40,11 +48,15 @@ unset($_SESSION['errorMessage']);
                 <?php foreach ($resultats as $covoiturage): ?>
                     <?php
                     $energie = htmlspecialchars($covoiturage['energie']);
-                    $ecologique = ($energie == 'électrique') ? 'Oui' : 'Non';
+                    $ecologique = ($energie == 'électrique') ? 'ecologique' : ''; // Classe écologique si voiture électrique
                     ?>
-                    <div class='carte-covoiturage'>
+
+                    <div class="carte-covoiturage" 
+                    
+                    data-ecologique="<?= $ecologique ?>">
+
                         <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
-                        <div class='chauffeur-info'>
+                        <div class="chauffeur-info">
                             <?php if (!empty($covoiturage['photo'])): ?>
                                 <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
                             <?php else: ?>
@@ -59,11 +71,10 @@ unset($_SESSION['errorMessage']);
                         <p><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
                         <p><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
-                        <p><strong>Voyage écologique</strong> <?= $ecologique ?></p>
                         
                         <div class="btn-container">
-                        <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
-                        <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
+                            <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
+                            <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
