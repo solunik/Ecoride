@@ -55,7 +55,7 @@ header {
 }
 
 /* Media query pour cacher le menu desktop et afficher le menu burger */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     #menu-toggle {
         display: block; /* Afficher le bouton burger */
     }
@@ -81,7 +81,7 @@ header {
 }
 
 /* Pour les écrans plus petits, on cache le menu desktop et affiche le menu mobile */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     #menu-desktop {
         display: none; /* Cache le menu desktop sur mobile */
     }
@@ -238,7 +238,7 @@ footer a:hover {
     text-decoration: underline; /* Ajoute un soulignement au survol */
 }
 
-@media (max-width: 768px) { /* Cache le footer sur mobile */
+@media (max-width: 640px) { /* Cache le footer sur mobile */
     footer {
         display: none;
     }
