@@ -12,7 +12,7 @@
         </ul>
 
         <!-- Menu burger (Mobile) -->
-        <ul id="menu-mobile">
+        <ul class= "menu" id="menu-mobile">
             <li><a href="index.php?page=accueil">Accueil</a></li>
             <li><a href="index.php?page=recherche">Covoiturages</a></li>
             <li><a href="index.php?page=contact">Contact</a></li>
