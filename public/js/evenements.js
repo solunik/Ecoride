@@ -1,33 +1,41 @@
 document.addEventListener('DOMContentLoaded', function () {
     const selectFiltre = document.getElementById('filtre-covoiturages');
-    
-    selectFiltre.addEventListener('change', function () {
-        const selectedValue = selectFiltre.value;
 
-        // Récupérer toutes les cartes de covoiturage
-        const covoiturages = document.querySelectorAll('.carte-covoiturage');
-        
-        // Afficher ou masquer les cartes en fonction du filtre sélectionné
-        covoiturages.forEach(covoiturage => {
-            // Réinitialisation de la visibilité de chaque carte
-            let visible = true;
+    // Vérifie si l'élément existe avant d'ajouter l'event listener
+    if (selectFiltre) {
+        selectFiltre.addEventListener('change', function () {
+            const selectedValue = selectFiltre.value;
 
-            // Si un filtre est sélectionné, on applique la logique de filtrage
-            if (selectedValue) {
-                // Vérification de chaque condition de filtrage
-                switch (selectedValue) {
-                    case 'ecologique':
-                        visible = covoiturage.getAttribute('data-ecologique') === 'ecologique';
-                        break;
+            // Récupérer toutes les cartes de covoiturage
+            const covoiturages = document.querySelectorAll('.carte-covoiturage');
+
+            covoiturages.forEach(covoiturage => {
+                let visible = true;
+
+                if (selectedValue) {
+                    switch (selectedValue) {
+                        case 'ecologique':
+                            visible = covoiturage.getAttribute('data-ecologique') === 'ecologique';
+                            break;
+                    }
                 }
-            }
-            
-            // Appliquer ou retirer la classe 'hidden' pour masquer ou afficher la carte
-            if (visible) {
-                covoiturage.style.display = 'block';
-            } else {
-                covoiturage.style.display = 'none';
-            }
+
+                covoiturage.style.display = visible ? 'block' : 'none';
+            });
         });
-    });
+    } else {
+        console.warn("⚠️ Aucun filtre trouvé sur cette page.");
+    }
+
+    // Gestion du menu burger
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuMobile = document.getElementById("menu-mobile");
+
+    if (menuToggle && menuMobile) {
+        menuToggle.addEventListener("click", function () {
+            menuMobile.style.display = (menuMobile.style.display === "block") ? "none" : "block";
+        });
+    } else {
+        console.warn("⚠️ Menu toggle ou menu mobile introuvable sur cette page.");
+    }
 });

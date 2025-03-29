@@ -20,6 +20,83 @@ header {
     
 }
 
+/* Par défaut, le bouton burger est caché */
+#menu-toggle {
+    display: none;
+    font-size: 24px;
+    background: #22c55e;
+    border: none;
+    cursor: pointer;
+
+
+}
+
+/* Masquer le menu mobile par défaut */
+#menu-mobile {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background: #22c55e;
+    padding: 20px 0;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#menu-mobile li {
+    padding: 10px;
+}
+
+#menu-mobile a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+/* Media query pour cacher le menu desktop et afficher le menu burger */
+@media (max-width: 768px) {
+    #menu-toggle {
+        display: block; /* Afficher le bouton burger */
+    }
+
+    .menu {
+        display: none; /* Cacher le menu desktop */
+    }
+
+    #menu-mobile {
+        display: none; /* Toujours caché au départ */
+    }
+}
+
+
+/* Cacher le menu desktop par défaut */
+#menu-desktop {
+    display: flex; /* Affiche le menu desktop sur les grands écrans */
+}
+
+/* Cacher le menu mobile par défaut */
+#menu-mobile {
+    display: none; /* Masque le menu mobile par défaut */
+}
+
+/* Pour les écrans plus petits, on cache le menu desktop et affiche le menu mobile */
+@media (max-width: 768px) {
+    #menu-desktop {
+        display: none; /* Cache le menu desktop sur mobile */
+    }
+
+    #menu-mobile {
+        display: none; /* Cache le menu mobile par défaut */
+    }
+
+    #menu-toggle {
+        display: block; /* Affiche le bouton burger */
+    }
+}
+
+
+
 /* Liste du menu */
 .menu {
     list-style: none; /* Enlève les puces par défaut de la liste */
@@ -159,6 +236,12 @@ footer a {
 footer a:hover {
     color: #374151; /* Gris légèrement plus clair au survol */
     text-decoration: underline; /* Ajoute un soulignement au survol */
+}
+
+@media (max-width: 768px) { /* Cache le footer sur mobile */
+    footer {
+        display: none;
+    }
 }
 
 
