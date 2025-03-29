@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application de Covoiturage - Accueil</title>
     <link rel="stylesheet" href="styles.css">
+    
 </head>
 <body>
     <header>
@@ -43,5 +44,7 @@
     <footer>
         <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
+
+    <script src="js/evenements.js" defer></script>
 </body>
 </html>
