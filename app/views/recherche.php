@@ -14,8 +14,7 @@ unset($_SESSION['errorMessage']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="js/evenements.js" defer></script> <!-- Lien vers ton fichier JS -->
-</head>
+    <script src="js/evenements.js" defer></script>
 <body>
     <header>
         <?php include __DIR__ . '/../partials/header.php'; ?>
@@ -73,7 +72,7 @@ unset($_SESSION['errorMessage']);
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
                         
                         <div class="btn-container">
-                            <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
+                            <button class='btn-detail' data-id='<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>'>Détail</button>
                             <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
                         </div>
                     </div>
@@ -83,6 +82,16 @@ unset($_SESSION['errorMessage']);
             <?php endif; ?>
         </section>
     </main>
+
+
+    <div id="modalDetails" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modalContent">
+            <!-- Contenu chargé dynamiquement -->
+        </div>
+    </div>
+    </div>
 
     <footer>
         <?php include __DIR__ . '/../partials/footer.php'; ?>

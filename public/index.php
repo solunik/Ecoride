@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+// Headers CORS globaux
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
+
+
 // Charge les fichiers de configuration et les contrôleurs
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../app/controllers/home.php';
@@ -39,6 +44,15 @@ switch ($page) {
     case 'research':
         Covoit::research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
     break;
+
+    case 'ridedetails':
+        if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+            header("HTTP/1.0 400 Bad Request");
+            echo json_encode(['success' => false, 'error' => 'ID de trajet invalide']);
+            exit;
+        }
+        Covoit::getRideDetails();
+        break;
 
     case 'registration':
         Registration::register($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
