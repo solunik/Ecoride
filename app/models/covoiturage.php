@@ -32,6 +32,7 @@ class Covoiturage extends Model {
         try {
             $stmt = $this->pdo->prepare("
                 SELECT
+                    c.covoiturage_id AS id_covoiturage,
                     c.date_depart,
                     c.lieu_depart, 
                     c.lieu_arrivee, 
@@ -77,4 +78,49 @@ class Covoiturage extends Model {
             return ["error" => "Erreur de connexion : " . htmlspecialchars($e->getMessage())];
         }
     }
+
+    public function getDetails($id) {
+        try {
+            // Requête principale pour les infos du trajet
+            $stmt = $this->pdo->prepare("
+                SELECT 
+                    c.*,
+                    u.pseudo,
+                    u.photo,
+                    v.modele,
+                    v.energie,
+                    m.libelle AS libelle_marque,
+                    a.commentaire,
+                    ROUND(AVG(a.note), 1) AS note_moyenne
+                FROM covoiturage c
+                JOIN utilisateur u ON c.utilisateur_id = u.utilisateur_id
+                JOIN voiture v ON c.voiture_id = v.voiture_id
+                JOIN marque m ON v.marque_id = m.marque_id
+                LEFT JOIN avis a ON a.utilisateur_id = u.utilisateur_id
+                WHERE c.covoiturage_id = ?
+                GROUP BY c.covoiturage_id
+            ");
+            $stmt->execute([$id]);
+            $details = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$details) return null;
+    
+            // Requête supplémentaire pour les avis
+            $stmtAvis = $this->pdo->prepare("
+                SELECT a.commentaire, a.note, a.statut
+                FROM avis a
+                WHERE a.utilisateur_id = ?
+                AND a.statut = 'actif'
+            ");
+            $stmtAvis->execute([$details['utilisateur_id']]);
+            $details['avis'] = $stmtAvis->fetchAll(PDO::FETCH_ASSOC);
+    
+            return $details;
+    
+        } catch (PDOException $e) {
+            error_log("Erreur SQL getDetails: " . $e->getMessage());
+            return null;
+        }
+    }
+
 }
