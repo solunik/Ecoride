@@ -84,17 +84,17 @@ unset($_SESSION['errorMessage']);
 
 
     <!-- Modale des filtres -->
-<div id="modalFiltres" class="modal">
+    <div id="modalFiltres" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         
         <form id="form-filtres">
             <div class="filtre-groupe">
-                <label for="filtre-ecologique">écologique</label>
-                <select id="filtre-ecologique" name="ecologique">
-                    <option value=""></option>
-                    <option value="ecologique">oui</option>
-                </select>
+                <label for="filtre-ecologique">Écologique</label>
+                <label class="switch">
+                    <input type="checkbox" id="filtre-ecologique" name="ecologique" value="ecologique">
+                    <span class="slider round"></span>
+                </label>
             </div>
             
             <div class="filtre-groupe">

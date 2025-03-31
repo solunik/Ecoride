@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     function appliquerFiltres() {
-        const filtreEcologique = document.getElementById('filtre-ecologique').value;
+        const filtreEcologique = document.getElementById('filtre-ecologique').checked ? 'ecologique' : '';
         const prixMax = parseFloat(document.getElementById('filtre-prix').value);
         const dureeMax = parseFloat(document.getElementById('filtre-duree').value);
         const noteMin = parseFloat(document.getElementById('filtre-note').value);
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
             // Application des filtres
             const isVisible = (
-                (filtreEcologique !== 'ecologique' || estEcologique) &&
+                (!filtreEcologique || estEcologique) &&
                 (prix <= prixMax) &&
                 (duree <= dureeMax) &&
                 (note >= noteMin)
