@@ -103,7 +103,7 @@ unset($_SESSION['recherche']);
                 <div class="filtre-groupe">
                     <label for="filtre-ecologique">écologique</label>
                     <select id="filtre-ecologique" name="ecologique">
-                        <option value=""></option>
+                        <option value=""> </option>
                         <option value="ecologique">oui</option>
                     </select>
                 </div>
