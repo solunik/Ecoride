@@ -13,6 +13,9 @@ public static function research() {
         exit();
     }
 
+    // Marquer qu'une recherche a été effectuée
+    $_SESSION['recherche_effectuee'] = true;
+
     // Récupérer les données du formulaire
     $depart = $_POST['depart'];
     $arrivee = $_POST['arrivee'];

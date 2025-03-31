@@ -1,10 +1,12 @@
 <?php
 $resultats = $_SESSION['resultats_recherche'] ?? [];
 $errorMessage = $_SESSION['errorMessage'] ?? null;
+$rechercheEffectuee = $_SESSION['recherche_effectuee'] ?? false;
 
 // Suppression des données stockées après récupération
 unset($_SESSION['resultats_recherche']);
 unset($_SESSION['errorMessage']);
+unset($_SESSION['recherche_effectuee']);
 ?>
 
 <!DOCTYPE html>
@@ -76,9 +78,10 @@ unset($_SESSION['errorMessage']);
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php elseif (empty($resultats) && $errorMessage === ''): ?>
-                <p>Aucun covoiturage trouvé.</p>
-            <?php endif; ?>
+
+                <?php elseif (empty($resultats) && $rechercheEffectuee): ?>
+                    <p>Aucun covoiturage trouvé.</p>
+                <?php endif; ?>
         </section>
     </main>
 
