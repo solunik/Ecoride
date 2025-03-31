@@ -1,74 +1,86 @@
 <?php
-    
-function research($postdepart, $postarrivee, $postdate) {
 
-    require_once __DIR__ . '/../models/db.php';
-    $errorMessage = ''; 
+// Inclure la classe Covoiturage
+require_once __DIR__ . '/../models/covoiturage.php';
+class Covoit{
 
-    try {
-        $conn = Database::getInstance();
+public static function research() {
 
-        // Initialisation du tableau des résultats
-        $resultats = [];
-
-        // Vérification de la présence des paramètres POST
-        if (isset($postdepart, $postarrivee, $postdate)) {
-            // Assainissement des entrées utilisateur pour éviter les attaques XSS
-            $depart = htmlspecialchars($postdepart);
-            $arrivee = htmlspecialchars($postarrivee);
-            $date = htmlspecialchars($postdate);
-
-            // Requête SQL pour récupérer les données nécessaires
-            $stmt = $conn->prepare("
-            SELECT
-                c.date_depart,
-                c.lieu_depart, 
-                c.lieu_arrivee, 
-                c.heure_depart,
-                c.heure_arrivee,
-                c.nb_place,
-                c.prix_personne,
-                u.photo,
-                u.pseudo, 
-                v.energie,
-                ROUND(AVG(a.note), 1) AS note
-            FROM 
-                covoiturage c  -- Table en minuscules
-            JOIN 
-                utilisateur u ON c.utilisateur_id = u.utilisateur_id
-            JOIN 
-                voiture v ON c.voiture_id = v.voiture_id
-            LEFT JOIN
-                avis a ON a.utilisateur_id = u.utilisateur_id
-            WHERE 
-                c.lieu_depart = :depart 
-                AND 
-                c.lieu_arrivee = :arrivee 
-                AND 
-                c.date_depart = :date
-            GROUP BY 
-                c.covoiturage_id, c.date_depart, c.lieu_depart, c.lieu_arrivee, 
-                c.heure_depart, c.heure_arrivee, c.nb_place, c.prix_personne, u.photo,
-                u.pseudo, v.energie
-            ORDER BY 
-                c.heure_depart;
-            ");
-
-            // Exécution et récupération des résultats
-            $stmt->execute([':depart' => $depart, ':arrivee' => $arrivee, ':date' => $date]);
-            $resultats = $stmt->fetchAll();
-        }
-    } catch (PDOException $e) {
-        // En cas d'erreur de connexion ou d'exécution, on stocke le message d'erreur
-        $errorMessage = "Erreur de connexion : " . htmlspecialchars($e->getMessage());
+    // Vérifier si le formulaire a été soumis
+    if (!isset($_POST['depart'], $_POST['arrivee'], $_POST['date'])) {
+        $_SESSION['errorMessage'] = "Veuillez remplir tous les champs.";
+        header("Location: index.php?page=recherche");
+        exit();
     }
 
-    // Stockage des résultats et du message d'erreur dans la session
-    $_SESSION['resultats_recherche'] = $resultats;
-    $_SESSION['errorMessage'] = $errorMessage ?? null;
+    // Marquer qu'une recherche a été effectuée
+    $_SESSION['recherche_effectuee'] = true;
 
-    // Redirection vers la page de recherche
+    // Récupérer les données du formulaire
+    $depart = $_POST['depart'];
+    $arrivee = $_POST['arrivee'];
+    $date = $_POST['date'];
+
+
+    // Instancier la classe Covoiturage
+    $covoiturageModel = new Covoiturage();
+    $resultats = $covoiturageModel->search($depart, $arrivee, $date);
+
+    if (isset($resultats["error"])) {
+        $_SESSION['errorMessage'] = $resultats["error"];
+        $_SESSION['resultats_recherche'] = [];
+    } else {
+        $_SESSION['resultats_recherche'] = $resultats;
+    }
+
     header("Location: index.php?page=recherche");
     exit();
+}
+
+public static function getRideDetails() {
+    header('Content-Type: application/json');
+    
+    try {
+        $rideId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$rideId) throw new Exception("ID de trajet invalide");
+
+        $model = new Covoiturage();
+        $details = $model->getDetails($rideId);
+
+        if (!$details) throw new Exception("Trajet non trouvé");
+
+        echo json_encode([
+            'success' => true,
+            'data' => [
+                'id' => $details['covoiturage_id'],
+                'conducteur' => [
+                    'pseudo' => htmlspecialchars($details['pseudo']),
+                    'note_moyenne' => $details['note_moyenne'],
+                    'commentaire' => $details['commentaire']
+                ],
+                'trajet' => [
+                    'depart' => htmlspecialchars($details['lieu_depart']),
+                    'arrivee' => htmlspecialchars($details['lieu_arrivee']),
+                    'date' => $details['date_depart'],
+                    'heure_depart' => $details['heure_depart'],
+                    'prix' => $details['prix_personne']
+                ],
+                'voiture' => [
+                    'modele' => htmlspecialchars($details['modele']),
+                    'marque' => htmlspecialchars($details['libelle_marque']),
+                    'energie' => htmlspecialchars($details['energie'])
+                ],
+            ]
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+    exit;
+}
+
 }
 ?>

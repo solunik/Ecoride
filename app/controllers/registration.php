@@ -4,30 +4,34 @@ require_once __DIR__ . '/../models/utilisateur.php';
 
 class Registration {
     public static function register($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
-        $_SESSION['error_message'] = ''; // Reset du message d'erreur à chaque nouvelle tentative
+        $_SESSION['error_message'] = ''; // Réinitialisation du message d'erreur à chaque nouvelle tentative
 
         try {
             // Assainir les entrées utilisateur
-            $email = trim(strtolower($postEmail));
+            $email = trim(strtolower($postEmail)); // Convertir en minuscule
             $pseudo = trim(strtolower($postPseudo));
-            $prenom = htmlspecialchars($postPrenom);
+            $prenom = htmlspecialchars($postPrenom); // Protection contre les injections XSS
             $nom = htmlspecialchars($postNom);
             $password = $postPassword;
             $confirmPassword = $postConfirmPassword;
 
+            // Création de l'objet Utilisateur
             $utilisateur = new Utilisateur();
 
             // Vérifier si l'email ou le pseudo existent déjà
-            if ($utilisateur->findByEmail($email)) {
+            $existingUserByEmail = $utilisateur->findByEmail($email);
+            $existingUserByPseudo = $utilisateur->findByPseudo($pseudo);
+
+            if ($existingUserByEmail) {
                 $_SESSION['error_message'] = "L'email est déjà utilisé.";
-            } elseif ($utilisateur->findByPseudo($pseudo)) {
+            } elseif ($existingUserByPseudo) {
                 $_SESSION['error_message'] = "Le pseudo est déjà pris.";
             } elseif ($password !== $confirmPassword) {
                 $_SESSION['error_message'] = "Les mots de passe ne correspondent pas.";
             } else {
-                // Inscription de l'utilisateur
+                // Inscription de l'utilisateur si toutes les conditions sont remplies
                 $utilisateur->inscription($nom, $prenom, $email, $password, $pseudo);
-                
+
                 // Redirection vers la page de connexion après inscription réussie
                 header("Location: index.php?page=connexion");
                 exit;

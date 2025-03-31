@@ -13,12 +13,12 @@ class Auth {
 
             if ($user) {
                 // Stocker les informations de l'utilisateur dans la session
-                $_SESSION['utilisateur_id'] = $user['utilisateur_id'];
-                $_SESSION['prenom'] = $user['prenom'];
-                $_SESSION['nom'] = $user['nom'];
-                $_SESSION['email'] = $user['email'];
-                $_SESSION['pseudo'] = $user['pseudo'];
-                $_SESSION['credit'] = $user['credit'];
+                $_SESSION['utilisateur_id'] = $user->utilisateur_id;
+                $_SESSION['prenom'] = $user->prenom;
+                $_SESSION['nom'] = $user->nom;
+                $_SESSION['email'] = $user->email;
+                $_SESSION['pseudo'] = $user->pseudo;
+                $_SESSION['credit'] = $user->credit;
 
                 header("Location: index.php?page=accueil");
                 exit;

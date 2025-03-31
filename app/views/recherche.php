@@ -1,10 +1,12 @@
 <?php
 $resultats = $_SESSION['resultats_recherche'] ?? [];
 $errorMessage = $_SESSION['errorMessage'] ?? null;
+$rechercheEffectuee = $_SESSION['recherche_effectuee'] ?? false;
 
 // Suppression des données stockées après récupération
 unset($_SESSION['resultats_recherche']);
 unset($_SESSION['errorMessage']);
+unset($_SESSION['recherche_effectuee']);
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,7 @@ unset($_SESSION['errorMessage']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
     <link rel="stylesheet" href="styles.css">
-</head>
+    <script src="js/evenements.js" defer></script>
 <body>
     <header>
         <?php include __DIR__ . '/../partials/header.php'; ?>
@@ -33,6 +35,10 @@ unset($_SESSION['errorMessage']);
             </form>
         </section>
 
+        <section class="filtres">
+            <button id="btn-filtres-avances" class="btn-filtres">Filtres</button>
+        </section>
+
         <section class="resultats-covoiturage">
             <?php if ($errorMessage): ?>
                 <p class="error-message"><?= htmlspecialchars($errorMessage) ?></p>
@@ -40,11 +46,17 @@ unset($_SESSION['errorMessage']);
                 <?php foreach ($resultats as $covoiturage): ?>
                     <?php
                     $energie = htmlspecialchars($covoiturage['energie']);
-                    $ecologique = ($energie == 'électrique') ? 'Oui' : 'Non';
+                    $ecologique = ($energie == 'électrique') ? 'ecologique' : ''; // Classe écologique si voiture électrique
                     ?>
-                    <div class='carte-covoiturage'>
+
+                    <div class="carte-covoiturage" 
+                    
+                    data-ecologique="<?= $ecologique ?>"
+                    data-prix="<?= htmlspecialchars($covoiturage['prix_personne']) ?>"
+                    data-note="<?= htmlspecialchars(explode('/', $covoiturage['note'])[0]) ?>">
+
                         <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
-                        <div class='chauffeur-info'>
+                        <div class="chauffeur-info">
                             <?php if (!empty($covoiturage['photo'])): ?>
                                 <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
                             <?php else: ?>
@@ -55,23 +67,74 @@ unset($_SESSION['errorMessage']);
                         </div>
                         
                         <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                        <p><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
-                        <p><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
-                        <p><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
+                        <p class="heure-depart"><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
+                        <p class="heure-arrivee"><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
+                        <p class="prix-covoiturage"><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
-                        <p><strong>Voyage écologique</strong> <?= $ecologique ?></p>
                         
                         <div class="btn-container">
-                        <a href='detail.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-detail'>Détail</a>
-                        <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
+                            <button class='btn-detail' data-id='<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>'>Détail</button>
+                            <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php elseif (empty($resultats) && $errorMessage === ''): ?>
-                <p>Aucun covoiturage trouvé.</p>
-            <?php endif; ?>
+
+                <?php elseif (empty($resultats) && $rechercheEffectuee): ?>
+                    <p>Aucun covoiturage trouvé.</p>
+                <?php endif; ?>
         </section>
     </main>
+
+
+    <!-- Modale des filtres -->
+    <div id="modalFiltres" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        
+        <form id="form-filtres">
+            <div class="filtre-groupe">
+                <label for="filtre-ecologique">Écologique</label>
+                <label class="switch">
+                    <input type="checkbox" id="filtre-ecologique" name="ecologique" value="ecologique">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-prix">Prix maximum (crédits)</label>
+                <input type="range" id="filtre-prix" name="prix" min="0" max="50" step="1" value="50">
+                <span id="prix-value">50</span>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-duree">Durée maximale (heures)</label>
+                <input type="range" id="filtre-duree" name="duree" min="1" max="24" step="1" value="24">
+                <span id="duree-value">24</span>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-note">Note minimale du conducteur</label>
+                <input type="range" id="filtre-note" name="note" min="0" max="5" step="0.5" value="0">
+                <span id="note-value">0</span>
+            </div>
+            
+            <div class="boutons-filtres">
+                <button type="button" id="btn-appliquer-filtres">Appliquer</button>
+                <button type="button" id="btn-reinitialiser-filtres">Réinitialiser</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <div id="modalDetails" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modalContent">
+            
+        </div>
+    </div>
+    </div>
 
     <footer>
         <?php include __DIR__ . '/../partials/footer.php'; ?>
