@@ -120,3 +120,138 @@ window.addEventListener('click', function(event) {
         modal.style.display = 'none';
     }
 });
+
+// Gestion de la modale de filtres
+document.addEventListener('DOMContentLoaded', function () {
+    // Éléments de la modale
+    const modalFiltres = document.getElementById('modalFiltres');
+    const btnFiltres = document.getElementById('btn-filtres-avances');
+    const btnFermer = document.querySelector('#modalFiltres .close-modal');
+    const btnAppliquer = document.getElementById('btn-appliquer-filtres');
+    const btnReinitialiser = document.getElementById('btn-reinitialiser-filtres');
+    
+    // Sliders avec affichage de la valeur
+    const filtrePrix = document.getElementById('filtre-prix');
+    const prixValue = document.getElementById('prix-value');
+    const filtreDuree = document.getElementById('filtre-duree');
+    const dureeValue = document.getElementById('duree-value');
+    const filtreNote = document.getElementById('filtre-note');
+    const noteValue = document.getElementById('note-value');
+    
+    // Ouvrir la modale
+    if (btnFiltres) {
+        btnFiltres.addEventListener('click', function() {
+            modalFiltres.style.display = 'block';
+        });
+    }
+    
+    // Fermer la modale
+    if (btnFermer) {
+        btnFermer.addEventListener('click', function() {
+            modalFiltres.style.display = 'none';
+        });
+    }
+    
+    // Fermer en cliquant à l'extérieur
+    window.addEventListener('click', function(event) {
+        if (event.target === modalFiltres) {
+            modalFiltres.style.display = 'none';
+        }
+    });
+    
+    // Mise à jour des valeurs des sliders
+    if (filtrePrix && prixValue) {
+        filtrePrix.addEventListener('input', function() {
+            prixValue.textContent = this.value;
+        });
+    }
+    
+    if (filtreDuree && dureeValue) {
+        filtreDuree.addEventListener('input', function() {
+            dureeValue.textContent = this.value;
+        });
+    }
+    
+    if (filtreNote && noteValue) {
+        filtreNote.addEventListener('input', function() {
+            noteValue.textContent = this.value;
+        });
+    }
+    
+    // Appliquer les filtres
+    if (btnAppliquer) {
+        btnAppliquer.addEventListener('click', function() {
+            appliquerFiltres();
+            modalFiltres.style.display = 'none';
+        });
+    }
+    
+    // Réinitialiser les filtres
+    if (btnReinitialiser) {
+        btnReinitialiser.addEventListener('click', function() {
+            document.getElementById('form-filtres').reset();
+            prixValue.textContent = '20';
+            dureeValue.textContent = '10';
+            noteValue.textContent = '1';
+            appliquerFiltres(); // Pour tout réafficher
+        });
+    }
+    
+    // Fonction pour appliquer les filtres
+    function appliquerFiltres() {
+        const filtreEcologique = document.getElementById('filtre-ecologique').value;
+        const prixMax = parseFloat(filtrePrix.value);
+        const dureeMax = parseFloat(filtreDuree.value);
+        const noteMin = parseFloat(filtreNote.value);
+        
+        const covoiturages = document.querySelectorAll('.carte-covoiturage');
+        
+        covoiturages.forEach(covoiturage => {
+            // Récupérer les données de chaque carte
+            const estEcologique = covoiturage.getAttribute('data-ecologique') === 'ecologique';
+            
+            // Récupération du prix
+            const prixText = covoiturage.querySelector('p[class*="prix"]')?.textContent || '';
+            const prixMatch = prixText.match(/\d+/);
+            const prix = prixMatch ? parseFloat(prixMatch[0]) : 0;
+            
+            // Récupération des heures
+            const heureDepart = covoiturage.querySelector('p[class*="heure_depart"]')?.textContent;
+            const heureArrivee = covoiturage.querySelector('p[class*="heure_arrivee"]')?.textContent;
+            
+            // Récupération de la note
+            const noteText = covoiturage.querySelector('.chauffeur-info p:nth-child(3)')?.textContent || '';
+            const noteParts = noteText.split('/');
+            const noteConducteur = noteParts.length > 0 ? parseFloat(noteParts[0]) : 0;
+            
+            // Calculer la durée (simplifié)
+            let duree = 0;
+            if (heureDepart && heureArrivee) {
+                const [hDep, mDep] = heureDepart.split(':').map(Number);
+                const [hArr, mArr] = heureArrivee.split(':').map(Number);
+                duree = (hArr - hDep) + (mArr - mDep)/60;
+            }
+            
+            // Appliquer les filtres
+            let visible = true;
+            
+            if (filtreEcologique === 'ecologique' && !estEcologique) {
+                visible = false;
+            }
+            
+            if (prix > prixMax) {
+                visible = false;
+            }
+            
+            if (duree > dureeMax) {
+                visible = false;
+            }
+            
+            if (noteConducteur < noteMin) {
+                visible = false;
+            }
+            
+            covoiturage.style.display = visible ? 'block' : 'none';
+        });
+    }
+});

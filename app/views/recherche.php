@@ -33,11 +33,8 @@ unset($_SESSION['errorMessage']);
             </form>
         </section>
 
-        <section class="filtre-eco">
-            <select id="filtre-covoiturages">
-                <option value="">Filtrer par...</option>
-                <option value="ecologique">Écologique</option>
-            </select>
+        <section class="filtres">
+            <button id="btn-filtres-avances" class="btn-filtres">Filtres</button>
         </section>
 
         <section class="resultats-covoiturage">
@@ -82,6 +79,48 @@ unset($_SESSION['errorMessage']);
             <?php endif; ?>
         </section>
     </main>
+
+
+    <!-- Modale des filtres -->
+<div id="modalFiltres" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Filtrer les covoiturages</h2>
+        
+        <form id="form-filtres">
+            <div class="filtre-groupe">
+                <label for="filtre-ecologique">écologique</label>
+                <select id="filtre-ecologique" name="ecologique">
+                    <option value="">non</option>
+                    <option value="ecologique">oui</option>
+                </select>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-prix">Prix maximum (crédits)</label>
+                <input type="range" id="filtre-prix" name="prix" min="0" max="20" step="1" value="20">
+                <span id="prix-value">20</span>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-duree">Durée maximale (heures)</label>
+                <input type="range" id="filtre-duree" name="duree" min="1" max="10" step="0.5" value="10">
+                <span id="duree-value">10</span>
+            </div>
+            
+            <div class="filtre-groupe">
+                <label for="filtre-note">Note minimale du conducteur</label>
+                <input type="range" id="filtre-note" name="note" min="0" max="5" step="0.5" value="0">
+                <span id="note-value">0</span>
+            </div>
+            
+            <div class="boutons-filtres">
+                <button type="button" id="btn-appliquer-filtres">Appliquer</button>
+                <button type="button" id="btn-reinitialiser-filtres">Réinitialiser</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
     <div id="modalDetails" class="modal">

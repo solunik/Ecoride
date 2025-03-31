@@ -318,27 +318,6 @@ footer a:hover {
     background-color: #16a34a; /* Changement de couleur au survol */
 }
 
-/* Centrer le filtre */
-.filtre-eco {
-    display: flex;
-    justify-content: center; /* Centre le filtre horizontalement */
-    align-items: center; /* Centre le filtre verticalement si nécessaire */
-    margin-bottom: 20px; /* Un peu d'espace sous le filtre */
-}
-
-/* Styles pour le menu déroulant (select) */
-#filtre-covoiturages {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-    min-width: 50px; /* Assure que le menu déroulant n'est pas trop petit */
-}
-
-
-
 
 .modal {
     display: none;
@@ -403,4 +382,35 @@ footer a:hover {
     color: #dc3545;
     padding: 20px;
     text-align: center;
+}
+
+/* Style pour la section filtres */
+section.filtres {
+    width: auto;
+    max-width: 400px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style de base pour le bouton Filtres */
+.btn-filtres {
+    display: flex;
+    margin-left: auto;
+    background-color: #f0fdf4; /* Couleur bleue moderne */
+    color: black;
+    border: solid #22c55e 1px;
+    border-radius: 30px; /* Bords très arrondis */
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Effet au survol */
+.btn-filtres:hover {
+    background-color: #f0fdf4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
