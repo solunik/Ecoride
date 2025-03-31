@@ -1,42 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const selectFiltre = document.getElementById('filtre-covoiturages');
-
-    // Vérifie si l'élément existe avant d'ajouter l'event listener
-    if (selectFiltre) {
-        selectFiltre.addEventListener('change', function () {
-            const selectedValue = selectFiltre.value;
-
-            // Récupérer toutes les cartes de covoiturage
-            const covoiturages = document.querySelectorAll('.carte-covoiturage');
-
-            covoiturages.forEach(covoiturage => {
-                let visible = true;
-
-                if (selectedValue) {
-                    switch (selectedValue) {
-                        case 'ecologique':
-                            visible = covoiturage.getAttribute('data-ecologique') === 'ecologique';
-                            break;
-                    }
-                }
-
-                covoiturage.style.display = visible ? 'block' : 'none';
-            });
-        });
-    } else {
-        console.warn("⚠️ Aucun filtre trouvé sur cette page.");
-    }
-
-    // Gestion du menu burger
+    // Gestion du menu burger uniquement
     const menuToggle = document.getElementById("menu-toggle");
     const menuMobile = document.getElementById("menu-mobile");
 
     if (menuToggle && menuMobile) {
         menuToggle.addEventListener("click", function () {
+            // Basculle entre affiché et caché
             menuMobile.style.display = (menuMobile.style.display === "block") ? "none" : "block";
         });
-    } else {
-        console.warn("⚠️ Menu toggle ou menu mobile introuvable sur cette page.");
     }
 });
 
@@ -108,10 +79,10 @@ document.querySelectorAll('.btn-detail').forEach(button => {
     });
 });
 
-// Gestion de la fermeture de la modale
-document.querySelector('.close-modal').addEventListener('click', function() {
+// Fermeture Modale Détails
+document.querySelector('#modalDetails .close-modal').addEventListener('click', function() {
     document.getElementById('modalDetails').style.display = 'none';
-});
+  });
 
 // Fermer la modale en cliquant à l'extérieur
 window.addEventListener('click', function(event) {
@@ -190,68 +161,49 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnReinitialiser) {
         btnReinitialiser.addEventListener('click', function() {
             document.getElementById('form-filtres').reset();
-            prixValue.textContent = '20';
-            dureeValue.textContent = '10';
-            noteValue.textContent = '1';
+            prixValue.textContent = '50';
+            dureeValue.textContent = '24';
+            noteValue.textContent = '0';
             appliquerFiltres(); // Pour tout réafficher
         });
     }
     
-    // Fonction pour appliquer les filtres
     function appliquerFiltres() {
         const filtreEcologique = document.getElementById('filtre-ecologique').value;
-        const prixMax = parseFloat(filtrePrix.value);
-        const dureeMax = parseFloat(filtreDuree.value);
-        const noteMin = parseFloat(filtreNote.value);
-        
-        const covoiturages = document.querySelectorAll('.carte-covoiturage');
-        
-        covoiturages.forEach(covoiturage => {
-            // Récupérer les données de chaque carte
-            const estEcologique = covoiturage.getAttribute('data-ecologique') === 'ecologique';
+        const prixMax = parseFloat(document.getElementById('filtre-prix').value);
+        const dureeMax = parseFloat(document.getElementById('filtre-duree').value);
+        const noteMin = parseFloat(document.getElementById('filtre-note').value);
+    
+        document.querySelectorAll('.carte-covoiturage').forEach(covoiturage => {
+            // 1. Filtre écologique
+            const estEcologique = covoiturage.dataset.ecologique === 'ecologique';
+    
+            // 2. Extraction du prix (depuis data-attribute)
+            const prix = parseFloat(covoiturage.dataset.prix) || 0;
+    
+            // 3. Extraction de la note (depuis data-attribute)
+            const note = parseFloat(covoiturage.dataset.note) || 0;
+    
+            // 4. Calcul de la durée
+            const heureDepartText = covoiturage.querySelector('.heure-depart')?.textContent.match(/\d{2}:\d{2}/)?.[0] || '';
+            const heureArriveeText = covoiturage.querySelector('.heure-arrivee')?.textContent.match(/\d{2}:\d{2}/)?.[0] || '';
             
-            // Récupération du prix
-            const prixText = covoiturage.querySelector('p[class*="prix"]')?.textContent || '';
-            const prixMatch = prixText.match(/\d+/);
-            const prix = prixMatch ? parseFloat(prixMatch[0]) : 0;
-            
-            // Récupération des heures
-            const heureDepart = covoiturage.querySelector('p[class*="heure_depart"]')?.textContent;
-            const heureArrivee = covoiturage.querySelector('p[class*="heure_arrivee"]')?.textContent;
-            
-            // Récupération de la note
-            const noteText = covoiturage.querySelector('.chauffeur-info p:nth-child(3)')?.textContent || '';
-            const noteParts = noteText.split('/');
-            const noteConducteur = noteParts.length > 0 ? parseFloat(noteParts[0]) : 0;
-            
-            // Calculer la durée (simplifié)
             let duree = 0;
-            if (heureDepart && heureArrivee) {
-                const [hDep, mDep] = heureDepart.split(':').map(Number);
-                const [hArr, mArr] = heureArrivee.split(':').map(Number);
-                duree = (hArr - hDep) + (mArr - mDep)/60;
+            if (heureDepartText && heureArriveeText) {
+                const [hDep, mDep] = heureDepartText.split(':').map(Number);
+                const [hArr, mArr] = heureArriveeText.split(':').map(Number);
+                duree = (hArr - hDep) + (mArr - mDep) / 60;
             }
-            
-            // Appliquer les filtres
-            let visible = true;
-            
-            if (filtreEcologique === 'ecologique' && !estEcologique) {
-                visible = false;
-            }
-            
-            if (prix > prixMax) {
-                visible = false;
-            }
-            
-            if (duree > dureeMax) {
-                visible = false;
-            }
-            
-            if (noteConducteur < noteMin) {
-                visible = false;
-            }
-            
-            covoiturage.style.display = visible ? 'block' : 'none';
+    
+            // Application des filtres
+            const isVisible = (
+                (filtreEcologique !== 'ecologique' || estEcologique) &&
+                (prix <= prixMax) &&
+                (duree <= dureeMax) &&
+                (note >= noteMin)
+            );
+    
+            covoiturage.style.display = isVisible ? 'block' : 'none';
         });
     }
 });

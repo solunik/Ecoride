@@ -49,7 +49,9 @@ unset($_SESSION['errorMessage']);
 
                     <div class="carte-covoiturage" 
                     
-                    data-ecologique="<?= $ecologique ?>">
+                    data-ecologique="<?= $ecologique ?>"
+                    data-prix="<?= htmlspecialchars($covoiturage['prix_personne']) ?>"
+                    data-note="<?= htmlspecialchars(explode('/', $covoiturage['note'])[0]) ?>">
 
                         <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
                         <div class="chauffeur-info">
@@ -63,9 +65,9 @@ unset($_SESSION['errorMessage']);
                         </div>
                         
                         <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                        <p><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
-                        <p><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
-                        <p><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
+                        <p class="heure-depart"><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
+                        <p class="heure-arrivee"><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
+                        <p class="prix-covoiturage"><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
                         <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
                         
                         <div class="btn-container">
@@ -85,7 +87,6 @@ unset($_SESSION['errorMessage']);
 <div id="modalFiltres" class="modal">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
-        <h2>Filtrer les covoiturages</h2>
         
         <form id="form-filtres">
             <div class="filtre-groupe">
@@ -98,14 +99,14 @@ unset($_SESSION['errorMessage']);
             
             <div class="filtre-groupe">
                 <label for="filtre-prix">Prix maximum (crédits)</label>
-                <input type="range" id="filtre-prix" name="prix" min="0" max="20" step="1" value="20">
-                <span id="prix-value">20</span>
+                <input type="range" id="filtre-prix" name="prix" min="0" max="50" step="1" value="50">
+                <span id="prix-value">50</span>
             </div>
             
             <div class="filtre-groupe">
                 <label for="filtre-duree">Durée maximale (heures)</label>
-                <input type="range" id="filtre-duree" name="duree" min="1" max="10" step="0.5" value="10">
-                <span id="duree-value">10</span>
+                <input type="range" id="filtre-duree" name="duree" min="1" max="24" step="1" value="24">
+                <span id="duree-value">24</span>
             </div>
             
             <div class="filtre-groupe">
@@ -127,7 +128,7 @@ unset($_SESSION['errorMessage']);
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         <div id="modalContent">
-            <!-- Contenu chargé dynamiquement -->
+            
         </div>
     </div>
     </div>
