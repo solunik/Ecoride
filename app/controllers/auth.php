@@ -19,6 +19,7 @@ class Auth {
                 $_SESSION['email'] = $user->email;
                 $_SESSION['pseudo'] = $user->pseudo;
                 $_SESSION['credit'] = $user->credit;
+                $_SESSION['photo'] = $user->photo;
 
                 header("Location: index.php?page=accueil");
                 exit;

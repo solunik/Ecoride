@@ -8,16 +8,31 @@ body {
     color: #1f2937; /* Définit la couleur du texte en gris foncé */
 }
 
-
 /* HEADER */
 header {
-    background-color: #22c55e; /* Définit la couleur de fond du header en vert */
-    color: white; /* Définit la couleur du texte du header en blanc */
+    background-color: #22c55e;
+    color: white;
     padding: 1rem 0;
-    display: flex; /* Utilise le modèle de boîte flexible pour organiser les éléments */
-    justify-content: center; /* Centre horizontalement le contenu */
-    align-items: center; /* Centre verticalement les éléments dans le nav */
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 80px; /* Hauteur fixe */
+    min-height: 80px; /* Empêche le rétrécissement */
+    box-sizing: border-box; /* Inclut padding dans la hauteur */
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+/* Ajoutez ceci pour l'état non-connecté */
+header:not(:has(.user-avatar)) {
+    padding: 1.5rem 0; /* Ajustez pour égaliser la hauteur */
 }
 
 /* Par défaut, le bouton burger est caché */
@@ -35,13 +50,16 @@ header {
 #menu-mobile {
     display: none;
     position: absolute;
-    top: 50px;
-    left: 0;
-    width: 100%;
+    top: 72px;
+    left: 50%; /* Centrage horizontal */
+    transform: translateX(-50%); /* Ajustement précis du centrage */
+    width: 80%; /* Réduction à 80% de la largeur (ajustable) */
+    max-width: 300px; /* Largeur maximale (optionnel) */
     background: #22c55e;
     padding: 20px 0;
     text-align: center;
     border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Ombre optionnelle */
 }
 
 #menu-mobile li {
