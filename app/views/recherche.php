@@ -92,7 +92,7 @@ unset($_SESSION['errorMessage']);
             <div class="filtre-groupe">
                 <label for="filtre-ecologique">écologique</label>
                 <select id="filtre-ecologique" name="ecologique">
-                    <option value="">non</option>
+                    <option value=""></option>
                     <option value="ecologique">oui</option>
                 </select>
             </div>
