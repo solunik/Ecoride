@@ -7,8 +7,23 @@ class Model {
     protected $table;
     protected $primaryKey = 'id'; // Par défaut, on suppose que la clé primaire s'appelle 'id'
 
-    public function __construct() {
+    public function __construct($data = []) {
         $this->pdo = Database::getInstance();
+        if (!empty($data)) {
+            foreach ($data as $key => $value) {
+                $this->{$key} = $value; // Assigne chaque valeur à la propriété correspondante
+            }
+        }
+    }
+
+     // Mapper un tableau de données à un objet
+     protected function mapToObject($data) {
+        $className = static::class; // Instancie la classe appelante
+        $object = new $className();
+        foreach ($data as $key => $value) {
+            $object->{$key} = $value; // Assigne les valeurs à l'objet
+        }
+        return $object;
     }
 
     public function getAll() {
@@ -18,21 +33,18 @@ class Model {
     }
 
     public function getById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $this->mapToObject($data); // Retourner un objet
+        return $data ? $this->mapToObject($data) : null;
     }
 
-    // Mapper un tableau de données à un objet
-    protected function mapToObject($data) {
-        $className = ucfirst($this->table);
-        $object = new $className(); // Crée un objet de la classe correspondant à la table
-        foreach ($data as $key => $value) {
-            $object->{$key} = $value; // Assigne les valeurs à l'objet
-        }
-        return $object;
-    }
+    public function findBy($column, $value) {
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$column} = :value");
+        $stmt->execute(['value' => $value]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->mapToObject($data) : null;
+    }    
 
     public function create($data) {
         $columns = implode(", ", array_keys($data));
@@ -51,33 +63,6 @@ class Model {
     public function delete($id) {
         $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = :id");
         return $stmt->execute(['id' => $id]);
-    }
-
-
-    // Relation "Un à plusieurs" (hasMany)
-    public function hasMany($relatedModel, $foreignKey) {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$relatedModel} WHERE {$foreignKey} = :id");
-        $stmt->execute(['id' => $this->{$this->primaryKey}]);
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(fn($item) => new $relatedModel($item), $data);
-    }
-
-    // Relation "Appartient à" (belongsTo)
-    public function belongsTo($relatedModel, $foreignKey) {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$relatedModel} WHERE id = :id");
-        $stmt->execute(['id' => $this->{$foreignKey}]);
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return new $relatedModel($data);
-    }
-
-    // Relation "Plusieurs à plusieurs" (belongsToMany)
-    public function belongsToMany($relatedModel, $pivotTable, $foreignKey, $relatedKey) {
-        $stmt = $this->pdo->prepare("SELECT {$relatedModel}.* FROM {$relatedModel}
-                                      JOIN {$pivotTable} ON {$pivotTable}.{$relatedKey} = {$relatedModel}.id
-                                      WHERE {$pivotTable}.{$foreignKey} = :id");
-        $stmt->execute(['id' => $this->{$this->primaryKey}]);
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return array_map(fn($item) => new $relatedModel($item), $data);
     }
 }
 

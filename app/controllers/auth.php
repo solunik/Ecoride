@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/utilisateur.php';
-
+require_once __DIR__ . '/../models/role.php';
 class Auth {
     // Méthode pour se connecter
     public static function login($postemail, $postpassword) {
@@ -20,6 +20,12 @@ class Auth {
                 $_SESSION['pseudo'] = $user->pseudo;
                 $_SESSION['credit'] = $user->credit;
                 $_SESSION['photo'] = $user->photo;
+                $_SESSION['suspended'] = $user->suspended;
+
+                // Récupérer les rôles de l'utilisateur
+                $roles = $user->getRoles();
+                $_SESSION['roles'] = array_column($roles, 'libelle'); // Stocker les rôles en session
+
 
                 header("Location: index.php?page=accueil");
                 exit;

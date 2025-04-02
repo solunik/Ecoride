@@ -2,6 +2,7 @@
 
 class Avis extends Model {
     protected $table = 'avis';
+    protected $primaryKey = 'avis_id';
 
     public $avis_id;
     public $commentaire;
@@ -10,12 +11,7 @@ class Avis extends Model {
     public $utilisateur_id;
 
     public function __construct($data = []) {
-        parent::__construct();
-        if ($data) {
-            foreach ($data as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
+        parent::__construct($data);
     }
 
     

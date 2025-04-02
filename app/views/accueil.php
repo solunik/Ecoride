@@ -21,6 +21,16 @@
                 <h1>Bienvenue sur EcoRide</h1>
                 <p>Rejoignez notre communauté et recevez 20 crédits pour vos premiers voyages !</p>
             <?php endif; ?>
+
+            <?php if (isset($_SESSION['utilisateur_id'])) {
+    echo "Utilisateur connecté avec l'ID : " . $_SESSION['utilisateur_id'];
+    echo '<pre>';
+    print_r($_SESSION);  // Affiche tout ce qui est dans la session
+    echo '</pre>';
+} else {
+    echo "Aucun utilisateur connecté.";
+}
+?>
         </section>
 
         <section>
