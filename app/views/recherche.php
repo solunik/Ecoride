@@ -15,7 +15,7 @@ unset($_SESSION['recherche_effectuee']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recherche de covoiturages</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <script src="js/evenements.js" defer></script>
 <body>
     <header>
@@ -63,7 +63,7 @@ unset($_SESSION['recherche_effectuee']);
                                 <img src="images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
                             <?php endif; ?>
                             <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
-                            <p><?= htmlspecialchars($covoiturage['note']) ?> / 5</p>
+                            <p><?= !empty($covoiturage['note']) ? htmlspecialchars($covoiturage['note']) . ' / 5' : '' ?></p>
                         </div>
                         
                         <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>

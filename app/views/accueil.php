@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application de Covoiturage - Accueil</title>
-    <link rel="stylesheet" href="styles.css">
-    
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/evenements.js" defer></script> 
 </head>
 <body>
     <header>
@@ -21,16 +21,6 @@
                 <h1>Bienvenue sur EcoRide</h1>
                 <p>Rejoignez notre communauté et recevez 20 crédits pour vos premiers voyages !</p>
             <?php endif; ?>
-
-            <?php if (isset($_SESSION['utilisateur_id'])) {
-    echo "Utilisateur connecté avec l'ID : " . $_SESSION['utilisateur_id'];
-    echo '<pre>';
-    print_r($_SESSION);  // Affiche tout ce qui est dans la session
-    echo '</pre>';
-} else {
-    echo "Aucun utilisateur connecté.";
-}
-?>
         </section>
 
         <section>
@@ -54,7 +44,5 @@
     <footer>
         <?php include __DIR__ . '/../partials/footer.php'; ?>
     </footer>
-
-    <script src="js/evenements.js" defer></script>
 </body>
 </html>
