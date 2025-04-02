@@ -1,24 +1,25 @@
 <?php
-
 require_once __DIR__ . '/../models/utilisateur.php';
+require_once __DIR__ . '/../models/role.php';
 
 class Registration {
+    const DEFAULT_ROLE = 'utilisateur'; // Définition du rôle par libellé
+
     public static function register($postEmail, $postPseudo, $postPrenom, $postNom, $postPassword, $postConfirmPassword) {
-        $_SESSION['error_message'] = ''; // Réinitialisation du message d'erreur à chaque nouvelle tentative
+        $_SESSION['error_message'] = '';
 
         try {
-            // Assainir les entrées utilisateur
-            $email = trim(strtolower($postEmail)); // Convertir en minuscule
+            // Nettoyage des données
+            $email = trim(strtolower($postEmail));
             $pseudo = trim(strtolower($postPseudo));
-            $prenom = htmlspecialchars($postPrenom); // Protection contre les injections XSS
+            $prenom = htmlspecialchars($postPrenom);
             $nom = htmlspecialchars($postNom);
             $password = $postPassword;
             $confirmPassword = $postConfirmPassword;
 
-            // Création de l'objet Utilisateur
             $utilisateur = new Utilisateur();
 
-            // Vérifier si l'email ou le pseudo existent déjà
+            // Vérifications
             $existingUserByEmail = $utilisateur->findByEmail($email);
             $existingUserByPseudo = $utilisateur->findByPseudo($pseudo);
 
@@ -29,20 +30,27 @@ class Registration {
             } elseif ($password !== $confirmPassword) {
                 $_SESSION['error_message'] = "Les mots de passe ne correspondent pas.";
             } else {
-                // Inscription de l'utilisateur si toutes les conditions sont remplies
-                $utilisateur->inscription($nom, $prenom, $email, $password, $pseudo);
-
-                // Redirection vers la page de connexion après inscription réussie
-                header("Location: index.php?page=connexion");
-                exit;
+                // Inscription
+                $userId = $utilisateur->inscription($nom, $prenom, $email, $password, $pseudo);
+                
+                try {
+                    // Attribution du rôle
+                    $role = new Role();
+                    $role->assignRoleByLibelle($userId, self::DEFAULT_ROLE);
+                    
+                    header("Location: index.php?page=connexion");
+                    exit;
+                } catch (Exception $e) {
+                    // Rollback si échec d'attribution de rôle
+                    $utilisateur->delete($userId);
+                    throw $e;
+                }
             }
         } catch (Exception $e) {
-            // Enregistrer l'erreur dans le log et dans la session
             error_log("Erreur d'inscription : " . $e->getMessage());
-            $_SESSION['error_message'] = "Erreur lors de l'inscription, veuillez réessayer plus tard.";
+            $_SESSION['error_message'] = "Erreur lors de l'inscription : " . $e->getMessage();
         }
 
-        // Redirection en cas d'erreur
         header("Location: index.php?page=inscription");
         exit;
     }

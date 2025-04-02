@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/model.php';
 
 class Covoiturage extends Model {
     protected $table = 'covoiturage';
+    protected $primaryKey = 'covoiturage_id';
 
     public $covoiturage_id;
     public $date_depart;
@@ -19,12 +20,7 @@ class Covoiturage extends Model {
     public $utilisateur_id;
 
     public function __construct($data = []) {
-        parent::__construct();
-        if ($data) {
-            foreach ($data as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
+        parent::__construct($data);
     }
 
     //rechercher un covoiturage

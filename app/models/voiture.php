@@ -2,6 +2,7 @@
 
 class Voiture extends Model {
     protected $table = 'voiture';
+    protected $primaryKey = 'voiture_id';
 
     public $voiture_id;
     public $modele;
@@ -13,13 +14,6 @@ class Voiture extends Model {
     public $marque_id;
 
     public function __construct($data = []) {
-        parent::__construct();
-        if ($data) {
-            foreach ($data as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
-    }
-
-    
+        parent::__construct($data);
+    } 
 }
