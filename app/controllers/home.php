@@ -20,4 +20,10 @@ function recherchePage() {
     require __DIR__ . '/../views/recherche.php';  // Inclut la vue de recherche
 }
 
+function adminPage() {
+    require __DIR__ . '/../views/admin.php';  // Inclut la vue de recherche
+}
+
+
+
 ?>

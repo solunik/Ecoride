@@ -33,6 +33,9 @@ switch ($page) {
     case 'recherche':
         recherchePage();
         break;
+    case 'admin':
+        adminPage();
+        break;
 
     case 'login':
             Auth::login($_POST['email'], $_POST['password']);
