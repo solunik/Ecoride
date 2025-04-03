@@ -117,7 +117,8 @@ class AdminDashboard {
             lastName: document.getElementById('employeeLastName').value.trim(),
             firstName: document.getElementById('employeeFirstName').value.trim(),
             email: document.getElementById('employeeEmail').value.trim(),
-            password: document.getElementById('employeePassword').value
+            password: document.getElementById('employeePassword').value,
+            confirmPassword: document.getElementById('employeeConfirmPassword').value
         };
     
         // Validation minimale
@@ -127,18 +128,33 @@ class AdminDashboard {
         }
     
         try {
-            // SIMULATION - À remplacer par un vrai appel API
-            console.log('Données employé:', employeeData);
-            await new Promise(resolve => setTimeout(resolve, 800)); // <-- Ligne corrigée
-            
-            // Afficher la confirmation
-            this.showEmployeeConfirmation(employeeData);
-            document.getElementById('createEmployeeForm').reset();
-            
+            // Envoi des données via AJAX
+            const response = await fetch('index.php?page=manadmin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(employeeData)
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                // Pas besoin de remplir #data-message car la confirmation est déjà gérée
+                this.showEmployeeConfirmation(employeeData); // Confirmation de l'employé
+    
+                // Réinitialiser la section message pour éviter le fond vide
+                document.getElementById('data-message').innerHTML = ''; // Vide le contenu du message de fond
+                document.getElementById('createEmployeeForm').reset(); // Réinitialise le formulaire
+            } else {
+                // Affichage du message d'erreur si échec
+                this.showMessage(result.message, true);
+            }
         } catch (error) {
             this.showMessage("Erreur lors de la création: " + error.message, true);
         }
     }
+    
     
     showEmployeeConfirmation(employeeData) {
         const confirmation = document.getElementById('employeeConfirmation');

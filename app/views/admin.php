@@ -15,8 +15,6 @@
     </header>
 
     <main class="admin-dashboard">
-        <div id="data-message" class="data-message"></div>
-
         <section class="chart-container">
             <h2>Covoiturages par jour</h2>
             <canvas id="ridesChart"></canvas>
@@ -29,6 +27,8 @@
                 Total: <span id="totalCredits">0</span> crédits
             </div>
         </section>
+
+        <div id="data-message" class="data-message"></div>
 
         <section class="employee-creation">
     <h2>Création de compte employé</h2>
@@ -52,6 +52,11 @@
         <div class="form-group">
             <label for="employeePassword">Mot de passe </label>
             <input type="password" id="employeePassword" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="employeeConfirmPassword">Confirmer le mot de passe</label>
+            <input type="password" id="employeeConfirmPassword" name="confirmPassword" required>
         </div>
         
         <button type="submit" class="btn-submit">Créer</button>

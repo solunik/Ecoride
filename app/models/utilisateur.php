@@ -35,6 +35,18 @@ class Utilisateur extends Model {
         return $db->lastInsertId();
     }
 
+     // Ajouter un employé sans pseudo et avec un crédit de 0
+     public function addEmployee($nom, $prenom, $email, $password) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        // Insérer l'employé avec un crédit de 0 et sans pseudo
+        $stmt = $this->pdo->prepare("INSERT INTO {$this->table} (nom, prenom, email, password, credit) VALUES (?, ?, ?, ?, 0)");
+        $stmt->execute([$nom, $prenom, $email, $hashedPassword]);
+
+        return $this->pdo->lastInsertId();
+    }
+    
+
     public function delete($id) {
         $db = Database::getInstance();
         $stmt = $db->prepare("DELETE FROM {$this->table} WHERE id = ?");
