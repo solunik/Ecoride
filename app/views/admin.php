@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Administrateur</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/evenements.js" defer></script>
     <link rel="stylesheet" href="css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
