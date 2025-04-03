@@ -9,7 +9,7 @@ body.admin-page {
 /* Conteneur principal du tableau de bord */
 .admin-dashboard {
     width: 90%;
-    max-width: 1200px;
+    max-width: 2000px;
     margin: 20px auto;
     padding: 20px;
     background: white;
@@ -19,6 +19,10 @@ body.admin-page {
 
 /* Sections des graphiques */
 .chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
     background: #ffffff;
     margin-bottom: 20px;
@@ -72,7 +76,7 @@ canvas {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .admin-dashboard {
         width: 95%;
         padding: 15px;
