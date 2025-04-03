@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../models/utilisateur.php';
 require_once __DIR__ . '/../models/role.php';
+
 class Auth {
     // Méthode pour se connecter
     public static function login($postemail, $postpassword) {
@@ -26,8 +27,12 @@ class Auth {
                 $roles = $user->getRoles();
                 $_SESSION['roles'] = array_column($roles, 'libelle'); // Stocker les rôles en session
 
-
-                header("Location: index.php?page=accueil");
+                // Vérifier si l'utilisateur est un administrateur
+                if (in_array('Administrateur', $_SESSION['roles'])) {
+                    header("Location: index.php?page=admin"); // Redirection vers la page admin
+                } else {
+                    header("Location: index.php?page=accueil"); // Redirection pour les autres utilisateurs
+                }
                 exit;
             } else {
                 $_SESSION['errorMessage'] = "Email ou mot de passe incorrect.";

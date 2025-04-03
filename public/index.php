@@ -12,6 +12,7 @@ require_once __DIR__ . '/../app/controllers/home.php';
 require_once __DIR__ . '/../app/controllers/auth.php';
 require_once __DIR__ . '/../app/controllers/research.php';
 require_once __DIR__ . '/../app/controllers/registration.php';
+require_once __DIR__ . '/../app/controllers/stats.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -32,6 +33,9 @@ switch ($page) {
         break;
     case 'recherche':
         recherchePage();
+        break;
+    case 'admin':
+        adminPage();
         break;
 
     case 'login':
@@ -62,5 +66,17 @@ switch ($page) {
         header("HTTP/1.0 404 Not Found");
         echo "Page non trouvée.";
         exit;
+
+    case 'stats':
+            $statsController = new Stats();
+            $statsController->getStatsData();
+            break;
+        
+
+    case 'admin':
+        $statsController = new Stats();
+        $statsController->showDashboard();
+        break;
 }
+    
 ?>
