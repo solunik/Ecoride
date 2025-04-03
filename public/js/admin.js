@@ -45,6 +45,10 @@ class AdminDashboard {
 
         this.destroyCharts(); // Supprime les anciens graphiques avant d'en créer de nouveaux
 
+        // Ajout d'une hauteur fixe pour éviter le chevauchement
+        document.getElementById('ridesChart').parentElement.style.height = "350px";
+        document.getElementById('creditsChart').parentElement.style.height = "350px";
+
         this.ridesChart = this.createChart('ridesChart', 'bar', data.dates, data.rides, 'Covoiturages', '#36a2eb');
         this.creditsChart = this.createChart('creditsChart', 'line', data.dates, data.credits, 'Crédits', '#4bc0c0');
         this.totalCreditsEl.textContent = data.totalCredits;
@@ -68,8 +72,10 @@ class AdminDashboard {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true } }
+                maintainAspectRatio: false, // Correction du chevauchement
+                scales: { 
+                    y: { beginAtZero: true } 
+                }
             }
         });
     }
