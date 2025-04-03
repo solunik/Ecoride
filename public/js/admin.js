@@ -5,6 +5,7 @@ class AdminDashboard {
         this.ridesChart = null;
         this.creditsChart = null;
         this.init();
+        this.initEmployeeCreation();
     }
 
     async init() {
@@ -96,7 +97,92 @@ class AdminDashboard {
         this.messageEl.className = `alert ${isError ? 'error' : 'info'}`;
         this.messageEl.style.display = 'block';
     }
+
+
+
+
+
+    initEmployeeCreation() {
+        const form = document.getElementById('createEmployeeForm');
+        if (!form) return;
+    
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleEmployeeCreation();
+        });
+    }
+    
+    async handleEmployeeCreation() {
+        const employeeData = {
+            lastName: document.getElementById('employeeLastName').value.trim(),
+            firstName: document.getElementById('employeeFirstName').value.trim(),
+            email: document.getElementById('employeeEmail').value.trim(),
+            password: document.getElementById('employeePassword').value,
+            confirmPassword: document.getElementById('employeeConfirmPassword').value
+        };
+    
+        // Validation minimale
+        if (!employeeData.lastName || !employeeData.firstName || !employeeData.email.includes('@') || employeeData.password.length < 6) {
+            this.showMessage('Veuillez remplir tous les champs correctement', true);
+            return;
+        }
+    
+        try {
+            // Envoi des données via AJAX
+            const response = await fetch('index.php?page=manadmin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(employeeData)
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                // Pas besoin de remplir #data-message car la confirmation est déjà gérée
+                this.showEmployeeConfirmation(employeeData); // Confirmation de l'employé
+    
+                // Réinitialiser la section message pour éviter le fond vide
+                document.getElementById('data-message').innerHTML = ''; // Vide le contenu du message de fond
+                document.getElementById('createEmployeeForm').reset(); // Réinitialise le formulaire
+            } else {
+                // Affichage du message d'erreur si échec
+                this.showMessage(result.message, true);
+            }
+        } catch (error) {
+            this.showMessage("Erreur lors de la création: " + error.message, true);
+        }
+    }
+    
+    
+    showEmployeeConfirmation(employeeData) {
+        const confirmation = document.getElementById('employeeConfirmation');
+        if (!confirmation) return;
+    
+        document.getElementById('confirmFullName').textContent = `${employeeData.firstName} ${employeeData.lastName}`;
+        document.getElementById('confirmEmail').textContent = employeeData.email;
+    
+        confirmation.style.display = 'block';
+        setTimeout(() => confirmation.style.display = 'none', 5000); // Le message disparaît après 5 secondes
+    }
+    
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
 
 // Initialisation après chargement de la page
 document.addEventListener('DOMContentLoaded', () => {

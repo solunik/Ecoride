@@ -13,6 +13,7 @@ require_once __DIR__ . '/../app/controllers/auth.php';
 require_once __DIR__ . '/../app/controllers/research.php';
 require_once __DIR__ . '/../app/controllers/registration.php';
 require_once __DIR__ . '/../app/controllers/stats.php';
+require_once __DIR__ . '/../app/controllers/manadmin.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -62,21 +63,31 @@ switch ($page) {
         Registration::register($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
     break;
 
-    default:
-        header("HTTP/1.0 404 Not Found");
-        echo "Page non trouvée.";
-        exit;
-
     case 'stats':
-            $statsController = new Stats();
-            $statsController->getStatsData();
-            break;
+        $statsController = new Stats();
+        $statsController->getStatsData();
+        break;
         
 
     case 'admin':
         $statsController = new Stats();
         $statsController->showDashboard();
         break;
+
+        case 'manadmin':
+            // Vérifie si une requête POST a été envoyée (comme dans ton AJAX)
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Appel à la méthode d'enregistrement de l'employé
+                EmployeeRegistration::registerEmployee($_POST['lastName'], $_POST['firstName'], $_POST['email'], $_POST['password'], $_POST['confirmPassword']);
+            }
+            break;
+
+
+
+    default:
+        header("HTTP/1.0 404 Not Found");
+        echo "Page non trouvée.";
+        exit;    
 }
     
 ?>
