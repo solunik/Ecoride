@@ -42,6 +42,7 @@ class Auth {
             $_SESSION['errorMessage'] = "Erreur de connexion, veuillez réessayer plus tard.";
         }
 
+        //session_write_close(); // Fermer la session avant de rediriger
         header("Location: index.php?page=connexion");
         exit;
     }

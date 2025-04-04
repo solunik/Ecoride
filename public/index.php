@@ -15,6 +15,8 @@ require_once __DIR__ . '/../app/controllers/registration.php';
 require_once __DIR__ . '/../app/controllers/stats.php';
 require_once __DIR__ . '/../app/controllers/manadmin.php';
 require_once __DIR__ . '/../app/controllers/suspend.php';
+require_once __DIR__ . '/../app/controllers/update_profile.php';
+require_once __DIR__ . '/../app/controllers/profil.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -97,10 +99,20 @@ case 'suspend':
     break;
 
 
+    case 'espace_utilisateur': // ou 'profil' 
+        profilPage();
+        break;
+    
+    case 'update_profile':
+        require_once __DIR__ . '/../app/controllers/update_profile.php';
+        break;   
+
     default:
         header("HTTP/1.0 404 Not Found");
         echo "Page non trouvée.";
-        exit;    
+        exit;   
+        
+
 }
     
 ?>

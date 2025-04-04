@@ -91,6 +91,20 @@ class Utilisateur extends Model {
         return $stmt->execute([$id]);
     }
 
+
+    public function findById($userId) {
+        $query = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :userId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userId' => $userId]);
+    
+        // Vérifier si un utilisateur est trouvé et retourner un objet Utilisateur
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            return new self($data); // Retourner un objet Utilisateur avec les données récupérées
+        }
+        return null; // Retourne null si l'utilisateur n'est pas trouvé
+    }
+
     // Récupérer un utilisateur par son email
     public function findByEmail($email) {
         return $this->findBy('email', $email);
@@ -112,6 +126,31 @@ class Utilisateur extends Model {
 
     public function getRoles() {
         return Role::getRolesByUserId($this->utilisateur_id);
+    }
+
+    public function updateUser($userId, $data) {
+        // Retirer les champs non autorisés à être modifiés directement
+        $allowedFields = ['nom', 'prenom', 'email', 'password', 'telephone', 'adresse', 
+        'date_naissance', 'photo', 'pseudo'];
+        $setParts = [];
+        $params = [];
+    
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowedFields)) {
+                $setParts[] = "$key = :$key";
+                $params[$key] = $value;
+            }
+        }
+    
+        if (empty($setParts)) {
+            return false; // Aucun champ modifiable fourni
+        }
+    
+        $params['utilisateur_id'] = $userId;
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $setParts) . " WHERE {$this->primaryKey} = :utilisateur_id";
+    
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 }
 
