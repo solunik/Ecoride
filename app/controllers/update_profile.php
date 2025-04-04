@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once __DIR__ . '/../models/Utilisateur.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
@@ -103,10 +103,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     // Rediriger l'utilisateur vers la page de son profil
     header('Location: index.php?page=espace_utilisateur');
     exit;
-} else {
-    // Si la méthode n'est pas POST ou si le bouton n'est pas cliqué
-    $_SESSION['profile_message'] = "Aucune donnée soumise.";
-    header('Location: index.php?page=espace_utilisateur');
-    exit;
-}
+} 
 ?>
