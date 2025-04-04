@@ -36,7 +36,7 @@ switch ($page) {
     case 'recherche':
         recherchePage();
         break;
-    case 'admin':
+    case 'xYz123secure':
         adminPage();
         break;
 

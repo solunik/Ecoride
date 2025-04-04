@@ -21,7 +21,7 @@ function recherchePage() {
 }
 
 function adminPage() {
-    require __DIR__ . '/../views/admin.php';  // Inclut la vue de recherche
+    require __DIR__ . '/../views/xYz123secure.php';  // Inclut la vue de recherche
 }
 
 
