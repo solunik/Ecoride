@@ -19,7 +19,7 @@
     <main>
         <section class="top-main">
             <?php if (isset($_SESSION['utilisateur_id'])): ?> 
-                <h1>Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom']); ?> !</h1> 
+                <h1>Bienvenue, <?php echo htmlspecialchars($_SESSION['pseudo']); ?> !</h1> 
                 <p>Ravi de vous revoir sur EcoRide</p> 
             <?php else: ?>
                 <h1>Bienvenue sur EcoRide</h1>
