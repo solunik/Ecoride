@@ -10,7 +10,7 @@ class Stats {
     }
 
     public function showDashboard() {
-        include __DIR__ . '/../../public/views/admin.php';
+        include __DIR__ . '/../../public/views/xYz123secure.php';
     }
 
     public function getStatsData() {

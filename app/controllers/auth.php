@@ -7,12 +7,19 @@ class Auth {
     // Méthode pour se connecter
     public static function login($postemail, $postpassword) {
         $_SESSION['errorMessage'] = '';
-
+    
         try {
             $utilisateur = new Utilisateur();
             $user = $utilisateur->authenticate($postemail, $postpassword);
-
+    
             if ($user) {
+                // Vérifier si le compte est suspendu
+                if ($user->suspended == 1) {
+                    $_SESSION['errorMessage'] = "Compte suspendu.";
+                    header("Location: index.php?page=connexion");
+                    exit;
+                }
+    
                 // Stocker les informations de l'utilisateur dans la session
                 $_SESSION['utilisateur_id'] = $user->utilisateur_id;
                 $_SESSION['prenom'] = $user->prenom;
@@ -22,16 +29,16 @@ class Auth {
                 $_SESSION['credit'] = $user->credit;
                 $_SESSION['photo'] = $user->photo;
                 $_SESSION['suspended'] = $user->suspended;
-
+    
                 // Récupérer les rôles de l'utilisateur
                 $roles = $user->getRoles();
-                $_SESSION['roles'] = array_column($roles, 'libelle'); // Stocker les rôles en session
-
-                // Vérifier si l'utilisateur est un administrateur
+                $_SESSION['roles'] = array_column($roles, 'libelle');
+    
+                // Redirection en fonction du rôle
                 if (in_array('Administrateur', $_SESSION['roles'])) {
-                    header("Location: index.php?page=admin"); // Redirection vers la page admin
+                    header("Location: index.php?page=xYz123secure");
                 } else {
-                    header("Location: index.php?page=accueil"); // Redirection pour les autres utilisateurs
+                    header("Location: index.php?page=accueil");
                 }
                 exit;
             } else {
@@ -41,7 +48,7 @@ class Auth {
             error_log("Erreur de connexion : " . $e->getMessage());
             $_SESSION['errorMessage'] = "Erreur de connexion, veuillez réessayer plus tard.";
         }
-
+    
         header("Location: index.php?page=connexion");
         exit;
     }
