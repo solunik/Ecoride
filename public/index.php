@@ -14,6 +14,7 @@ require_once __DIR__ . '/../app/controllers/research.php';
 require_once __DIR__ . '/../app/controllers/registration.php';
 require_once __DIR__ . '/../app/controllers/stats.php';
 require_once __DIR__ . '/../app/controllers/manadmin.php';
+require_once __DIR__ . '/../app/controllers/suspend.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -82,6 +83,18 @@ switch ($page) {
             }
             break;
 
+case 'suspend':
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['utilisateur_id'])) {
+            ManagerUser::handleSuspension();
+        }
+    } elseif (isset($_GET['getUsers'])) {
+        ManagerUser::getUsers();
+    } else {
+        header('HTTP/1.0 400 Bad Request');
+        echo json_encode(['success' => false, 'error' => 'Requête non reconnue.']);
+    }
+    break;
 
 
     default:

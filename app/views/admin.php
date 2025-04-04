@@ -73,12 +73,57 @@
     </div>
 </section>
 
-        <section>
-            <?php echo "suspendre un compte, aussi bien utilisateur qu’employé"; ?>
-        </section>
+
+<section class="user-management">
+    <h2>Gestion des utilisateurs / employés</h2>
+    
+    <!-- Message d'état -->
+    <div id="user-message" class="alert-message" style="display: none;"></div>
+    
+    <!-- Contrôles simplifiés -->
+    <div class="user-controls">
+        <button id="refresh-users" class="btn-refresh">🔄 Actualiser</button>
+    </div>
+
+    <!-- Tableau principal -->
+    <div class="table-responsive">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>État</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="users-tbody">
+                <!-- Rempli dynamiquement par JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Template pour une ligne utilisateur -->
+    <template id="user-row-template">
+        <tr>
+            <td class="user-nom"></td>
+            <td class="user-prenom"></td>
+            <td class="user-email"></td>
+            <td class="user-role"></td>
+            <td class="user-status">
+                <span class="status-badge"></span>
+            </td>
+            <td class="user-actions">
+                <button class="btn-suspend"></button>
+            </td>
+        </tr>
+    </template>
+</section>
 
     </main>
 
     <script src="js/admin.js" defer></script>
+    <script src="js/adminmanager.js" defer></script>
 </body>
 </html>

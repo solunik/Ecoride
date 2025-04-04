@@ -45,6 +45,44 @@ class Utilisateur extends Model {
 
         return $this->pdo->lastInsertId();
     }
+
+    public function getAllForAdmin() {
+        $query = "SELECT u.utilisateur_id, u.nom, u.prenom, u.email, 
+                         u.suspended, GROUP_CONCAT(r.libelle) as roles
+                  FROM {$this->table} u
+                  LEFT JOIN utilisateur_role ur ON u.utilisateur_id = ur.utilisateur_id
+                  LEFT JOIN role r ON ur.role_id = r.role_id
+                  GROUP BY u.utilisateur_id
+                  HAVING 
+                      FIND_IN_SET('employe', roles) > 0 
+                      OR FIND_IN_SET('utilisateur', roles) > 0";
+        
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    public function toggleSuspension($userId) {
+        // Inverse l'état actuel
+        $query = "UPDATE {$this->table} 
+                  SET suspended = NOT suspended 
+                  WHERE utilisateur_id = :userId";
+        
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userId' => $userId]);
+        
+        // Retourne le nouvel état
+        return $this->isSuspended($userId);
+    }
+
+    public function isSuspended($userId) {
+        $query = "SELECT suspended FROM {$this->table} 
+                  WHERE utilisateur_id = :userId";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['userId' => $userId]);
+        return (bool)$stmt->fetchColumn();
+    }
     
 
     public function delete($id) {
