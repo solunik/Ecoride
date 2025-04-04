@@ -70,7 +70,7 @@ unset($_SESSION['recherche_effectuee']);
                             <p><?= !empty($covoiturage['note']) ? htmlspecialchars($covoiturage['note']) . ' / 5' : '' ?></p>
                         </div>
                         
-                        <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
+                        <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_formatted']) ?></p>
                         <p class="heure-depart"><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
                         <p class="heure-arrivee"><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
                         <p class="prix-covoiturage"><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>

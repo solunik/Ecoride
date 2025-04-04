@@ -53,7 +53,7 @@ document.querySelectorAll('.btn-detail').forEach(button => {
                         <h3>Trajet</h3>
                         <p><strong>Départ:</strong> ${data.data.trajet.depart}</p>
                         <p><strong>Arrivée:</strong> ${data.data.trajet.arrivee}</p>
-                        <p><strong>Date:</strong> ${new Date(data.data.trajet.date).toLocaleDateString()}</p>
+                        <p><strong>Date:</strong> ${data.data.trajet.date}</p>
                         <p><strong>Heure:</strong> ${data.data.trajet.heure_depart.substring(0,5)}</p>
                         <p><strong>Prix:</strong> ${data.data.trajet.prix} crédits</p>
                     </div>
