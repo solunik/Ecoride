@@ -99,18 +99,22 @@ case 'suspend':
     break;
 
 
-    case 'espace_utilisateur': // ou 'profil' 
-        profilPage();
-        break;
+case 'espace_utilisateur': // ou 'profil' 
+    profilPage();
+    break;
     
-    case 'update_profile':
-        require_once __DIR__ . '/../app/controllers/update_profile.php';
-        break;   
+case 'update_profile':
+    require_once __DIR__ . '/../app/controllers/update_profile.php';
+    break;  
+    
+case 'historique_ajax':
+    include __DIR__ . '/../app/views/partials/historique_utilisateur.php';
+    break;
 
-    default:
-        header("HTTP/1.0 404 Not Found");
-        echo "Page non trouvée.";
-        exit;   
+default:
+    header("HTTP/1.0 404 Not Found");
+    echo "Page non trouvée.";
+    exit;   
         
 
 }

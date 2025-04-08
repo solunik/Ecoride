@@ -119,4 +119,19 @@ class Covoiturage extends Model {
         }
     }
 
+    public function getHistoriqueByUserId($userId)
+    {
+        $sql = "SELECT depart, arrivee, date 
+                FROM covoiturages 
+                WHERE utilisateur_id = :userId 
+                ORDER BY date DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 }

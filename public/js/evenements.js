@@ -206,4 +206,42 @@ document.addEventListener('DOMContentLoaded', function () {
             covoiturage.style.display = isVisible ? 'block' : 'none';
         });
     }
+
+    //Evenement Vue Utilisateur 
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.tab-button');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+    
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Réinitialise tous les onglets
+                tabPanes.forEach(pane => pane.style.display = 'none');
+                buttons.forEach(btn => btn.classList.remove('active'));
+    
+                // Active le bon onglet
+                const tab = button.getAttribute('data-tab');
+                document.getElementById(`tab-${tab}`).style.display = 'block';
+                button.classList.add('active');
+    
+                // Charger l'historique en AJAX si nécessaire
+                if (tab === 'historique') {
+                    fetchHistorique();
+                }
+            });
+        });
+    
+        function fetchHistorique() {
+            const container = document.getElementById('historique-content');
+            fetch('index.php?page=historique_ajax')
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    container.innerHTML = 'Erreur de chargement.';
+                    console.error(err);
+                });
+        }
+    });
+    
 });
