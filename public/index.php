@@ -85,36 +85,40 @@ switch ($page) {
             }
             break;
 
-case 'suspend':
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (isset($_POST['utilisateur_id'])) {
-            ManagerUser::handleSuspension();
+    case 'suspend':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['utilisateur_id'])) {
+                ManagerUser::handleSuspension();
+            }
+        } elseif (isset($_GET['getUsers'])) {
+            ManagerUser::getUsers();
+        } else {
+            header('HTTP/1.0 400 Bad Request');
+            echo json_encode(['success' => false, 'error' => 'Requête non reconnue.']);
         }
-    } elseif (isset($_GET['getUsers'])) {
-        ManagerUser::getUsers();
-    } else {
-        header('HTTP/1.0 400 Bad Request');
-        echo json_encode(['success' => false, 'error' => 'Requête non reconnue.']);
-    }
-    break;
+        break;
 
 
-case 'espace_utilisateur': // ou 'profil' 
-    profilPage();
-    break;
-    
-case 'update_profile':
-    require_once __DIR__ . '/../app/controllers/update_profile.php';
-    break;  
-    
-case 'historique_ajax':
-    include __DIR__ . '/../app/views/partials/historique_utilisateur.php';
-    break;
+    case 'espace_utilisateur': // ou 'profil' 
+        profilPage();
+        break;
+        
+    case 'update_profile':
+        require_once __DIR__ . '/../app/controllers/update_profile.php';
+        break;  
+        
+    case 'historique_ajax':
+        include __DIR__ . '/../app/views/partials/historique_utilisateur.php';
+        break;
 
-default:
-    header("HTTP/1.0 404 Not Found");
-    echo "Page non trouvée.";
-    exit;   
+    case 'historique_ajax':
+        require_once __DIR__ . '/../app/controllers/historique_ajax.php';
+        break;
+
+    default:
+        header("HTTP/1.0 404 Not Found");
+        echo "Page non trouvée.";
+        exit;   
         
 
 }
