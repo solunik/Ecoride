@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,93 +6,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Utilisateur</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/evenements.js" defer></script>
+    <link rel="stylesheet" href="css/user.css">
 </head>
-<body>
-
-    <header>
-        <?php include __DIR__ . '/../partials/header.php'; ?>
-    </header>
-
-    <main>
-        <section class="top-main">
-            <h1>Mon profil</h1>
-        </section>
-
-        <!-- Onglets -->
-        <nav class="tabs">
-            <button class="tab-button" data-tab="infos">Mes informations</button>
-            <button class="tab-button" data-tab="historique">Mon historique de covoiturage</button>
-        </nav>
-
-        <section id="tab-content">
-            <!-- Contenu par défaut : infos -->
-            <div id="tab-infos" class="tab-pane active">
-                <h2>Mes informations</h2>
-                <?php if (isset($user)): ?>
-                    <form action="index.php?page=update_profile" method="post" enctype="multipart/form-data">
-                        <label for="pseudo">Pseudo</label>
-                        <input type="text" id="pseudo" name="pseudo" value="<?= htmlspecialchars($user->pseudo ?? 'Non défini') ?>" required>
-
-                        <label for="prenom">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($user->prenom ?? 'Non défini') ?>" required>
-
-                        <label for="nom">Nom</label>
-                        <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($user->nom ?? 'Non défini') ?>" required>
-
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($user->email ?? 'Non défini') ?>" required>
-
-                        <label for="telephone">Téléphone</label>
-                        <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars($user->telephone ?? '') ?>">
-
-                        <label for="adresse">Adresse</label>
-                        <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($user->adresse ?? 'Non définie') ?>" required>
-
-                        <h3>Changer mon mot de passe</h3>
-                        <label for="new_password">Nouveau mot de passe</label>
-                        <input type="password" id="new_password" name="new_password">
-
-                        <label for="confirm_new_password">Confirmer le nouveau mot de passe</label>
-                        <input type="password" id="confirm_new_password" name="confirm_new_password">
-
-                        <h3>Photo de profil</h3>
-                        <?php if (!empty($user->photo)): ?>
-                            <img src="uploads/<?= htmlspecialchars($user->photo) ?>" alt="Photo de profil" class="profil-photo">
-                        <?php else: ?>
-                            <p>Pas de photo pour l'instant.</p>
-                        <?php endif; ?>
-
-                        <label for="photo">Modifier la photo</label>
-                        <input type="file" id="photo" name="photo" accept="image/*">
-
-                        <button type="submit" name="update_profile">Mettre à jour</button>
-                    </form>
-                    <?php else: ?>
-                        <p>Erreur: L'utilisateur n'est pas défini.</p>
-                    <?php endif; ?>
-
-                </form>
-            </div>
-
-            <!-- Contenu AJAX -->
-            <div id="tab-historique" class="tab-pane" style="display: none;">
-                <h2>Mon historique de covoiturage</h2>
-                <div id="historique-content">
-                    Chargement...
-                </div>
-            </div>
-        </section>
-
-        <?php if (isset($_SESSION['profile_message'])): ?>
-            <div class="message"><?= htmlspecialchars($_SESSION['profile_message']) ?></div>
-            <?php unset($_SESSION['profile_message']); ?>
-        <?php endif; ?>
-
-    </main>
-
-    <footer>
-        <?php include __DIR__ . '/../partials/footer.php'; ?>
-    </footer>
+<body class="user-page">
+<header>
+    <?php include __DIR__ . '/../partials/header.php'; ?>
+</header>
+<main class="user-dashboard">
+    <section class="user-controls">
+        <button id="passengerBtn" class="btn-toggle">Passager</button>
+        <button id="driverBtn" class="btn-toggle">Conducteur</button>
+    </section>
+    <!-- Section Passager -->
+    <section id="passengerSection" class="user-section" style="display: none;">
+        <h2>Passager</h2>
+        <!-- Mise à jour des informations de l'utilisateur -->
+        <div id="updateUserInfo">
+            <h3>Mise à jour de vos informations</h3>
+            <form id="updateUserForm">
+                <label for="userAddress">Adresse:</label>
+                <input type="text" id="userAddress" name="address" required>
+                <label for="userPhone">Téléphone:</label>
+                <input type="tel" id="userPhone" name="telephone" required>
+                <label for="userPassword">Mot de passe:</label>
+                <input type="password" id="userPassword" name="userPassword" required>
+                <label for="userEmail">Email:</label>
+                <input type="email" id="userEmail" name="userEmail" required>
+                <label for="userProfilePicture">Photo de profil:</label>
+                <input type="file" id="userProfilePicture" name="userProfilePicture" accept="image/*">
+                <button type="submit">Mettre à jour</button>
+            </form>
+        </div>
+    </section>
+    <!-- Section Conducteur -->
+    <section id="driverSection" class="user-section" style="display: none;">
+        <h2>Conducteur</h2>
+        <!-- Vérification du rôle -->
+        <div id="driverFormSection" style="display: none;">
+            <h3>Ajouter un véhicule</h3>
+            <form id="addVehicleForm">
+                <label for="vehicleMarque">Marque:</label>
+                <input type="text" id="vehicleMarque" name="marque" required>
+                <label for="vehicleModel">Modèle:</label>
+                <input type="text" id="vehicleModel" name="modele" required>
+                <label for="vehicleColor">Couleur:</label>
+                <input type="text" id="vehicleColor" name="couleur" required>
+                <label for="vehiclePlate">Plaque d'immatriculation:</label>
+                <input type="text" id="vehiclePlate" name="immatriculation" required>
+                <label for="vehicleEnergy">Énergie:</label>
+                <select id="vehicleEnergy" name="energy">
+                    <option value="essence">Essence</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electrique">Électrique</option>
+                </select>
+                <label for="vehicleFirstRegistration">Date 1ère mise en circulation:</label>
+                <input type="date" id="vehicleFirstRegistration" name="date_premiere_immatriculation" required>
+                <input type="hidden" name="user_id" value="1"> <!-- ID de l'utilisateur actuel -->
+                <button type="submit">Ajouter le véhicule</button>
+            </form>
+        </div>
+        <!-- Formulaire pour proposer un covoiturage -->
+        <div id="rideOfferForm" style="display: none;">
+            <h3>Proposer un covoiturage</h3>
+            <form id="proposeRideForm">
+                <label for="departureLocation">Lieu de départ:</label>
+                <input type="text" id="departureLocation" name="departureLocation" required>
+                <label for="arrivalLocation">Lieu d'arrivée:</label>
+                <input type="text" id="arrivalLocation" name="arrivalLocation" required>
+                <label for="rideDate">Date:</label>
+                <input type="date" id="rideDate" name="rideDate" required>
+                <label for="rideTime">Heure:</label>
+                <input type="time" id="rideTime" name="rideTime" required>
+                <label for="seatCount">Nombre de places:</label>
+                <input type="number" id="seatCount" name="seatCount" required>
+                <button type="submit">Proposer le covoiturage</button>
+            </form>
+        </div>
+    </section>
+</main>
+<script src="js/user.js" defer></script>
 </body>
 </html>

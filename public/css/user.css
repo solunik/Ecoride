@@ -1,0 +1,202 @@
+/* RESET & BASE STYLES */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+/* HEADER */
+header {
+    background-color: #22c55e;
+    color: white;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 80px;
+    min-height: 80px;
+    box-sizing: border-box;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+/* MAIN SECTION */
+main {
+    padding: 2rem;
+}
+
+.user-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.btn-toggle {
+    background-color: #22c55e;
+    color: white;
+    padding: 12px 25px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-toggle:hover {
+    background-color: #16a34a;
+}
+
+.section-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.section-container.active {
+    display: block;
+}
+
+/* Passager Section */
+.passenger-section {
+    background-color: #f0fdf4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.passenger-section .user-data, .passenger-section .ride-history {
+    margin-bottom: 20px;
+}
+
+.user-data h3, .ride-history h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.passenger-section .user-data p, .passenger-section .ride-history p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.passenger-section .ride-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.passenger-section .ride-history th, .passenger-section .ride-history td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Conducteur Section */
+.driver-section {
+    background-color: #f0fdf4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.driver-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.driver-section input, .driver-section select, .driver-section button {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #22c55e;
+    border-radius: 5px;
+}
+
+.driver-section button {
+    background-color: #22c55e;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.driver-section button:hover {
+    background-color: #16a34a;
+}
+
+.driver-section .form-group label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.driver-section .form-group {
+    margin-bottom: 20px;
+}
+
+/* Error / Success Messages */
+.error-message, .success-message {
+    text-align: center;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Loader */
+.loader {
+    text-align: center;
+    padding: 30px;
+}
+
+/* Responsive Styles */
+@media (max-width: 640px) {
+    .btn-toggle {
+        width: 100%;
+        font-size: 1.1rem;
+    }
+
+    .section-container {
+        padding: 15px;
+    }
+
+    .passenger-section, .driver-section {
+        padding: 15px;
+    }
+
+    .driver-section form {
+        max-width: 100%;
+    }
+
+    .user-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}

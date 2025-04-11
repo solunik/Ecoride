@@ -24,7 +24,7 @@ function profilPage() {
         exit;
     }
 
-    //$_SESSION['user'] = (array) $user;
+   
     
     // Inclure la vue espace_utilisateur.php pour afficher le profil
     include __DIR__ . '/../views/espace_utilisateur.php';

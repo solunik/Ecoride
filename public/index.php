@@ -15,7 +15,9 @@ require_once __DIR__ . '/../app/controllers/registration.php';
 require_once __DIR__ . '/../app/controllers/stats.php';
 require_once __DIR__ . '/../app/controllers/manadmin.php';
 require_once __DIR__ . '/../app/controllers/suspend.php';
-require_once __DIR__ . '/../app/controllers/update_profile.php';
+require_once __DIR__ . '/../app/controllers/updateUserController.php';
+require_once __DIR__ . '/../app/controllers/addVehiculeController.php';
+require_once __DIR__ . '/../app/controllers/updateVehiculeController.php';
 require_once __DIR__ . '/../app/controllers/profil.php';
 
 // Vérifie si une route est demandée
@@ -40,6 +42,9 @@ switch ($page) {
         break;
     case 'admin':
         adminPage();
+        break;
+    case 'espace_utilisateur': 
+        profilPage();
         break;
 
     case 'login':
@@ -99,21 +104,26 @@ switch ($page) {
         break;
 
 
-    case 'espace_utilisateur': // ou 'profil' 
-        profilPage();
+    
+        
+    case '/api/add-vehicle':
+        require 'controllers/addVehiculeController.php';
         break;
         
-    case 'update_profile':
-        require_once __DIR__ . '/../app/controllers/update_profile.php';
-        break;  
-        
-    case 'historique_ajax':
-        include __DIR__ . '/../app/views/partials/historique_utilisateur.php';
+    // API routes
+    case '/api/update-user':
+        // Vérifie si la requête est bien en POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            require_once __DIR__ . '/../app/controllers/updateUserController.php';
+            $controller = new UpdateUserController();
+            $controller->updateUser();
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
+        }
         break;
 
-    case 'historique_ajax':
-        require_once __DIR__ . '/../app/controllers/historique_ajax.php';
-        break;
+     
 
     default:
         header("HTTP/1.0 404 Not Found");
