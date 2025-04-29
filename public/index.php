@@ -16,9 +16,10 @@ require_once __DIR__ . '/../app/controllers/stats.php';
 require_once __DIR__ . '/../app/controllers/manadmin.php';
 require_once __DIR__ . '/../app/controllers/suspend.php';
 require_once __DIR__ . '/../app/controllers/updateUserController.php';
-require_once __DIR__ . '/../app/controllers/addVehiculeController.php';
-require_once __DIR__ . '/../app/controllers/updateVehiculeController.php';
-require_once __DIR__ . '/../app/controllers/profil.php';
+require_once __DIR__ . '/../app/controllers/changeRoleController.php';
+
+
+require_once __DIR__ . '/../app/controllers/EspaceUtilisateurController.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -44,7 +45,7 @@ switch ($page) {
         adminPage();
         break;
     case 'espace_utilisateur': 
-        profilPage();
+        EspaceUtilisateurController::showForm();
         break;
 
     case 'login':
@@ -82,13 +83,13 @@ switch ($page) {
         $statsController->showDashboard();
         break;
 
-        case 'manadmin':
-            // Vérifie si une requête POST a été envoyée (comme dans ton AJAX)
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Appel à la méthode d'enregistrement de l'employé
-                EmployeeRegistration::registerEmployee($_POST['lastName'], $_POST['firstName'], $_POST['email'], $_POST['password'], $_POST['confirmPassword']);
-            }
-            break;
+    case 'manadmin':
+        // Vérifie si une requête POST a été envoyée (comme dans ton AJAX)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Appel à la méthode d'enregistrement de l'employé
+            EmployeeRegistration::registerEmployee($_POST['lastName'], $_POST['firstName'], $_POST['email'], $_POST['password'], $_POST['confirmPassword']);
+        }
+        break;
 
     case 'suspend':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -106,12 +107,9 @@ switch ($page) {
 
     
         
-    case '/api/add-vehicle':
-        require 'controllers/addVehiculeController.php';
-        break;
-        
+       
     // API routes
-    case '/api/update-user':
+    case 'api_update_user':
         // Vérifie si la requête est bien en POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             require_once __DIR__ . '/../app/controllers/updateUserController.php';
@@ -123,7 +121,70 @@ switch ($page) {
         }
         break;
 
+    case 'api_change_role':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller = new ChangeRoleController();
+            $controller->changeRole();
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
+        }
+        break;
+    
      
+    case 'submit_covoiturage':
+        EspaceUtilisateurController::handleForm();
+        break;
+    
+    case 'api_proposer_covoiturage':
+        EspaceUtilisateurController::handleForm();
+        break;
+
+    
+    case 'api_get_all_vehicules':
+        // Appel de la méthode getAll pour récupérer tous les véhicules de l'utilisateur
+        $controller = new EspaceUtilisateurController();
+        $controller->getAll();
+        break;
+
+    case 'api_add_vehicule':
+        // Appel de la méthode add pour ajouter un véhicule
+        $controller = new EspaceUtilisateurController();
+        $controller->add();
+        break;
+        
+    case 'api_delete_vehicule':
+        $controller = new EspaceUtilisateurController();
+        $controller->delete();
+        break;
+        
+    case 'api_delete_covoiturage':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $covoiturage = new Covoiturage();
+            $success = $covoiturage->deleteById((int)$_POST['covoiturage_id']);
+    
+            header('Content-Type: application/json');
+            echo json_encode(['success' => $success]);
+        } else {
+            header("HTTP/1.0 405 Method Not Allowed");
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
+        }
+        
+    break;
+        
+    case 'api_get_user_covoiturages':
+        $covoiturage = new Covoiturage();
+        $userId = $_SESSION['utilisateur_id'] ?? null;
+        if ($userId) {
+            $historique = $covoiturage->getHistoriqueByUserId($userId);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'historique' => $historique]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté']);
+        }
+    break;
+        
+                
 
     default:
         header("HTTP/1.0 404 Not Found");

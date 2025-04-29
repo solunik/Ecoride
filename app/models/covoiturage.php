@@ -121,17 +121,74 @@ class Covoiturage extends Model {
 
     public function getHistoriqueByUserId($userId)
     {
-        $sql = "SELECT depart, arrivee, date 
-                FROM covoiturages 
-                WHERE utilisateur_id = :userId 
-                ORDER BY date DESC";
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT 
+                    covoiturage_id,
+                    date_depart,
+                    lieu_depart,
+                    lieu_arrivee,
+                    statut,
+                    nb_place
+                FROM covoiturage
+                WHERE utilisateur_id = :userId
+                ORDER BY date_depart DESC
+            ");
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erreur récupération historique: " . $e->getMessage());
+            return [];
+        }
     }
 
 
+
+    public function create($data) {
+        try {
+            $stmt = $this->pdo->prepare("
+                INSERT INTO covoiturage (
+                    date_depart, heure_depart, lieu_depart,
+                    lieu_arrivee, heure_arrivee, date_arrive,
+                    nb_place, prix_personne, statut,
+                    voiture_id, utilisateur_id
+                ) VALUES (
+                    :date_depart, :heure_depart, :lieu_depart,
+                    :lieu_arrivee, :heure_arrivee, :date_arrive,
+                    :nb_place, :prix_personne, 'confirmed',
+                    :voiture_id, :utilisateur_id
+                )
+            ");
+    
+            return $stmt->execute([
+                ':date_depart' => $data['date_depart'],
+                ':heure_depart' => $data['heure_depart'],
+                ':lieu_depart' => $data['lieu_depart'],
+                ':lieu_arrivee' => $data['lieu_arrivee'],
+                ':heure_arrivee' => $data['heure_arrivee'],
+                ':date_arrive' => $data['date_arrive'],
+                ':nb_place' => $data['nb_place'],
+                ':prix_personne' => $data['prix_personne'],
+                ':voiture_id' => $data['voiture_id'],
+                ':utilisateur_id' => $data['utilisateur_id']
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erreur création covoiturage : " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteById($id) {
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM covoiturage WHERE covoiturage_id = :id");
+            return $stmt->execute([':id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Erreur suppression covoiturage : " . $e->getMessage());
+            return false;
+        }
+    }
+    
 }

@@ -18,6 +18,8 @@ class Auth {
                 $_SESSION['prenom'] = $user->prenom;
                 $_SESSION['nom'] = $user->nom;
                 $_SESSION['email'] = $user->email;
+                $_SESSION['adresse'] = $user->adresse;
+                $_SESSION['telephone'] = $user->telephone;
                 $_SESSION['pseudo'] = $user->pseudo;
                 $_SESSION['credit'] = $user->credit;
                 $_SESSION['photo'] = $user->photo;
@@ -26,6 +28,13 @@ class Auth {
                 // Récupérer les rôles de l'utilisateur
                 $roles = $user->getRoles();
                 $_SESSION['roles'] = array_column($roles, 'libelle'); // Stocker les rôles en session
+
+                // Définir le rôle actif (par défaut "utilisateur")
+                $roleActif = 'utilisateur'; // Rôle par défaut
+               
+                // Enregistrer le rôle actif dans la session
+                $_SESSION['role_actif'] = $roleActif;
+
 
                 // Vérifier si l'utilisateur est un administrateur
                 if (in_array('Administrateur', $_SESSION['roles'])) {

@@ -24,4 +24,11 @@ class Marque extends Model {
         require_once __DIR__ . '/voiture.php';
         return array_map(fn($row) => new Voiture($row), $data);
     }
+
+    public function getAll() {
+        $stmt = $this->pdo->query("SELECT * FROM {$this->table} ORDER BY libelle ASC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
 }

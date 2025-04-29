@@ -12,18 +12,20 @@ class Voiture extends Model {
     public $date_premiere_immatriculation;
     public $utilisateur_id;
     public $marque_id;
-
+    
+    public $marque_nom;
+    
     public function __construct($data = []) {
         parent::__construct($data);
     } 
 
     // Méthode pour ajouter une nouvelle voiture dans la base de données
-    public function addVehicle($data) {
+    public function addVehicule($data) {
         // Préparer les données pour l'insertion
         $sql = "INSERT INTO {$this->table} (modele, immatriculation, energie, couleur, date_premiere_immatriculation, utilisateur_id, marque_id)
                 VALUES (:modele, :immatriculation, :energie, :couleur, :date_premiere_immatriculation, :utilisateur_id, :marque_id)";
         
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql); // Remplacer $this->db par $this->pdo
         return $stmt->execute([
             ':modele' => $data['model'],
             ':immatriculation' => $data['plate'],
@@ -38,7 +40,7 @@ class Voiture extends Model {
     // Méthode pour récupérer une voiture par son ID
     public function findById($voiture_id) {
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :voiture_id";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql); // Remplacer $this->db par $this->pdo
         $stmt->execute([':voiture_id' => $voiture_id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -50,9 +52,15 @@ class Voiture extends Model {
     }
 
     // Méthode pour récupérer toutes les voitures d'un utilisateur
+    // Méthode pour récupérer toutes les voitures d'un utilisateur avec leur nom de marque
     public function getByUserId($utilisateur_id) {
-        $sql = "SELECT * FROM {$this->table} WHERE utilisateur_id = :utilisateur_id";
-        $stmt = $this->db->prepare($sql);
+        // Effectuer la jointure avec la table 'marque'
+        $sql = "SELECT v.*, m.libelle AS marque_nom 
+                FROM {$this->table} v
+                LEFT JOIN marque m ON v.marque_id = m.marque_id
+                WHERE v.utilisateur_id = :utilisateur_id";
+        
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':utilisateur_id' => $utilisateur_id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -60,16 +68,18 @@ class Voiture extends Model {
             return new self($voitureData);
         }, $data);
     }
+    
+
 
     // Méthode pour mettre à jour les informations d'une voiture
-    public function updateVehicle($voiture_id, $data) {
+    public function updateVehicule($voiture_id, $data) {
         $sql = "UPDATE {$this->table} 
                 SET modele = :modele, immatriculation = :immatriculation, energie = :energie, 
                     couleur = :couleur, date_premiere_immatriculation = :date_premiere_immatriculation, 
                     marque_id = :marque_id
                 WHERE {$this->primaryKey} = :voiture_id";
         
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql); // Remplacer $this->db par $this->pdo
         return $stmt->execute([
             ':modele' => $data['modele'],
             ':immatriculation' => $data['immatriculation'],
@@ -82,11 +92,11 @@ class Voiture extends Model {
     }
 
     // Méthode pour supprimer une voiture de la base de données
-    public function deleteVehicle($voiture_id) {
+    public function deleteVehicule($voiture_id) {
         $sql = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :voiture_id";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->pdo->prepare($sql); // Remplacer $this->db par $this->pdo
         return $stmt->execute([':voiture_id' => $voiture_id]);
     }
 
-
 }
+?>
