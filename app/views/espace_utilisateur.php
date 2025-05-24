@@ -6,47 +6,37 @@
     <title>Espace Utilisateur </title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/user.css">
-    <link rel="stylesheet" href="css/MesVoitures.css">
-    <link rel="stylesheet" href="css/proposercovoiturage.css">
     
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Ajouter SweetAlert pour messages stylés -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- 🆕 ajout -->
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
+
+    <script src="js/evenements.js" defer></script>
     <script src="js/mesvoitures.js" defer></script>
     <script src="js/proposerCovoiturage.js" defer></script>
-    
-
-
 </head>
-<body class="user-page">
+
+<body>
 <header>
     <?php include __DIR__ . '/../partials/header.php'; ?>
 </header>
-<main class="user-dashboard">
-<!-- <pre>
-SESSION ROLE ACTIF = <?= htmlspecialchars($_SESSION['role_actif'] ?? 'aucun role') ?>
-</pre> -->
 
-<section class="user-controls">
+<main>
+<section class="top-main">
     <label class="switch">
         <input type="checkbox" id="roleSwitch" <?= ($_SESSION['role_actif'] === 'chauffeur') ? 'checked' : '' ?>>
         <span class="slider"></span>
     </label>
     <span id="switchLabel">
-        <?= ($_SESSION['role_actif'] === 'chauffeur') ? 'Mode Chauffeur' : 'Mode Utilisateur' ?>
+        <?= ($_SESSION['role_actif'] === 'chauffeur') ? 'Espace Chauffeur' : 'Espace Utilisateur' ?>
     </span>
 </section>
 
-
-
-
     <!-- Section Utilisateur -->
     <section id="utilisateurSection" class="user-section" style="display: block;">
-    <h2>Utilisateur</h2>
-    <!-- Mise à jour des informations de l'utilisateur -->
+
     <div id="updateUserInfo">
-        <h3>Mise à jour de vos informations</h3>
-        <form id="updateUserForm">
+        <h1>Vos informations</h1>
+        <form id="updateUserForm" enctype="multipart/form-data" method="POST">
+
             <!-- Champs de formulaire avec les valeurs dynamiques -->
             <label for="userAddress">Adresse:</label>
             <input type="text" id="userAddress" name="adresse" value="<?= htmlspecialchars( $_SESSION['adresse'] ?? '') ?>" required>
@@ -64,10 +54,11 @@ SESSION ROLE ACTIF = <?= htmlspecialchars($_SESSION['role_actif'] ?? 'aucun role
         </form>
     </div>
     </section>
+    
 
      <!-- Section Gestion des véhicules -->
      <section id="vehiculeManagementSection" class="user-section">
-        <h2>Gestion des véhicules</h2>
+        <h1>Gestion des véhicules</h1>
 
         <!-- Liste des véhicules enregistrés -->
         <div class="vehicule-list" id="vehicule-list">
@@ -197,11 +188,9 @@ SESSION ROLE ACTIF = <?= htmlspecialchars($_SESSION['role_actif'] ?? 'aucun role
 
 
     <section class="covoiturage-section">
-        <h2>Proposer un Covoiturage</h2>
+        <h1>Proposer un Covoiturage</h1>
 
         <div class="vehicule-choose-container">
-            <p class="instruction-text">Avec quel véhicule souhaitez-vous réaliser le trajet ?</p>
-
             <?php if (!empty($vehicules)):?>
                 <div class="vehicule-list">
                     <?php foreach ($vehicules as $vehicule): ?>
@@ -256,7 +245,6 @@ SESSION ROLE ACTIF = <?= htmlspecialchars($_SESSION['role_actif'] ?? 'aucun role
                     <option value="2">2 places</option>
                     <option value="3">3 places</option>
                     <option value="4">4 places</option>
-                    <option value="5">5 places</option>
                 </select>
             </div>
 

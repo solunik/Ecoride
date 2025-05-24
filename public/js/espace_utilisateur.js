@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateSectionVisibility(currentRole) {
         const allSections = document.querySelectorAll('main > section');
-        const userControlsSection = document.querySelector('.user-controls');
+        const userControlsSection = document.querySelector('.top-main');
         console.log('Rôle dans updateSectionVisibility:', currentRole);
         
         // La section user-controls doit toujours être visible

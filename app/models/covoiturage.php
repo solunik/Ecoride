@@ -158,7 +158,7 @@ class Covoiturage extends Model {
                 ) VALUES (
                     :date_depart, :heure_depart, :lieu_depart,
                     :lieu_arrivee, :heure_arrivee, :date_arrive,
-                    :nb_place, :prix_personne, 'confirmed',
+                    :nb_place, :prix_personne, 'pending',
                     :voiture_id, :utilisateur_id
                 )
             ");
