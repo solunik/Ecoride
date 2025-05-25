@@ -10,16 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert -->
 
     <script src="js/evenements.js" defer></script>
-    <script src="js/mesvoitures.js" defer></script>
-    <script src="js/proposerCovoiturage.js" defer></script>
 </head>
 
 <body>
-<header>
-    <?php include __DIR__ . '/../partials/header.php'; ?>
-</header>
+    <header>
+        <?php include __DIR__ . '/../partials/header.php'; ?>
+    </header>
 
 <main>
+
 <section class="top-main">
     <label class="switch">
         <input type="checkbox" id="roleSwitch" <?= ($_SESSION['role_actif'] === 'chauffeur') ? 'checked' : '' ?>>
@@ -31,8 +30,7 @@
 </section>
 
     <!-- Section Utilisateur -->
-    <section id="utilisateurSection" class="user-section" style="display: block;">
-
+<section id="utilisateurSection" class="user-section" style="display: block;">
     <div id="updateUserInfo">
         <h1>Vos informations</h1>
         <form id="updateUserForm" enctype="multipart/form-data" method="POST">
@@ -53,11 +51,11 @@
             <button type="submit">Mettre à jour</button>
         </form>
     </div>
-    </section>
+</section>
     
 
      <!-- Section Gestion des véhicules -->
-     <section id="vehiculeManagementSection" class="user-section">
+<section id="vehiculeManagementSection" class="user-section">
         <h1>Gestion des véhicules</h1>
 
         <!-- Liste des véhicules enregistrés -->
@@ -96,10 +94,12 @@
             
         </div>
 
-    </section>
+</section>
 
     <!-- Bouton pour ajouter un véhicule -->
-    <button id="addVehiculeBtn">Ajouter un véhicule</button>
+    <button id="addVehiculeBtn"><span class="plus-icon">+</span></button>
+
+
 
     <!-- Section Ajout de véhicule -->
     <section id="addVehiculeSection" class="user-section" style="display: none;">
@@ -149,7 +149,7 @@
 
 <!-- Historique des covoiturages proposés -->
 <section id="historySection" class="form-section">
-    <h3>🚗 Mes covoiturages </h3>
+    <h2>Mes covoiturages</h2>
 
     <?php if (!empty($historiqueCovoiturages)) : ?>
         <div class="history-list">
@@ -264,8 +264,11 @@
 <script>
     window.roleActif = <?= json_encode($_SESSION['role_actif'] ?? null) ?>;
     window.userId = <?= json_encode($_SESSION['utilisateur_id'] ?? null) ?>;
-</script> 
+</script>
+
 <script src="js/espace_utilisateur.js" defer></script>
+<script src="js/mesvoitures.js" defer></script>
+<script src="js/proposerCovoiturage.js" defer></script>
 
 </body>
 </html>
