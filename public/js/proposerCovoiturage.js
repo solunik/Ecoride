@@ -1,43 +1,50 @@
+// Exécute le code uniquement quand le DOM est complètement chargé
 document.addEventListener("DOMContentLoaded", () => {
+    
+    // Récupération des éléments principaux du DOM
     const rideFormContainer = document.getElementById("rideOfferForm");
     const vehiculeIdInput = document.getElementById("vehiculeId");
     const proposeRideForm = document.getElementById("proposeRideForm");
     const noVehiculeWarning = document.getElementById("noVehiculeWarning");
     const vehiculeChooseContainer = document.querySelector('.vehicule-choose-container');
-
     const vehiculeCards = document.querySelectorAll('.vehicule-card');
 
+    // Si aucun véhicule n'est disponible, afficher un message et cacher le formulaire
     if (vehiculeCards.length === 0) {
         if (noVehiculeWarning) noVehiculeWarning.style.display = "block";
         if (rideFormContainer) rideFormContainer.style.display = "none";
         return;
     }
 
+    // Fonction pour réinitialiser le choix de véhicule
     function resetVehiculeChoice() {
-        vehiculeCards.forEach(card => card.style.display = "block");
+        vehiculeCards.forEach(card => card.style.display = "block"); // réaffiche toutes les cartes
         const summary = document.querySelector('.selected-vehicule-summary');
-        if (summary) summary.remove();
+        if (summary) summary.remove(); // supprime le résumé affiché
         const changeButton = document.querySelector('#changeVehiculeBtn');
-        if (changeButton) changeButton.remove();
+        if (changeButton) changeButton.remove(); // supprime le bouton "changer"
         rideFormContainer.classList.remove('show');
         setTimeout(() => {
-            rideFormContainer.style.display = 'none';
+            rideFormContainer.style.display = 'none'; // cache le formulaire
         }, 500);
-        vehiculeIdInput.value = "";
+        vehiculeIdInput.value = ""; // réinitialise la valeur
     }
 
+    // Gestion du clic sur un bouton "choisir ce véhicule"
     document.querySelectorAll('.select-vehicule-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const card = e.target.closest('.vehicule-card');
             const selectedVehiculeId = card.getAttribute('data-id');
 
             if (selectedVehiculeId) {
+                // Masquer les autres cartes
                 vehiculeCards.forEach(c => {
                     if (c !== card) {
                         c.style.display = "none";
                     }
                 });
 
+                // Affiche le résumé du véhicule sélectionné
                 const summary = document.createElement('div');
                 summary.classList.add('selected-vehicule-summary');
                 summary.innerHTML = `
@@ -46,33 +53,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
                 vehiculeChooseContainer.appendChild(summary);
 
+                // Création du bouton "Changer de véhicule"
                 const changeButton = document.createElement('button');
                 changeButton.id = "changeVehiculeBtn";
                 changeButton.textContent = "Changer de véhicule";
                 changeButton.classList.add('change-vehicule-btn');
                 vehiculeChooseContainer.appendChild(changeButton);
 
+                // Ajout de l'événement pour réinitialiser le choix
                 changeButton.addEventListener('click', resetVehiculeChoice);
 
+                // Affichage du formulaire avec animation
                 rideFormContainer.style.display = "block";
                 setTimeout(() => {
                     rideFormContainer.classList.add('show');
                 }, 50);
 
+                // Enregistrement de l'ID du véhicule dans un champ masqué
                 vehiculeIdInput.value = selectedVehiculeId;
+
+                // Scroll vers le formulaire
                 window.scrollTo({ top: rideFormContainer.offsetTop - 100, behavior: 'smooth' });
             }
         });
     });
 
+    // Gestion de l'envoi du formulaire de covoiturage
     proposeRideForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // empêche le rechargement de la page
 
         const submitButton = proposeRideForm.querySelector('button[type="submit"]');
-        const originalButtonText = "Proposer le covoiturage"; // Remets ça après chaque soumission
+        const originalButtonText = "Proposer le covoiturage";
         submitButton.disabled = true;
         submitButton.innerText = "Envoi...";
 
+        // Validation du nombre de places
         const seatCount = parseInt(document.getElementById("seatCount").value, 10);
         if (isNaN(seatCount) || seatCount < 1 || seatCount > 5) {
             Swal.fire('Attention', 'Veuillez choisir un nombre de places valide entre 1 et 5.', 'warning');
@@ -81,10 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const today = new Date();
+        // Validation de l'heure (minimum 1h après l'heure actuelle)
         const rideDateInput = document.getElementById("rideDate");
         const rideTimeInput = document.getElementById("rideTime");
-
         const selectedDate = new Date(rideDateInput.value);
         const [hours, minutes] = rideTimeInput.value.split(":");
         selectedDate.setHours(hours, minutes);
@@ -99,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Construction de l'objet à envoyer à l’API
         const payload = {
             departureLocation: document.getElementById("departureLocation").value,
             arrivalLocation: document.getElementById("arrivalLocation").value,
@@ -109,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pricePerPerson: document.getElementById("pricePerPerson").value
         };
 
+        // Vérification que tous les champs sont remplis
         if (!payload.departureLocation || !payload.arrivalLocation || !payload.rideDate || !payload.rideTime || !payload.seatCount || !payload.vehiculeId) {
             Swal.fire('Attention', 'Veuillez remplir tous les champs requis.', 'warning');
             submitButton.disabled = false;
@@ -116,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Envoi des données à l'API
         try {
             const response = await fetch("index.php?page=api_proposer_covoiturage", {
                 method: "POST",
@@ -132,15 +149,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    refreshHistorySection(); // 🆕
-                    resetVehiculeChoice();     // 🆕 réinitialiser formulaire
+                    refreshHistorySection(); // Recharge l'historique des trajets
+                    resetVehiculeChoice();   // Réinitialise le formulaire
                 });        
             } else {
                 Swal.fire('Erreur', result.message || "Impossible de proposer le covoiturage.", 'error');
                 submitButton.disabled = false;
                 submitButton.innerText = originalButtonText;
             }
-            
         } catch (err) {
             console.error("Erreur lors de la requête :", err);
             Swal.fire('Erreur', 'Erreur technique.', 'error');
@@ -149,14 +165,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Gestion de la suppression d'un covoiturage avec animation
+    // Suppression d’un covoiturage (avec animation + confirmation)
     document.addEventListener('click', async (e) => {
         if (e.target.classList.contains('delete-ride-btn')) {
             const card = e.target.closest('.history-card');
             const rideId = card.getAttribute('data-id');
-
             if (!rideId) return;
 
+            // Boîte de confirmation
             const confirmResult = await Swal.fire({
                 title: 'Êtes-vous sûr ?',
                 text: "Ce covoiturage sera supprimé définitivement.",
@@ -181,15 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (result.success) {
                         Swal.fire('Supprimé !', 'Le covoiturage a été supprimé.', 'success');
 
-                        // ➡️ Ajouter une transition avant suppression
+                        // Animation de disparition de la carte
                         card.style.transition = "opacity 0.5s, transform 0.5s";
                         card.style.opacity = 0;
                         card.style.transform = "translateX(100px)";
-                        
                         setTimeout(() => {
                             card.remove();
-                        }, 500); // Supprime après l'animation
-
+                        }, 500);
                     } else {
                         Swal.fire('Erreur', result.message || 'Suppression impossible.', 'error');
                     }
@@ -201,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Recharge la section "historique des trajets" (après ajout ou suppression)
     async function refreshHistorySection() {
         try {
             const response = await fetch('index.php?page=api_get_user_covoiturages');
