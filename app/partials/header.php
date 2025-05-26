@@ -4,7 +4,6 @@
     <ul class="menu" id="menu-desktop">
         <?php if (isset($_SESSION['utilisateur_id'])): ?>
             <?php if (!empty($_SESSION['roles']) && in_array('Administrateur', $_SESSION['roles'])): ?>
-                <li><a href="index.php?page=xYz123secure">Admin</a></li>
                 <li><a href="index.php?page=logout">Déconnexion</a></li>
             <?php else: ?>
                 <li><a href="index.php?page=accueil">Accueil</a></li>
@@ -24,7 +23,6 @@
     <ul class="menu" id="menu-mobile">
         <?php if (isset($_SESSION['utilisateur_id'])): ?>
             <?php if (!empty($_SESSION['roles']) && in_array('Administrateur', $_SESSION['roles'])): ?>
-                <li><a href="index.php?page=xYz123secure">Admin</a></li>
                 <li><a href="index.php?page=logout">Déconnexion</a></li>
             <?php else: ?>
                 <li><a href="index.php?page=accueil">Accueil</a></li>

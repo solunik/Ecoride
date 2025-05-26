@@ -53,7 +53,6 @@
     </div>
 </section>
     
-
      <!-- Section Gestion des véhicules -->
 <section id="vehiculeManagementSection" class="user-section">
         <h1>Gestion des véhicules</h1>
@@ -97,9 +96,9 @@
 </section>
 
     <!-- Bouton pour ajouter un véhicule -->
+<div class="btn-container">
     <button id="addVehiculeBtn"><span class="plus-icon">+</span></button>
-
-
+</div>
 
     <!-- Section Ajout de véhicule -->
     <section id="addVehiculeSection" class="user-section" style="display: none;">
@@ -141,11 +140,11 @@
                 <button type="submit">Ajouter le véhicule</button>
             </form>
         </div>
-        <button id="cancelAddVehiculeBtn" type="button">Annuler</button>
-    </section>
-
-    
-    
+        
+    <div class="btn-container">
+        <button id="cancelAddVehiculeBtn" type="button">-</button>
+    </div>
+    </section>   
 
 <!-- Historique des covoiturages proposés -->
 <section id="historySection" class="form-section">
@@ -170,7 +169,7 @@
 
                     <?php if ($covoiturage['statut'] !== 'completed') : ?>
                         <div class="history-actions">
-                            <button class="delete-ride-btn">🗑️ Supprimer</button>
+                            <button class="delete-ride-btn">Annuler</button>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -184,11 +183,8 @@
     <?php endif; ?>
 </section>
 
-
-
-
     <section class="covoiturage-section">
-        <h1>Proposer un Covoiturage</h1>
+        <h1>Proposer un covoiturage</h1>
 
         <div class="vehicule-choose-container">
             <?php if (!empty($vehicules)):?>
@@ -216,29 +212,15 @@
 
         <form id="proposeRideForm" method="POST" action="index.php?page=submit_covoiturage">
             <input type="hidden" id="vehiculeId" name="vehiculeId">
-
-            <div class="form-group">
-                <label for="departureLocation">Lieu de départ:</label>
-                <input type="text" id="departureLocation" name="departureLocation" required>
-            </div>
-
-            <div class="form-group">
-                <label for="arrivalLocation">Lieu d'arrivée:</label>
-                <input type="text" id="arrivalLocation" name="arrivalLocation" required>
-            </div>
-
-            <div class="form-group">
-                <label for="rideDate">Date:</label>
-                <input type="date" id="rideDate" name="rideDate" required>
-            </div>
-
-            <div class="form-group">
-                <label for="rideTime">Heure:</label>
-                <input type="time" id="rideTime" name="rideTime" required>
-            </div>
-
-            <div class="form-group">
-                <label for="seatCount">Nombre de places:</label>
+            <label for="departureLocation">Lieu de départ:</label>
+            <input type="text" id="departureLocation" name="departureLocation" required>
+            <label for="arrivalLocation">Lieu d'arrivée:</label>
+            <input type="text" id="arrivalLocation" name="arrivalLocation" required>
+            <label for="rideDate">Date:</label>
+            <input type="date" id="rideDate" name="rideDate" required>
+            <label for="rideTime">Heure:</label>
+            <input type="time" id="rideTime" name="rideTime" required>
+            <label for="seatCount">Nombre de places:</label>
                 <select id="seatCount" name="seatCount" required>
                     <option value="">-- Sélectionnez --</option>
                     <option value="1">1 place</option>
@@ -246,16 +228,10 @@
                     <option value="3">3 places</option>
                     <option value="4">4 places</option>
                 </select>
-            </div>
-
-            <div class="form-group">
-                <label for="pricePerPerson">Credit par personne:</label>
-                <input type="number" id="pricePerPerson" name="pricePerPerson" step="0.5" min="0">
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">Proposer le covoiturage</button>
-            </div>
+            <label for="pricePerPerson">Credit par personne:</label>
+            <input type="number" id="pricePerPerson" name="pricePerPerson" step="0.5" min="0">
+            <button type="submit">Proposer le covoiturage</button>
+            
         </form>
     </section>
     
