@@ -1,5 +1,3 @@
-console.log("JS espace utilisateur chargé !");
-
 document.addEventListener('DOMContentLoaded', () => {
     const role = window.roleActif;
     const userId = window.userId;
@@ -12,9 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     updateSectionVisibility(role);
     
-   
-
-    console.log('Rôle actuel détecté:', role);
 
     roleSwitch.addEventListener('change', async () => {
         const newRole = roleSwitch.checked ? 'chauffeur' : 'utilisateur';
