@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateForm = document.getElementById('updateUserForm');
     const roleSwitch = document.getElementById('roleSwitch');
     const switchLabel = document.getElementById('switchLabel');
+    const addVehiculeSection = document.getElementById('addVehiculeSection');
+    const rideFormContainer = document.getElementById("rideOfferForm");
     
     
     updateSectionVisibility(role);
@@ -72,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     userControlsSection.style.display = 'block';
                 }
             });
-    
+
             // Cache le bouton 'Ajouter un véhicule' si l'utilisateur n'est pas conducteur
             if (addVehiculeBtn) addVehiculeBtn.style.display = 'none';
         } else { // Si le rôle est 'chauffeur'
@@ -86,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     
+            addVehiculeSection.style.display = 'none';
+            rideFormContainer.style.display = 'none';
             
         }
     }

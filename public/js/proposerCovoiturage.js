@@ -37,12 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const selectedVehiculeId = card.getAttribute('data-id');
 
             if (selectedVehiculeId) {
-                // Masquer les autres cartes
+                // Masquer les  cartes
                 vehiculeCards.forEach(c => {
-                    if (c !== card) {
-                        c.style.display = "none";
-                    }
-                });
+                    c.style.display = "none";
+   });
 
                 // Affiche le résumé du véhicule sélectionné
                 const summary = document.createElement('div');
