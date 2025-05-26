@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../models/Voiture.php';
+require_once __DIR__ . '/../models/voiture.php';
 require_once __DIR__ . '/../models/marque.php';
 require_once __DIR__ . '/../models/covoiturage.php';
 class EspaceUtilisateurController {
