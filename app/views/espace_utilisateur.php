@@ -145,12 +145,27 @@
         <button id="cancelAddVehiculeBtn" type="button">-</button>
     </div>
     </section>   
+ 
 
 <!-- Historique des covoiturages proposés -->
 <section id="historySection" class="form-section">
     <h2>Mes covoiturages</h2>
 
     <?php if (!empty($historiqueCovoiturages)) : ?>
+
+        <?php
+        // Fonction de traduction des statuts
+        function traduireStatut($statut) {
+            $traductions = [
+                'pending' => 'En attente',
+                'approved' => 'Approuvé',
+                'cancelled' => 'Annulé',
+                'completed' => 'Terminé'
+            ];
+            return $traductions[strtolower($statut)] ?? ucfirst($statut);
+        }
+        ?>
+
         <div class="history-list">
             <?php foreach ($historiqueCovoiturages as $covoiturage) : ?>
                 <div class="history-card" data-id="<?= htmlspecialchars($covoiturage['covoiturage_id']) ?>">
@@ -161,10 +176,9 @@
                         <p><strong>📅 Date :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($covoiturage['date_depart']))) ?></p>
                         <p><strong>⚙️ Statut :</strong> 
                             <span class="status <?= htmlspecialchars(strtolower($covoiturage['statut'])) ?>">
-                                <?= htmlspecialchars(ucfirst($covoiturage['statut'])) ?>
+                                <?= htmlspecialchars(traduireStatut($covoiturage['statut'])) ?>
                             </span>
                         </p>
-
                     </div>
 
                     <?php if ($covoiturage['statut'] !== 'completed') : ?>
@@ -175,13 +189,14 @@
                 </div>
             <?php endforeach; ?>
         </div>
+
     <?php else : ?>
         <div class="empty-history">
             <p>Vous n'avez proposé aucun covoiturage pour l'instant.</p>
-            
         </div>
     <?php endif; ?>
 </section>
+
 
     <section class="covoiturage-section">
         <h1>Proposer un covoiturage</h1>
