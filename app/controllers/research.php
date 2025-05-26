@@ -55,6 +55,13 @@ class Covoit {
             $_SESSION['errorMessage'] = $resultats["error"];
             $_SESSION['resultats_recherche'] = [];
         } else {
+            // Formatage des dates pour chaque résultat avant de les stocker en session
+            foreach ($resultats as &$resultat) {
+                $dateObj = DateTime::createFromFormat('Y-m-d', $resultat['date_depart']);
+                $resultat['date_formatted'] = $dateObj ? $dateObj->format('d/m/Y') : $resultat['date_depart'];
+            }
+            unset($resultat); // Détruire la référence
+            
             $_SESSION['resultats_recherche'] = $resultats;
         }
 
