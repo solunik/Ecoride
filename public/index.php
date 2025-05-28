@@ -7,7 +7,6 @@ header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
 
 
 // Charge les fichiers de configuration et les contrôleurs
-require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../app/controllers/home.php';
 require_once __DIR__ . '/../app/controllers/auth.php';
 require_once __DIR__ . '/../app/controllers/research.php';

@@ -1,10 +1,18 @@
 <?php
 
+require_once __DIR__ . '/../../vendor/autoload.php'; // Autoload de Composer
+
+use Dotenv\Dotenv;
+
 class Database {
     private static $instance = null;
     private $pdo;
 
     private function __construct() {
+        // Charger les variables d’environnement (.env)
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../'); // dossier où se trouve .env
+        $dotenv->load();
+
         // Vérifier si on est sur Heroku (JAWSDB_URL existe)
         $url = getenv('JAWSDB_URL');
 
@@ -17,13 +25,11 @@ class Database {
             $user = $dbparts['user'];
             $password = $dbparts['pass'];
         } else {
-            // On est en local, on utilise le fichier config.php
-            $config = require __DIR__ . '/../../config/config.php';
-
-            $host = $config['host'];
-            $dbname = $config['dbname'];
-            $user = $config['user'];
-            $password = $config['password'];
+            // On est en local, on utilise les variables d’environnement
+            $host = $_ENV["DB_HOST"];
+            $dbname = $_ENV["DB_NAME"];
+            $user = $_ENV["DB_USER"];
+            $password = $_ENV["DB_PASSWORD"];
         }
 
         try {
