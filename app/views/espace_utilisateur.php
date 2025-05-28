@@ -65,18 +65,8 @@
                         <h4><?= htmlspecialchars($voiture->marque_nom) ?> <?= htmlspecialchars($voiture->modele) ?></h4>
                         <p><strong>Couleur :</strong> <?= htmlspecialchars($voiture->couleur) ?></p>
                         <p><strong>Plaque :</strong> <?= htmlspecialchars($voiture->immatriculation) ?></p>
-                        <p><strong>Énergie :</strong> 
-                            <?php
-                            $icon = '';
-                            if ($voiture->energie === 'electrique') {
-                                $icon = '⚡';
-                            } elseif ($voiture->energie === 'essence') {
-                                $icon = '⛽';
-                            } elseif ($voiture->energie === 'diesel') {
-                                $icon = '🔥';
-                            }
-                            ?>
-                            <?= $icon ?> <?= htmlspecialchars($voiture->energie) ?>
+                        <p><strong>Énergie :</strong> <?= htmlspecialchars($voiture->energie) ?></p>
+                            
                         </p>
 
 

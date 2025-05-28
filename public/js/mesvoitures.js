@@ -151,9 +151,9 @@ cancelAddVehiculeBtn.addEventListener('click', () => {
                                     data.message,
                                     'success'
                                 );
-
+                                
                                 // Supprimer la carte du DOM sans recharger la page
-                                card.remove();
+                                window.location.reload();
                             } else {
                                 Swal.fire(
                                     'Erreur !',
