@@ -27,12 +27,11 @@ class Utilisateur extends Model {
     // Inscription d'un utilisateur
     public function inscription($nom, $prenom, $email, $password, $pseudo) {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $db = Database::getInstance();
         
-        $stmt = $db->prepare("INSERT INTO {$this->table} (nom, prenom, email, password, pseudo) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $this->pdo->prepare("INSERT INTO {$this->table} (nom, prenom, email, password, pseudo) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$nom, $prenom, $email, $hashedPassword, $pseudo]);
         
-        return $db->lastInsertId();
+        return $this->pdo->lastInsertId();
     }
 
      // Ajouter un employé sans pseudo et avec un crédit de 0
@@ -85,10 +84,9 @@ class Utilisateur extends Model {
     }
     
 
-    public function delete($id) {
-        $db = Database::getInstance();
-        $stmt = $db->prepare("DELETE FROM {$this->table} WHERE id = ?");
-        return $stmt->execute([$id]);
+    public function delete($userId) {
+        $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE {$this->primaryKey} = ?");
+        return $stmt->execute([$userId]);
     }
 
 
@@ -129,29 +127,37 @@ class Utilisateur extends Model {
     }
 
     public function updateUser($userId, $data) {
-        // Retirer les champs non autorisés à être modifiés directement
-        $allowedFields = ['nom', 'prenom', 'email', 'password', 'telephone', 'adresse', 
-        'date_naissance', 'photo', 'pseudo'];
-        $setParts = [];
-        $params = [];
-    
-        foreach ($data as $key => $value) {
-            if (in_array($key, $allowedFields)) {
-                $setParts[] = "$key = :$key";
-                $params[$key] = $value;
+    // Retirer les champs non autorisés à être modifiés directement
+    $allowedFields = ['nom', 'prenom', 'email', 'password', 'telephone', 'adresse', 
+    'date_naissance', 'photo', 'pseudo'];
+    $setParts = [];
+    $params = [];
+
+    foreach ($data as $key => $value) {
+    if (in_array($key, $allowedFields)) {
+        if ($key === 'password') {
+            if (empty($value)) {
+                continue; // on saute ce champ pour ne pas le modifier
             }
+            $value = password_hash($value, PASSWORD_BCRYPT);
         }
-    
-        if (empty($setParts)) {
-            return false; // Aucun champ modifiable fourni
-        }
-    
-        $params['utilisateur_id'] = $userId;
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $setParts) . " WHERE {$this->primaryKey} = :utilisateur_id";
-    
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute($params);
+        $setParts[] = "$key = :$key";
+        $params[$key] = $value;
     }
+    }
+
+
+    if (empty($setParts)) {
+        return false; // Aucun champ modifiable fourni
+    }
+
+    $params['utilisateur_id'] = $userId;
+    $sql = "UPDATE {$this->table} SET " . implode(', ', $setParts) . " WHERE {$this->primaryKey} = :utilisateur_id";
+
+    $stmt = $this->pdo->prepare($sql);
+    return $stmt->execute($params);
+    }
+
 }
 
 ?>
