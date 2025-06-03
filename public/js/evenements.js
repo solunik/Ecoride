@@ -23,7 +23,6 @@ document.querySelectorAll('.btn-detail').forEach(button => {
             return;
         }
 
-        // Afficher la modale et le loader
         modal.style.display = 'block';
         modalContent.innerHTML = '<div class="loader">Chargement...</div>';
 
@@ -35,8 +34,15 @@ document.querySelectorAll('.btn-detail').forEach(button => {
             const data = await response.json();
             
             if (!data.success) throw new Error(data.error || 'Erreur inconnue');
-            
-            // Construction du HTML détaillé
+
+            // Conversion de la date ISO en locale, fallback si invalide
+            const dateObj = new Date(data.data.trajet.date);
+            const dateDisplay = isNaN(dateObj) ? data.data.trajet.date : dateObj.toLocaleDateString();
+
+
+            const note = data.data.conducteur.note_moyenne;
+            const commentaire = data.data.conducteur.commentaire;
+
             modalContent.innerHTML = `
                 <div class="modal-header">
                     <h2>Détails du trajet</h2>
@@ -45,15 +51,15 @@ document.querySelectorAll('.btn-detail').forEach(button => {
                     <div class="driver-info">
                         <h3>Conducteur</h3>
                         <p><strong>${data.data.conducteur.pseudo}</strong></p>
-                        <p>Note: ${data.data.conducteur.note_moyenne}/5</p>
-                        <p>${data.data.conducteur.commentaire}</p>
+                        <p>${(note !== null && note !== undefined) ? note + '/5' : 'pas encore noté'}</p>
+                        <p>${commentaire ? commentaire : "pas encore d'avis"}</p>
                     </div>
                     
                     <div class="ride-info">
                         <h3>Trajet</h3>
                         <p><strong>Départ:</strong> ${data.data.trajet.depart}</p>
                         <p><strong>Arrivée:</strong> ${data.data.trajet.arrivee}</p>
-                        <p><strong>Date:</strong> ${new Date(data.data.trajet.date).toLocaleDateString()}</p>
+                        <p><strong>Date:</strong> ${dateDisplay}</p>
                         <p><strong>Heure:</strong> ${data.data.trajet.heure_depart.substring(0,5)}</p>
                         <p><strong>Prix:</strong> ${data.data.trajet.prix} crédits</p>
                     </div>
@@ -78,6 +84,8 @@ document.querySelectorAll('.btn-detail').forEach(button => {
         }
     });
 });
+
+
 
 // Fermeture Modale Détails
 document.querySelector('#modalDetails .close-modal').addEventListener('click', function() {

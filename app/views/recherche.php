@@ -54,33 +54,45 @@ unset($_SESSION['recherche_effectuee']);
                     ?>
 
                     <div class="carte-covoiturage" 
-                    
-                    data-ecologique="<?= $ecologique ?>"
-                    data-prix="<?= htmlspecialchars($covoiturage['prix_personne']) ?>"
-                    data-note="<?= htmlspecialchars(explode('/', $covoiturage['note'])[0]) ?>">
+    data-ecologique="<?= $ecologique ?>"
+    data-prix="<?= htmlspecialchars($covoiturage['prix_personne']) ?>"
+    data-note="<?= htmlspecialchars(explode('/', $covoiturage['note'])[0]) ?>">
 
-                        <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
-                        <div class="chauffeur-info">
-                            <?php if (!empty($covoiturage['photo'])): ?>
-                                <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
-                            <?php else: ?>
-                                <img src="images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
-                            <?php endif; ?>
-                            <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
-                            <p><?= !empty($covoiturage['note']) ? htmlspecialchars($covoiturage['note']) . ' / 5' : '' ?></p>
-                        </div>
-                        
-                        <p><strong>Date de départ</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                        <p class="heure-depart"><strong>Heure de départ</strong> <?= htmlspecialchars($covoiturage['heure_depart']) ?></p>
-                        <p class="heure-arrivee"><strong>Heure d'arrivée</strong> <?= htmlspecialchars($covoiturage['heure_arrivee']) ?></p>
-                        <p class="prix-covoiturage"><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
-                        <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
-                        
-                        <div class="btn-container">
-                            <button class='btn-detail' data-id='<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>'>Détail</button>
-                            <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
-                        </div>
-                    </div>
+    <h2><?= htmlspecialchars($covoiturage['lieu_depart']) ?> → <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h2>
+    <div class="chauffeur-info">
+        <?php if (!empty($covoiturage['photo'])): ?>
+            <img src="<?= 'data:image/jpeg;base64,' . base64_encode($covoiturage['photo']) ?>" alt="Photo du chauffeur" class="photo-chauffeur">
+        <?php else: ?>
+            <img src="images/photo_defaut.webp" alt="Photo par défaut du chauffeur" class="photo-chauffeur">
+        <?php endif; ?>
+        <p><strong><?= htmlspecialchars($covoiturage['pseudo']) ?></strong></p>
+        <p><?= !empty($covoiturage['note']) ? htmlspecialchars($covoiturage['note']) . ' / 5' : '' ?></p>
+    </div>
+
+    <?php
+    // Formatage de la date et des heures
+    $date_depart = DateTime::createFromFormat('Y-m-d', $covoiturage['date_depart']);
+    $date_depart_formatee = $date_depart ? $date_depart->format('m/d/Y') : htmlspecialchars($covoiturage['date_depart']);
+
+    $heure_depart = DateTime::createFromFormat('H:i:s', $covoiturage['heure_depart']);
+    $heure_depart_formatee = $heure_depart ? $heure_depart->format('H:i') : htmlspecialchars($covoiturage['heure_depart']);
+
+    $heure_arrivee = DateTime::createFromFormat('H:i:s', $covoiturage['heure_arrivee']);
+    $heure_arrivee_formatee = $heure_arrivee ? $heure_arrivee->format('H:i') : htmlspecialchars($covoiturage['heure_arrivee']);
+    ?>
+
+    <p><strong>Date de départ</strong> <?= $date_depart_formatee ?></p>
+    <p class="heure-depart"><strong>Heure de départ</strong> <?= $heure_depart_formatee ?></p>
+    <p class="heure-arrivee"><strong>Heure d'arrivée</strong> <?= $heure_arrivee_formatee ?></p>
+    <p class="prix-covoiturage"><strong>Prix</strong> <?= htmlspecialchars($covoiturage['prix_personne']) ?> crédits</p>
+    <p><strong>Places restantes</strong> <?= htmlspecialchars($covoiturage['nb_place']) ?></p>
+
+    <div class="btn-container">
+        <button class='btn-detail' data-id='<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>'>Détail</button>
+        <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
+    </div>
+</div>
+
                 <?php endforeach; ?>
 
                 <?php elseif (empty($resultats) && $rechercheEffectuee): ?>
