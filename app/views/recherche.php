@@ -53,7 +53,7 @@ unset($_SESSION['recherche_effectuee']);
                     $ecologique = ($energie == 'électrique') ? 'ecologique' : ''; // Classe écologique si voiture électrique
                     ?>
 
-                    <div class="carte-covoiturage" 
+    <div class="carte-covoiturage" 
     data-ecologique="<?= $ecologique ?>"
     data-prix="<?= htmlspecialchars($covoiturage['prix_personne']) ?>"
     data-note="<?= htmlspecialchars(explode('/', $covoiturage['note'])[0]) ?>">
@@ -72,7 +72,7 @@ unset($_SESSION['recherche_effectuee']);
     <?php
     // Formatage de la date et des heures
     $date_depart = DateTime::createFromFormat('Y-m-d', $covoiturage['date_depart']);
-    $date_depart_formatee = $date_depart ? $date_depart->format('m/d/Y') : htmlspecialchars($covoiturage['date_depart']);
+    $date_depart_formatee = $date_depart ? $date_depart->format('d/m/Y') : htmlspecialchars($covoiturage['date_depart']);
 
     $heure_depart = DateTime::createFromFormat('H:i:s', $covoiturage['heure_depart']);
     $heure_depart_formatee = $heure_depart ? $heure_depart->format('H:i') : htmlspecialchars($covoiturage['heure_depart']);
@@ -92,6 +92,7 @@ unset($_SESSION['recherche_effectuee']);
         <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
     </div>
 </div>
+
 
                 <?php endforeach; ?>
 
