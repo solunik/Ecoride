@@ -255,6 +255,28 @@ button:hover {
     color: #374151; /* Gris légèrement plus clair au survol */
 }
 
+#main-mentions {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #f0fdf4;  /* ton vert clair existant */
+  color: #1f2937;             /* texte gris foncé */
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#main-mentions a {
+    color: #1f2937; /* Gris foncé */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+}
+
+#main-mentions a:hover {
+    color: #374151; /* Gris légèrement plus clair au survol */
+    text-decoration: underline; /* Ajoute un soulignement au survol */
+}
+
 
 /* FOOTER */
 footer {

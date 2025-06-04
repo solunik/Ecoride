@@ -33,14 +33,14 @@
                 <?php endif; ?>
                 <li><a href="index.php?page=contact">Contact</a></li>
                 <li><a href="index.php?page=logout">Déconnexion</a></li>
-                <li><a href="mentions_legales.php">Mentions légales</a></li>
+                <li><a href="index.php?page=mentions">Mentions légales</a></li>
             <?php endif; ?>
         <?php else: ?>
             <li><a href="index.php?page=accueil">Accueil</a></li>
             <li><a href="index.php?page=recherche">Covoiturages</a></li>
             <li><a href="index.php?page=contact">Contact</a></li>
             <li><a href="index.php?page=connexion">Connexion</a></li>
-            <li><a href="mentions_legales.php">Mentions légales</a></li>
+            <li><a href="index.php?page=mentions">Mentions légales</a></li>
         <?php endif; ?>
     </ul>
 </nav>

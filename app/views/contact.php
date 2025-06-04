@@ -35,6 +35,8 @@
                 <label for="message">Votre message </label>
                 <textarea id="message" name="message" rows="5" required></textarea>
 
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+
                 <button type="submit">Envoyer</button>
             </form>
         </section>

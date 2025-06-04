@@ -4,6 +4,10 @@ use App\Controllers\ContactController;
 
 session_start();
 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Headers CORS globaux
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
@@ -38,6 +42,9 @@ switch ($page) {
         break;
     case 'inscription':
         inscriptionPage();
+        break;
+    case 'mentions':
+        mentionsPage();
         break;
     case 'recherche':
         recherchePage();

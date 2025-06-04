@@ -16,6 +16,10 @@ function inscriptionPage() {
     require __DIR__ . '/../views/inscription.php';  // Inclut la vue d'inscription
 }
 
+function mentionsPage() {
+    require __DIR__ . '/../views/mentions.php';  // Inclut la vue de recherche
+}
+
 function recherchePage() {
     require __DIR__ . '/../views/recherche.php';  // Inclut la vue de recherche
 }
