@@ -1,4 +1,7 @@
 <?php
+
+use App\Controllers\ContactController;
+
 session_start();
 
 // Headers CORS globaux
@@ -16,9 +19,8 @@ require_once __DIR__ . '/../app/controllers/manadmin.php';
 require_once __DIR__ . '/../app/controllers/suspend.php';
 require_once __DIR__ . '/../app/controllers/updateUserController.php';
 require_once __DIR__ . '/../app/controllers/changeRoleController.php';
-
-
 require_once __DIR__ . '/../app/controllers/EspaceUtilisateurController.php';
+require_once __DIR__ . '/../app/controllers/contact.php';
 
 // Vérifie si une route est demandée
 $page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
@@ -43,6 +45,7 @@ switch ($page) {
     case 'admin':
         adminPage();
         break;
+
     case 'espace_utilisateur': 
         EspaceUtilisateurController::showForm();
         break;
@@ -70,6 +73,11 @@ switch ($page) {
     case 'registration':
         Registration::register($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
     break;
+
+    case 'contact_send':
+    ContactController::sendMessage($_POST);
+    break;
+
 
     case 'stats':
         $statsController = new Stats();

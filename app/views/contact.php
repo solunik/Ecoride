@@ -17,13 +17,15 @@
         <section class="top-main">
             <h1>Contactez-nous</h1>
             <p>Vous pouvez nous contacter en utilisant l'adresse e-mail suivante :</p>
-            <h4>contact@ecoride.fr</h4>
+            <h4>contact.ecoridedwwm@gmail.com</h4>
             <br>
             <p>Ou en remplissant le formulaire ci-dessous :</p>
         </section>
 
         <section>
-            <form action="Covoiturage/app/controllers/send_message.php" method="post"> <!-- Formulaire pointe vers send_message.php dans controllers/ -->
+            <!-- Formulaire de contact -->
+            <form action="index.php?page=contact_send" method="post">
+
                 <label for="name">Votre nom </label>
                 <input type="text" id="name" name="name" required>
 
@@ -36,6 +38,18 @@
                 <button type="submit">Envoyer</button>
             </form>
         </section>
+        
+            <?php
+            if (isset($_SESSION['errorMessage'])) {
+                echo '<div class="error-message">' . htmlspecialchars($_SESSION['errorMessage']) . '</div>';
+                unset($_SESSION['errorMessage']);
+            }
+
+            if (isset($_GET['success']) && $_GET['success'] == 1) {
+                echo '<div class="success-message">Votre message a bien été envoyé !</div>';
+            }
+            ?>
+
     </main>
 
     <footer>
