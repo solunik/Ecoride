@@ -251,5 +251,9 @@
 <script src="js/mesvoitures.js" defer></script>
 <script src="js/proposerCovoiturage.js" defer></script>
 
+<footer>
+        <?php include __DIR__ . '/../partials/footer.php'; ?>
+    </footer>
+
 </body>
 </html>

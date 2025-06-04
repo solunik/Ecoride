@@ -1,12 +1,23 @@
 /* RESET & BASE STYLES */
-body {
-    font-family: Arial, sans-serif; /* Définit la police du texte du site */
-    margin: 0; /* Enlève les marges par défaut du body */
-    padding: 0; /* Enlève les espacements par défaut du body */
-    box-sizing: border-box;
-    background-color: #f9fafb; /* Définit une couleur de fond claire */
-    color: #1f2937; /* Définit la couleur du texte en gris foncé */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
 
 /* HEADER */
 header {
@@ -145,6 +156,7 @@ header:not(:has(.user-avatar)) {
 /* MAIN */
 main {
     padding: 2rem; /* Ajoute un padding de 2rem autour du contenu principal */
+    flex: 1; /* remplit l'espace restant pour pousser le footer en bas */
 }
 
 section {
@@ -241,7 +253,6 @@ footer {
     color: white; /* Définit la couleur du texte du footer en blanc */
     text-align: center; /* Centre le texte dans le footer */
     padding: 0rem 0; /* Ajoute un padding de 1rem en haut et en bas du footer */
-    position: fixed; /* Fixe le footer en bas de la page */
     bottom: 0; /* Positionne le footer tout en bas de la page */
     width: 100%; /* Prend toute la largeur de la page pour le footer */
 }
