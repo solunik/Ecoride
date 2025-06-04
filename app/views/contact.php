@@ -40,15 +40,16 @@
         </section>
         
             <?php
-            if (isset($_SESSION['errorMessage'])) {
-                echo '<div class="error-message">' . htmlspecialchars($_SESSION['errorMessage']) . '</div>';
-                unset($_SESSION['errorMessage']);
-            }
+                if (isset($_SESSION['errorMessage'])) {
+                    echo '<div class="error-message">' . htmlspecialchars($_SESSION['errorMessage']) . '</div>';
+                    unset($_SESSION['errorMessage']);
+                }
 
-            if (isset($_GET['success']) && $_GET['success'] == 1) {
-                echo '<div class="success-message">Votre message a bien été envoyé !</div>';
-            }
-            ?>
+                if (isset($_SESSION['successMessage'])) {
+                    echo '<div class="success-message">' . htmlspecialchars($_SESSION['successMessage']) . '</div>';
+                    unset($_SESSION['successMessage']);
+                }
+                ?>
 
     </main>
 

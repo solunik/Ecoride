@@ -61,7 +61,7 @@ class ContactController
 
                 $mail->CharSet = 'UTF-8';
                 $mail->setFrom($_ENV['SMTP_USER'], 'EcoRide');
-                $mail->addAddress($_ENV['SMTP_USER']);
+                $mail->addAddress($_ENV['SMTP_RECIPIENT']);
                 $mail->addReplyTo($email, $name);
 
                 $mail->isHTML(true);
@@ -75,7 +75,9 @@ class ContactController
 
                 $mail->send();
 
-                header('Location: index.php?page=contact&success=1');
+                $_SESSION['successMessage'] = "Votre message a bien été envoyé.";
+                header('Location: index.php?page=contact');
+
                 exit;
             } catch (Exception $e) {
                 error_log("Erreur d'envoi du mail : " . $mail->ErrorInfo);
