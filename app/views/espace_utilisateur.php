@@ -217,9 +217,9 @@
 
         <form id="proposeRideForm" method="POST" action="index.php?page=submit_covoiturage">
             <input type="hidden" id="vehiculeId" name="vehiculeId">
-            <label for="departureLocation">Lieu de départ:</label>
+            <label for="departureLocation">Ville de départ:</label>
             <input type="text" id="departureLocation" name="departureLocation" required>
-            <label for="arrivalLocation">Lieu d'arrivée:</label>
+            <label for="arrivalLocation">Ville d'arrivée:</label>
             <input type="text" id="arrivalLocation" name="arrivalLocation" required>
             <label for="rideDate">Date:</label>
             <input type="date" id="rideDate" name="rideDate" required>

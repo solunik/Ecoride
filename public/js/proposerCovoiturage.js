@@ -149,6 +149,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 }).then(() => {
                     refreshHistorySection(); // Recharge l'historique des trajets
                     resetVehiculeChoice();   // Réinitialise le formulaire
+                
+                    // RESET DU FORMULAIRE COMPLET
+                    proposeRideForm.reset();
+
+                    // RÉACTIVE LE BOUTON ET RESTAURE LE TEXTE
+                    submitButton.disabled = false;
+                    submitButton.innerText = originalButtonText;
+                
+                
+                
                 });        
             } else {
                 Swal.fire('Erreur', result.message || "Impossible de proposer le covoiturage.", 'error');
