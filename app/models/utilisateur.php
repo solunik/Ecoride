@@ -127,28 +127,26 @@ class Utilisateur extends Model {
     }
 
     public function updateUser($userId, $data) {
-    // Retirer les champs non autorisés à être modifiés directement
     $allowedFields = ['nom', 'prenom', 'email', 'password', 'telephone', 'adresse', 
-    'date_naissance', 'photo', 'pseudo'];
+                      'date_naissance', 'photo', 'pseudo'];
     $setParts = [];
     $params = [];
 
     foreach ($data as $key => $value) {
-    if (in_array($key, $allowedFields)) {
-        if ($key === 'password') {
-            if (empty($value)) {
-                continue; // on saute ce champ pour ne pas le modifier
+        if (in_array($key, $allowedFields)) {
+            if ($key === 'password') {
+                if (empty($value)) {
+                    continue;
+                }
+                $value = password_hash($value, PASSWORD_BCRYPT);
             }
-            $value = password_hash($value, PASSWORD_BCRYPT);
+            $setParts[] = "$key = :$key";
+            $params[$key] = $value;
         }
-        $setParts[] = "$key = :$key";
-        $params[$key] = $value;
     }
-    }
-
 
     if (empty($setParts)) {
-        return false; // Aucun champ modifiable fourni
+        return false;
     }
 
     $params['utilisateur_id'] = $userId;
@@ -156,7 +154,8 @@ class Utilisateur extends Model {
 
     $stmt = $this->pdo->prepare($sql);
     return $stmt->execute($params);
-    }
+}
+
 
 }
 

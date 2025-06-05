@@ -96,25 +96,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
     if (updateForm) {
-        updateForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(updateForm);
-            try {
-                const response = await fetch('index.php?page=api_update_user', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                if (result.success) {
-                    Swal.fire('Succès', 'Informations mises à jour !', 'success').then(() => window.location.reload());
-                } else {
-                    Swal.fire('Erreur', result.message, 'error');
-                }
-            } catch (err) {
-                Swal.fire('Erreur', 'Une erreur est survenue.', 'error');
+    updateForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(updateForm);
+        try {
+            const response = await fetch('index.php?page=api_update_user', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                Swal.fire('Succès', 'Informations mises à jour !', 'success')
+                    .then(() => {
+                        window.location.reload();
+                    });
+            } else {
+                Swal.fire('Erreur', result.message, 'error')
+                    .then(() => {
+                        window.location.reload();
+                    });
             }
-        });
-    }
+        } catch (err) {
+            Swal.fire('Erreur', 'Une erreur est survenue.', 'error');
+        }
+    });
+}
+
 
 
 });
