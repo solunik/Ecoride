@@ -2,8 +2,10 @@
 
 use App\Controllers\ContactController;
 
+// Démarre la session
 session_start();
 
+// Génère un token CSRF si nécessaire
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -11,7 +13,6 @@ if (!isset($_SESSION['csrf_token'])) {
 // Headers CORS globaux
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
-
 
 // Charge les fichiers de configuration et les contrôleurs
 require_once __DIR__ . '/../app/controllers/home.php';
@@ -26,31 +27,64 @@ require_once __DIR__ . '/../app/controllers/changeRoleController.php';
 require_once __DIR__ . '/../app/controllers/EspaceUtilisateurController.php';
 require_once __DIR__ . '/../app/controllers/contact.php';
 
-// Vérifie si une route est demandée
-$page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil'; // Sécurisation du paramètre page
+// Liste des routes nécessitant un rôle spécifique
+$protectedRoutes = [
+    'admin' => 'Administrateur',       // Seul Administrateur
 
-// Vérifie la page demandée et appelle le contrôleur correspondant
+];
+
+// Récupère la page demandée et la sécurise
+$page = isset($_GET['page']) ? preg_replace('/[^a-z0-9_]/i', '', $_GET['page']) : 'accueil';
+
+// Vérifie si la page est protégée par un rôle
+if (isset($protectedRoutes[$page])) {
+    $requiredRole = $protectedRoutes[$page];
+
+    $userId = $_SESSION['utilisateur_id'] ?? 'inconnu';
+    $userIp = $_SERVER['REMOTE_ADDR'] ?? 'inconnue';
+
+    if ($requiredRole === 'Administrateur') {
+        if (!isset($_SESSION['roles']) || !in_array('Administrateur', $_SESSION['roles'])) {
+            // Log interne
+            error_log("Tentative d'accès interdit - Page: $page - Utilisateur: $userId - IP: $userIp - Rôle requis: $requiredRole");
+
+            header("HTTP/1.0 403 Forbidden");
+            echo "Page non trouvée.";
+            exit;
+        }
+    }
+}
+
+
+// Gestion des routes
 switch ($page) {
     case 'accueil':
         accueilPage();
         break;
+
     case 'connexion':
         connexionPage();
         break;
+
     case 'contact':
         contactPage();
         break;
+
     case 'inscription':
         inscriptionPage();
         break;
+
     case 'mentions':
         mentionsPage();
         break;
+
     case 'recherche':
         recherchePage();
         break;
+
     case 'admin':
-        adminPage();
+        $statsController = new Stats();
+        $statsController->showDashboard();
         break;
 
     case 'espace_utilisateur': 
@@ -58,15 +92,16 @@ switch ($page) {
         break;
 
     case 'login':
-            Auth::login($_POST['email'], $_POST['password']);
+        Auth::login($_POST['email'], $_POST['password']);
         break;
+
     case 'logout':
-            Auth::logout();
+        Auth::logout();
         break;
 
     case 'research':
         Covoit::research($_POST['depart'], $_POST['arrivee'], $_POST['date']);
-    break;
+        break;
 
     case 'ridedetails':
         if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
@@ -79,29 +114,21 @@ switch ($page) {
 
     case 'registration':
         Registration::register($_POST['email'], $_POST['pseudo'], $_POST['prenom'], $_POST['nom'], $_POST['password'], $_POST['confirm_password']);
-    break;
+        break;
 
     case 'contact_send':
-    ContactController::sendMessage($_POST);
-    break;
-
-
-    case 'stats':
-        $statsController = new Stats();
-        $statsController->getStatsData();
-        break;
-        
-
-    case 'admin':
-        $statsController = new Stats();
-        $statsController->showDashboard();
+        ContactController::sendMessage($_POST);
         break;
 
     case 'manadmin':
-        // Vérifie si une requête POST a été envoyée (comme dans ton AJAX)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Appel à la méthode d'enregistrement de l'employé
-            EmployeeRegistration::registerEmployee($_POST['lastName'], $_POST['firstName'], $_POST['email'], $_POST['password'], $_POST['confirmPassword']);
+            EmployeeRegistration::registerEmployee(
+                $_POST['lastName'],
+                $_POST['firstName'],
+                $_POST['email'],
+                $_POST['password'],
+                $_POST['confirmPassword']
+            );
         }
         break;
 
@@ -118,15 +145,8 @@ switch ($page) {
         }
         break;
 
-
-    
-        
-       
-    // API routes
     case 'api_update_user':
-        // Vérifie si la requête est bien en POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require_once __DIR__ . '/../app/controllers/updateUserController.php';
             $controller = new UpdateUserController();
             $controller->updateUser();
         } else {
@@ -144,48 +164,40 @@ switch ($page) {
             echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
         }
         break;
-    
-     
+
     case 'submit_covoiturage':
-        EspaceUtilisateurController::handleForm();
-        break;
-    
     case 'api_proposer_covoiturage':
         EspaceUtilisateurController::handleForm();
         break;
 
-    
     case 'api_get_all_vehicules':
-        // Appel de la méthode getAll pour récupérer tous les véhicules de l'utilisateur
         $controller = new EspaceUtilisateurController();
         $controller->getAll();
         break;
 
     case 'api_add_vehicule':
-        // Appel de la méthode add pour ajouter un véhicule
         $controller = new EspaceUtilisateurController();
         $controller->add();
         break;
-        
+
     case 'api_delete_vehicule':
         $controller = new EspaceUtilisateurController();
         $controller->delete();
         break;
-        
+
     case 'api_delete_covoiturage':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $covoiturage = new Covoiturage();
             $success = $covoiturage->deleteById((int)$_POST['covoiturage_id']);
-    
+
             header('Content-Type: application/json');
             echo json_encode(['success' => $success]);
         } else {
             header("HTTP/1.0 405 Method Not Allowed");
             echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
         }
-        
-    break;
-        
+        break;
+
     case 'api_get_user_covoiturages':
         $covoiturage = new Covoiturage();
         $userId = $_SESSION['utilisateur_id'] ?? null;
@@ -196,16 +208,10 @@ switch ($page) {
         } else {
             echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté']);
         }
-    break;
-        
-                
+        break;
 
     default:
         header("HTTP/1.0 404 Not Found");
         echo "Page non trouvée.";
-        exit;   
-        
-
+        exit;
 }
-    
-?>
