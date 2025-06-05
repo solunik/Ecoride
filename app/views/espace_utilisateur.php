@@ -99,6 +99,7 @@
             <form id="addVehiculeForm">
             <label for="vehiculeMarque">Marque:</label>
             <select id="vehiculeMarque" name="marque_id">
+                    <option value="">-- Sélectionnez --</option>
                 <?php foreach ($marques as $marque): ?>
                     <option value="<?= htmlspecialchars(string: $marque['marque_id']) ?>">
                         <?= htmlspecialchars($marque['libelle']) ?>
@@ -118,6 +119,7 @@
 
                 <label for="vehiculeEnergy">Énergie:</label>
                 <select id="vehiculeEnergy" name="energy">
+                    <option value="">-- Sélectionnez --</option>
                     <option value="essence">Essence</option>
                     <option value="diesel">Diesel</option>
                     <option value="electrique">Électrique</option>

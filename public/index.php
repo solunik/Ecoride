@@ -29,7 +29,7 @@ require_once __DIR__ . '/../app/controllers/contact.php';
 
 // Liste des routes nécessitant un rôle spécifique
 $protectedRoutes = [
-    'admin' => 'Administrateur',       // Seul Administrateur
+    'admin' => 'Administrateur',
 
 ];
 
