@@ -82,6 +82,11 @@ switch ($page) {
         recherchePage();
         break;
 
+    case 'stats':
+        $statsController = new Stats();
+        $statsController->getStatsData();
+        break;
+
     case 'admin':
         $statsController = new Stats();
         $statsController->showDashboard();
