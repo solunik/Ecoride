@@ -89,7 +89,7 @@ unset($_SESSION['recherche_effectuee']);
 
     <div class="btn-container">
         <button class='btn-detail' data-id='<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>'>Détail</button>
-        <a href='participer.php?id=<?= htmlspecialchars($covoiturage['id_covoiturage']) ?>' class='btn-participer'>Participer</a>
+        <button class='btn-participer'>Participer</button>
     </div>
 </div>
 
